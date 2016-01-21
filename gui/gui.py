@@ -8,14 +8,14 @@ import math
 pygame.init()
 
 #add the text for your buttons here, feel free to make the array longer or shorter
-texts = ['system halt','settings','xserver','a','b','c','d','e','f']
+texts = ['echo open','settings','xserver','a','b','c','d','e','f']
 
 #add your commands for the buttons here in the same order as your texts
 #be carefull what commands you add, since they might be executed by mistake by users
-functions = ['sudo halt','sudo raspi-config','startx','echo a','echo b','echo c','echo d','echo e','echo f']
+functions = ['echo one','sudo raspi-config','startx','echo a','echo b','echo c','echo d','echo e','echo f']
 
 #edit the button size here
-buttonSize = [100,50]
+buttonSize = [300,120]
 
 #how many buttons you want in one row?
 columns = 3

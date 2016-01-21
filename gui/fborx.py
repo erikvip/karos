@@ -32,7 +32,7 @@ def getFb():
 
                     drivers = ['fbcon', 'directfb', 'svgalib', 'xvfb', 'x11', 'dga', 'ggi', 'vgl', 'svgalib', 'aalib', 'windib', 'directx'] #the last 2 are windows where we should not need the fb since it always has desktop, but lets keep them anyway...
                     found = False
-                    py.display.set_mode((800, 600));
+                    pygame.display.set_mode((800, 600));
                     for driver in drivers:
                             # Make sure that SDL_VIDEODRIVER is set
                             if not os.getenv('SDL_VIDEODRIVER'):
