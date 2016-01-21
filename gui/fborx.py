@@ -35,6 +35,7 @@ def getFb():
                     pygame.display.set_mode((800, 600));
                     for driver in drivers:
                             # Make sure that SDL_VIDEODRIVER is set
+                            os.putenv('SDL_MOUSE', 'event3')
                             if not os.getenv('SDL_VIDEODRIVER'):
                                     os.putenv('SDL_VIDEODRIVER', driver)
                             try:
