@@ -12,13 +12,13 @@ texts = ['echo open','settings','xserver','a','b','c','d','e','f']
 
 #add your commands for the buttons here in the same order as your texts
 #be carefull what commands you add, since they might be executed by mistake by users
-functions = ['echo one','sudo raspi-config','startx','echo a','echo b','echo c','echo d','echo e','echo f']
+functions = ['echo one; sleep 5;','echo raspiconfig;sleep 5','echo STARTX;sleep 5','echo a; sleep 5;','echo b; sleep 5;','echo c; sleep 5;','echo d; sleep 5;','echo e; sleep 5;','echo f; sleep 5;']
 
 #edit the button size here
-buttonSize = [300,120]
+buttonSize = [400,120]
 
 #how many buttons you want in one row?
-columns = 3
+columns = 2
 
 #number of rows will be determined by the number of buttons
 buttonCount = len(texts)
