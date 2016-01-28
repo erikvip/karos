@@ -55,3 +55,17 @@ You can now test the screen by running **ts_test**:
     sudo TSLIB_FBDEVICE=/dev/fb0 TSLIB_TSDEVICE=/dev/input/event0 ts_calibrate
 
 
+# Xstroke
+Install Xstroke for gesture support
+
+https://learn.adafruit.com/adafruit-pitft-28-inch-resistive-touchscreen-display-raspberry-pi/gesture-input
+
+
+	cd ~
+	wget http://mirror.egtvedt.no/avr32linux.org/twiki/pub/Main/XStroke/xstroke-0.6.tar.gz
+	tar xfv xstroke-0.6.tar.gz
+	cd xstroke-0.6
+	./configure
+	sed -i '/^X_LIBS = / s/$/ -lXrender -lX11 -lXext -ldl/' Makefile
+	make
+	sudo make install
