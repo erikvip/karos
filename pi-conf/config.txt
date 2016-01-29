@@ -1,0 +1,43 @@
+framebuffer_width=800
+framebuffer_height=480
+
+dtparam=audio=on
+
+#disable_overscan=1
+#display_rotate=2
+overscan_left=2
+overscan_right=0
+overscan_top=0
+overscan_bottom=0
+
+gpu_mem=64
+
+framebuffer_ignore_alpha=1
+framebuffer_swap=1
+init_uart_clock=16000000
+
+hdmi_group=2
+# Or mode 4 ...
+hdmi_mode=87
+hdmi_force_hotplug=1
+hdmi_cvt=800 480 60
+#hdmi_cvt=800 480 60 6
+
+config_hdmi_boost=4
+
+dtparam=spi=on
+#dtoverlay=ads7846,penirq=25,speed=10000,penirq_pull=2,xohms=150
+
+
+# From: https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=105755
+
+dtparam=i2c_arm=on
+dtoverlay=ads7846, cs=1 speed=50000 penirq=25, penirq_pull=2, swapxy=0, xmin=200, ymin=200, xmax=3900, ymax=3900, pmin=0, pmax=155, xohms=150
+#dtoverlay=ads7846, cs=1 speed=50000 penirq=25, penirq_pull=2, swapxy=0, xmin=0, ymin=0, xmax=800, ymax=480, pmin=0, pmax=155, xohms=150
+dtoverlay=w1-gpio-pullup,gpiopin=4,extpullup=1
+
+# Increase ampers available to USB devices (from 600ma (default) to 1.2a)
+max_usb_current=1
+
+# Hide rainbow on boot
+disable_splash=1

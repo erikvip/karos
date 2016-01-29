@@ -230,3 +230,5 @@ http://www.dimrobotics.com/2013/06/olinuxino-a13-touchscreen-support-in.html
 https://en.wikipedia.org/wiki/Uzbl
 https://github.com/elalemanyo/raspberry-pi-kiosk-screen
 http://ozzmaker.com/matchbox-desktop-raspberry-pi/
+https://www.raspberrypi.org/forums/viewtopic.php?f=29&t=105755
+
