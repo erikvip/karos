@@ -1,10 +1,12 @@
 import json
 import pprint
 
+from kivy.interactive import InteractiveLauncher
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.stacklayout import StackLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.button import Button
 from kivy.uix.image import Image
@@ -81,6 +83,8 @@ class PluginIcon(Image):
 '''
 class MainViewport(ScrollView):
     def __init__(self, **kwargs):
+        self.width = 760
+        self.height = 440
         super(MainViewport, self).__init__(**kwargs)
 
         #layout = GridLayout(cols=1, padding=10, spacing=10)
@@ -97,21 +101,30 @@ class MainViewport(ScrollView):
 
     def touch(args):
         print "Touch event: {}".format(args)    
-
+'''
 class PluginIcon(Button):
     def __init__(self, **kwargs):
-        
+
         super(PluginIcon, self).__init__(**kwargs)
         #self.canvas.clear()
         #dump(self.canvas.children)
         self.clear_widgets()
         self.add_widget(Image(source="static/1.png"))
         dump(self)
-
+'''
 
 
 class CarPiApp(App):
+    use_kivy_settings = False
+
+    def build_config(self, config):
+        config.setdefaults('Global', {
+            'volume': '50'
+        })
+
     def build(self):
+        self.width=300
+        config = self.config
         return MainViewport()
 
     def p(self, arg):
@@ -121,4 +134,9 @@ class CarPiApp(App):
 
 
 if __name__ == '__main__':
+#    i = InteractiveLauncher(CarPiApp())
+#   i.run()
     CarPiApp().run()
+#else:
+#    print "Not running in main: " + __name__
+#    i = InteractiveLauncher(CarPiApp())

@@ -33,32 +33,161 @@
 #        text_size: root.width, root.height
 #        size: self.texture_size
 
-<PluginIcon@Button>:
-    text: root.text
-    #background_down: (1,0,1)
-        
+<-PluginIcon@Button>:
+    source: ''
+    canvas.before:
+        Color:
+            rgba: (1, 1, 1, 1)
+        BorderImage:
+            source: root.source
+            pos: self.pos
+            #size: self.size
+            size: 96, 96
+
+    text: ''
+    size_hint: 1, None
+    on_release: app.p(root)
 
 
 <MainViewport>:
+#    Screen:
     ScrollView:
-        canvas:
-            Color:
-                rgb: 1, 0, 0
-        BoxLayout:
-            padding: '2sp'
-            GridLayout:
-                id: content
-                cols: 4
-                spacing: '18px'
-                padding: '18px'
-                Button:
-                    text: 'test'
-                Button:
-                    text: 'two'
-                    on_press: root.touch()
-                PluginIcon:
-                    text: 'Music Player'
-                    source: 'static/1.png'
+        width: 700
+        height: 480
+        do_scroll_y: True
+        do_scroll_x: False
+        size_hint: None, 480
+        padding: 0, 0, 0, 100
+
+#        do_scroll_x: False
+#        do_scroll_y: True
+#        canvas:
+#            Color:
+#                rgb: 1, 0, 0
+        GridLayout:
+            #rows: 4 
+            cols: 4
+            #orientation: 'tb-lr'
+            spacing: 25
+            padding: 0, 0, 0, 100
+
+#        Button:
+#            text: 'test'
+#            width: 32
+#            height: 32
+#        Button:
+#            text: 'two'
+#            on_press: app.open_settings()
+#            size: 32, 32
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/1.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/1.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/4.png'
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+
+
+
+
+
 #                PluginIcon:
 #                    text: 'Videos'
 #                    source: 'static/2.png'
