@@ -1,0 +1,42 @@
+#:kivy 1.0.9
+
+
+<-PluginIcon>:
+    name: ''
+    x: 13
+    y: 2000
+    canvas:
+        Color:
+            rgb: (0, 1, 1)
+        Rectangle:
+            texture: self.texture
+            size: 64, 64
+            pos: root.x, root.y
+    Label:
+        text: str(self.parent.children)
+
+
+<MainViewport>:
+    ScrollView:
+        canvas:
+            Color:
+                rgb: 1, 0, 0
+        BoxLayout:
+            padding: '2sp'
+            GridLayout:
+                id: content
+                cols: 2
+                spacing: '18px'
+                padding: '18px'
+                Button:
+                    text: 'test'
+                Button:
+                    text: 'two'
+                    on_press: root.touch()
+                PluginIcon:
+                    name: 'asdf'
+                    source: 'static/musictube.png'
+                    x: 14
+                    y: 15
+                    on_touch_down: self.on_press()
+                    
