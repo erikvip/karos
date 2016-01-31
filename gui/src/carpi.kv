@@ -1,19 +1,42 @@
 #:kivy 1.0.9
+#:import PrettyPrinter pprint
 
+# Old method..
+#<-PluginIcon>:
+#    name: ''
+#    canvas:
+#        Color:
+#            rgb: (1, 1, 1)
+#        Rectangle:
+#            id: icon
+ #           texture: root.texture
+#            size: 64, 64
+#            pos: root.center_x, root.center_y
+#    Label:
+#        text: app.p(root)
+#        pos: root.center_x, root.center_y
 
-<-PluginIcon>:
-    name: ''
-    x: 13
-    y: 2000
-    canvas:
-        Color:
-            rgb: (0, 1, 1)
-        Rectangle:
-            texture: self.texture
-            size: 64, 64
-            pos: root.x, root.y
-    Label:
-        text: str(self.parent.children)
+#<-PluginIcon@Button+Label>:
+#    iconsize: 112
+#    canvas:
+#        Color:
+#            rgb: (1, 1, 1)
+#        Rectangle:
+#            id: icon
+#            texture: root.texture
+#            size: root.iconsize, root.iconsize
+#            pos: root.center_x-(root.iconsize/2), root.center_y-(root.iconsize/2)
+#    Label:
+#        text: 'asdf'
+#        halign: 'center'
+#        valign: 'bottom'
+#        text_size: root.width, root.height
+#        size: self.texture_size
+
+<PluginIcon@Button>:
+    text: root.text
+    #background_down: (1,0,1)
+        
 
 
 <MainViewport>:
@@ -25,7 +48,7 @@
             padding: '2sp'
             GridLayout:
                 id: content
-                cols: 2
+                cols: 4
                 spacing: '18px'
                 padding: '18px'
                 Button:
@@ -34,9 +57,20 @@
                     text: 'two'
                     on_press: root.touch()
                 PluginIcon:
-                    name: 'asdf'
-                    source: 'static/musictube.png'
-                    x: 14
-                    y: 15
-                    on_touch_down: self.on_press()
+                    text: 'Music Player'
+                    source: 'static/1.png'
+#                PluginIcon:
+#                    text: 'Videos'
+#                    source: 'static/2.png'
+#                PluginIcon:
+#                    text: 'Youtube'
+#                    source: 'static/3.png'
+#                PluginIcon:
+#                    text: 'Internet'
+#                    source: 'static/4.png'
+#                PluginIcon:
+#                    text: 'Youtube Downloader'
+#                    source: 'static/2.png'
+                    
+                    
                     
