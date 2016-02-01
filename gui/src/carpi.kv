@@ -33,7 +33,7 @@
 #        text_size: root.width, root.height
 #        size: self.texture_size
 
-<-PluginIcon@Button+Label>:
+<-PluginIcon@Image+Label>:
     source: ''
     text: 'Abc'
     canvas.before:
@@ -45,7 +45,9 @@
             #size: self.size
             size: 96, 96
     size_hint: 1, None
-    on_release: app.p(root)
+    height: 96
+    width: 96
+#    on_release: app.p(root)
     Label:
         text: 'asdf'
         pos: self.pos

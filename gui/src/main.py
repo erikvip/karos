@@ -55,7 +55,10 @@ def dump(arg):
     print "="*80, "\n", bcolors.BOLD, arg, bcolors.ENDC, "\n" + "="*80, bcolors.WARNING
     col_width = max(len(row) for row in dir(arg)) + 3
     for d in dir(arg):
-        print d.ljust(col_width) + " : " + str(getattr(arg,d))
+        try:
+            print d.ljust(col_width) + " : " + str(getattr(arg,d))
+        except AttributeError:
+            print "AttributeError: {} -- {}".format(d, d  )
 
     try:
         pprint.pprint(vars(arg))
@@ -87,6 +90,8 @@ class MainViewport(ScrollView):
         self.height = 440
         super(MainViewport, self).__init__(**kwargs)
 
+        self.bind(on_scroll_start=self.scroll)
+
         #layout = GridLayout(cols=1, padding=10, spacing=10)
 
         #self.previous_text = open(self.kv_file).read()
@@ -99,6 +104,11 @@ class MainViewport(ScrollView):
 #        self.add_widget(layout)
       #self.add_widget(widget)
 
+    def scroll(self, item, vp):
+        print "Scrolling!"  
+        #dump(arg)
+        #dump(arg2)
+        dump(self)
     def touch(args):
         print "Touch event: {}".format(args)    
 '''
