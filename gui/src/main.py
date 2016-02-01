@@ -116,8 +116,10 @@ class PluginIcon(Button, Label):
     text = ObjectProperty()
     def __init__(self, **kwargs):
         super(PluginIcon, self).__init__(**kwargs)
-        dump(self)
+        self.bind(on_press=self.launch)
 
+    def launch(self, event):
+        dump(self)
 
 
 class CarPiApp(App):
