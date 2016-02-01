@@ -1,5 +1,6 @@
 import json
 import pprint
+import random
 
 from kivy.interactive import InteractiveLauncher
 from kivy.app import App
@@ -86,11 +87,11 @@ class PluginIcon(Image):
 '''
 class MainViewport(ScrollView):
     def __init__(self, **kwargs):
-        self.width = 760
-        self.height = 440
+        #self.width = 760
+        #self.height = 440
         super(MainViewport, self).__init__(**kwargs)
 
-        self.bind(on_scroll_start=self.scroll)
+        #self.bind(on_scroll_start=self.scroll)
 
         #layout = GridLayout(cols=1, padding=10, spacing=10)
 
@@ -106,36 +107,59 @@ class MainViewport(ScrollView):
 
     def scroll(self, item, vp):
         print "Scrolling!"  
-        #dump(arg)
-        #dump(arg2)
-        dump(self)
     def touch(args):
         print "Touch event: {}".format(args)    
-'''
-class PluginIcon(Button):
-    def __init__(self, **kwargs):
 
+
+class PluginIcon(Button, Label):
+    source = ObjectProperty()
+    text = ObjectProperty()
+    def __init__(self, **kwargs):
         super(PluginIcon, self).__init__(**kwargs)
-        #self.canvas.clear()
-        #dump(self.canvas.children)
-        self.clear_widgets()
-        self.add_widget(Image(source="static/1.png"))
         dump(self)
-'''
+
 
 
 class CarPiApp(App):
     use_kivy_settings = False
+
+    def build(self):
+        #config = self.config
+        #self.width=300
+        #return MainViewport()
+
+        # Grid layout holds our main icons. 40 px padding on bottom
+        layout = GridLayout(cols=4, padding=(0, 0, 0, 40), spacing=18,
+                size_hint=(None, None), width=700)
+        
+        # This is the magic that makes ScrollView work when you
+        # scroll on a nested child item
+        layout.bind(minimum_height=layout.setter('height'))
+
+        for i in range(30):
+            r = random.randrange(1,4)
+           
+            icon = PluginIcon(text="Media Player With a Long Name", 
+                    size=(128, 128), 
+                    size_hint=(None, None),
+                    source="static/"+str(r)+".png")
+            layout.add_widget(icon)
+
+                    # create a scroll view, with a size < size of the grid
+        root = ScrollView(size_hint=(None, None), size=(700, 480),
+                pos_hint={'center_x': .5, 'center_y': .5}, do_scroll_x=False)
+        root.add_widget(layout)
+
+        return root
+
+
+
 
     def build_config(self, config):
         config.setdefaults('Global', {
             'volume': '50'
         })
 
-    def build(self):
-        self.width=300
-        config = self.config
-        return MainViewport()
 
     def p(self, arg):
         dump(arg)
