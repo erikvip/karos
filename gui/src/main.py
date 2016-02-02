@@ -114,6 +114,7 @@ class MainViewport(ScrollView):
 class PluginIcon(Button, Label):
     source = ObjectProperty()
     text = ObjectProperty()
+    direction = ObjectProperty()
     def __init__(self, **kwargs):
         super(PluginIcon, self).__init__(**kwargs)
         self.bind(on_press=self.launch)
@@ -124,32 +125,45 @@ class PluginIcon(Button, Label):
 
 class CarPiApp(App):
     use_kivy_settings = False
+    direction = "vertical"
 
     def build(self):
         #config = self.config
         #self.width=300
         #return MainViewport()
+        self.direction = "horizontal"
 
         # Grid layout holds our main icons. 40 px padding on bottom
-        layout = GridLayout(cols=4, padding=(0, 0, 0, 40), spacing=18,
-                size_hint=(None, None), width=700)
+        if (self.direction == "vertical"):
+            layout = GridLayout(cols=5, padding=(0, 40, 0, 0), spacing=18,
+                    size_hint=(None, None), width=800)
+        else:
+            layout = GridLayout(rows=3, padding=(20, 80, 40, 0), spacing=18,
+                    size_hint=(None, None), height=480)
         
-        # This is the magic that makes ScrollView work when you
-        # scroll on a nested child item
-        layout.bind(minimum_height=layout.setter('height'))
+        # This is the magic that makes ScrollView work when scroll event occurs on a nested child item
+        if (self.direction == "vertical"):
+            layout.bind(minimum_height=layout.setter('height'))
+        else:
+            layout.bind(minimum_width=layout.setter('width'))
 
         for i in range(30):
             r = random.randrange(1,4)
            
-            icon = PluginIcon(text="Media Player With a Long Name", 
+            icon = PluginIcon(text="Media Player with a long name", 
+                    direction=self.direction,
                     size=(128, 128), 
                     size_hint=(None, None),
                     source="static/"+str(r)+".png")
             layout.add_widget(icon)
 
-                    # create a scroll view, with a size < size of the grid
-        root = ScrollView(size_hint=(None, None), size=(700, 480),
-                pos_hint={'center_x': .5, 'center_y': .5}, do_scroll_x=False)
+        # create a scroll view, with a size < size of the grid
+        if (self.direction == "vertical"):
+            root = ScrollView(id="main", size_hint=(None, None), size=(800, 480),
+                    pos_hint={'center_x': .48, 'center_y': .5}, do_scroll_x=False, do_scroll_y = True)
+        else:
+            root = ScrollView(id="main", size_hint=(None, None), size=(800, 480),
+                    pos_hint={'center_x': .42, 'center_y': .5}, do_scroll_x=True, do_scroll_y = False)
         root.add_widget(layout)
 
         return root
