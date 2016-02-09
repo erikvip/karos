@@ -1,0 +1,218 @@
+#:kivy 1.0.9
+#:import PrettyPrinter pprint
+
+# Old method..
+#<-PluginIcon>:
+#    name: ''
+#    canvas:
+#        Color:
+#            rgb: (1, 1, 1)
+#        Rectangle:
+#            id: icon
+ #           texture: root.texture
+#            size: 64, 64
+#            pos: root.center_x, root.center_y
+#    Label:
+#        text: app.p(root)
+#        pos: root.center_x, root.center_y
+
+#<-PluginIcon@Button+Label>:
+#    iconsize: 112
+#    canvas:
+#        Color:
+#            rgb: (1, 1, 1)
+#        Rectangle:
+#            id: icon
+#            texture: root.texture
+#            size: root.iconsize, root.iconsize
+#            pos: root.center_x-(root.iconsize/2), root.center_y-(root.iconsize/2)
+#    Label:
+#        text: 'asdf'
+#        halign: 'center'
+#        valign: 'bottom'
+#        text_size: root.width, root.height
+#        size: self.texture_size
+
+#<-PluginIcon@Image+Label>:
+#    source: ''
+#    text: 'Abc'
+#    canvas.before:
+#        Color:
+#            rgba: (1, 1, 1, 1)
+#        BorderImage:
+#            source: root.source
+#            pos: self.pos
+            #size: self.size
+#            #size: 96, 96
+#            #size_hint: 96, None
+#    size_hint: root.width, None
+#    height: 96
+#    width: 96
+#    on_release: app.p(root)
+#    Label:
+#        text: 'asdf'
+#        pos: self.pos
+#        halign: 'center'
+#        valign: 'bottom'
+        #text_size: root.width, root.height
+        #size: self.texture_size
+#        size_hint: root.width, None
+
+
+
+
+<MainViewport>:
+#    Screen:
+    ScrollView:
+        width: 700
+        height: 480
+        do_scroll_y: True
+        do_scroll_x: False
+        #size_hint: None, 480
+        padding: 0, 0, 0, 100
+
+#        do_scroll_x: False
+#        do_scroll_y: True
+#        canvas:
+#            Color:
+#                rgb: 1, 0, 0
+        GridLayout:
+            #rows: 4 
+            cols: 4
+            #orientation: 'tb-lr'
+            spacing: 25
+            padding: 0, 0, 0, 100
+            size_hint: 1, None
+
+#        Button:
+#            text: 'test'
+#            width: 32
+#            height: 32
+#        Button:
+#            text: 'two'
+#            on_press: app.open_settings()
+#            size: 32, 32
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/1.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/1.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/4.png'
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/2.png'
+            PluginIcon:
+                text: 'One'
+                source: 'static/3.png'
+
+
+
+
+
+#                PluginIcon:
+#                    text: 'Videos'
+#                    source: 'static/2.png'
+#                PluginIcon:
+#                    text: 'Youtube'
+#                    source: 'static/3.png'
+#                PluginIcon:
+#                    text: 'Internet'
+#                    source: 'static/4.png'
+#                PluginIcon:
+#                    text: 'Youtube Downloader'
+#                    source: 'static/2.png'
+                    
+                    
+                    

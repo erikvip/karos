@@ -1,0 +1,24 @@
+#:kivy 1.0.9
+
+<-PluginIcon>:
+    source:""
+    text:""
+    canvas.after:
+        BorderImage:
+            source: root.source
+            pos: root.pos
+            #size: root.width-12, root.height - 12
+            #size: self.size
+            #size: 96, 96
+    Label:
+        text: root.text
+        pos: (root.pos[0], root.pos[1] - root.height/2)
+        text_size: (root.width, None)
+        halign: 'center'
+        valign: 'bottom'
+        font_size: 13
+
+#        halign: 'center'
+#        valign: 'bottom'
+ #       text_size: root.width, root.height
+ #       size: self.texture_size
