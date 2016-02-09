@@ -1,16 +1,22 @@
 import random
-
 from utils import dump
 
-#from kivy.interactive import InteractiveLauncher
+from kivy.interactive import InteractiveLauncher
 from kivy.app import App
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.properties import ObjectProperty
+from kivy.lang import Builder
+from kivy.logger import Logger
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.uix.actionbar import ActionBar, ActionView, ActionButton
 
 #from kivy.properties import NumericProperty
+
+from musicplayer.musicplayer import *
+#from musicplayer.musicplayer.MusicPlayerScreen import MusicPlayerScreen
 
 #from pudb import set_trace; set_trace()
 '''
@@ -27,18 +33,57 @@ class PluginIcon(Button, Label):
     source = ObjectProperty()
     text = ObjectProperty()
     direction = ObjectProperty()
+    name = ObjectProperty()
     def __init__(self, **kwargs):
         super(PluginIcon, self).__init__(**kwargs)
         self.bind(on_press=self.launch)
 
     def launch(self, event):
-        dump(self)
+        #dump(app.screens)
+        pass
+        #app.p(event)
 
+
+
+
+class SettingsScreen(Screen):
+    pass
+
+
+'''
+Layout is like this:
+
+ScreenManager
+    Screen: MainScreen <GridLayout>:
+        ScrollView:
+            PluginIcon
+    Screen: MusicPlayer 
+
+    
+
+'''
 class CarPiApp(App):
     use_kivy_settings = False
     direction = "vertical"
+    screens = []
+
+    def launch(self, icon):
+        Logger.info("CarPiApp: Attempting to launch screen {}".format(str(icon.name)))
+        self.sm.current = str(icon.name)
+        #dump(self.sm.children[0].children[0])
+
 
     def build(self):
+        global app
+        app = self
+
+        self.sm = ScreenManager()
+
+        MainScreen = Screen(name="main")
+        self.screens.append(MainScreen)
+
+        Builder.load_file('musicplayer/musicplayer.kv')
+
         #config = self.config
 
         #self.direction = "horizontal"
@@ -56,6 +101,11 @@ class CarPiApp(App):
             layout.bind(minimum_height=layout.setter('height'))
         else:
             layout.bind(minimum_width=layout.setter('width'))
+
+
+        ab = ActionBar(pos_hint={'top':1})
+        layout.add_widget(ab)
+
 
         for i in range(30):
             r = random.randrange(1,4)
@@ -75,9 +125,26 @@ class CarPiApp(App):
             root = ScrollView(size_hint=(None, None), size=(800, 480),
                     pos_hint={'center_x': .42, 'center_y': .5}, do_scroll_x=True, do_scroll_y = False)
 
-        root.add_widget(layout)
 
-        return root
+
+        root.add_widget(layout)
+        MainScreen.add_widget(root)
+        self.sm.add_widget(MainScreen)
+
+        MusicPlayer = MusicPlayerScreen(self, name='musicplayer')
+
+        #self.screens.append(MusicPlayer.build() )
+        self.sm.add_widget(MusicPlayer)
+
+       
+        
+
+
+
+        return self.sm
+
+
+
 
 
     def build_config(self, config):
@@ -90,12 +157,8 @@ class CarPiApp(App):
         dump(arg)
         return "P"
 
-
+#launcher = InteractiveLauncher(CarPiApp())
+#launcher.run()
 
 if __name__ == '__main__':
-#    i = InteractiveLauncher(CarPiApp())
-#   i.run()
-    CarPiApp().run()
-#else:
-#    print "Not running in main: " + __name__
-#    i = InteractiveLauncher(CarPiApp())
+    app = CarPiApp().run()

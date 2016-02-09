@@ -3,8 +3,9 @@
 <-PluginIcon>:
     source:""
     text:""
+    name:"musicplayer"
     direction: "vertical"
-    on_press: app.p(root)     
+    on_press: app.launch(self)
     canvas.after:
         BorderImage:
             source: root.source
@@ -27,3 +28,11 @@
  #       text_size: root.width, root.height
  #       size: self.texture_size
 
+
+#<-ScrollView>:
+#    ActionBar:
+#        pos_hint: {'top':1}
+#        ActionView:
+#            use_separator: True
+#            ActionButton:
+#                text: 'blah'

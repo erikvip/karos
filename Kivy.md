@@ -10,3 +10,9 @@ Notes on Kivy implmentation and design
 - settings/main.py
 - widgets/effectwidget3_advanced.py
 
+
+
+
+## Requirements
+
+python-mpd2 (for mpd)
