@@ -1,0 +1,24 @@
+<MusicPlayerScreen>:
+    #size: (800, 400)
+    canvas.before:
+        Color:
+            rgb: (0, 0, 0)
+        Rectangle:
+            pos: (0, 0)
+            size: (800, 400)
+    MusicList:
+        cols: 1
+        width: 700
+
+<ListItemButton>:
+    canvas:
+#        BorderImage:
+            #size: (800, 200)
+        Rectangle:
+            size: (800, 200)
+    selected_color: (0.75, 0.75, 0.75, 1)
+    deselected_color: (0.1, 0.1, 0.1, 1)
+#    height: 50
+    #size_hint: (None, 50)
+    text_size: self.size
+    halign: 'left'
