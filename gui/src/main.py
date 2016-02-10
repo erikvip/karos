@@ -5,6 +5,8 @@ from kivy.interactive import InteractiveLauncher
 from kivy.app import App
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.floatlayout import FloatLayout
+
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.properties import ObjectProperty
@@ -44,8 +46,6 @@ class PluginIcon(Button, Label):
         #app.p(event)
 
 
-
-
 class SettingsScreen(Screen):
     pass
 
@@ -58,9 +58,6 @@ ScreenManager
         ScrollView:
             PluginIcon
     Screen: MusicPlayer 
-
-    
-
 '''
 class CarPiApp(App):
     use_kivy_settings = False
@@ -68,14 +65,15 @@ class CarPiApp(App):
     screens = []
 
     def launch(self, icon):
+
         Logger.info("CarPiApp: Attempting to launch screen {}".format(str(icon.name)))
         self.sm.current = str(icon.name)
-        #dump(self.sm.children[0].children[0])
-
 
     def build(self):
         global app
         app = self
+
+        self.container = FloatLayout(size=(800, 480))
 
         self.sm = ScreenManager()
 
@@ -90,21 +88,21 @@ class CarPiApp(App):
 
         # Grid layout holds our main icons. 40 px padding on bottom
         if (self.direction == "vertical"):
-            layout = GridLayout(cols=5, padding=(0, 40, 0, 0), spacing=18,
+            grid = GridLayout(cols=5, padding=(0, 40, 0, 0), spacing=18,
                     size_hint=(None, None), width=800)
         else:
-            layout = GridLayout(rows=3, padding=(20, 80, 40, 0), spacing=18,
+            grid = GridLayout(rows=3, padding=(20, 80, 40, 0), spacing=18,
                     size_hint=(None, None), height=480)
         
         # This is the magic that makes ScrollView work when scroll event occurs on a nested child item
         if (self.direction == "vertical"):
-            layout.bind(minimum_height=layout.setter('height'))
+            grid.bind(minimum_height=grid.setter('height'))
         else:
-            layout.bind(minimum_width=layout.setter('width'))
+            grid.bind(minimum_width=grid.setter('width'))
 
 
-        ab = ActionBar(pos_hint={'top':1})
-        layout.add_widget(ab)
+        #ab = ActionBar(pos_hint={'top':1})
+        #grid.add_widget(ab)
 
 
         for i in range(30):
@@ -115,7 +113,7 @@ class CarPiApp(App):
                     size=(128, 128), 
                     size_hint=(None, None),
                     source="static/"+str(r)+".png")
-            layout.add_widget(icon)
+            grid.add_widget(icon)
 
         # create a scroll view, with a size < size of the grid
         if (self.direction == "vertical"):
@@ -127,7 +125,7 @@ class CarPiApp(App):
 
 
 
-        root.add_widget(layout)
+        root.add_widget(grid)
         MainScreen.add_widget(root)
         self.sm.add_widget(MainScreen)
 
@@ -137,14 +135,10 @@ class CarPiApp(App):
         self.sm.add_widget(MusicPlayer)
 
        
-        
+        self.container.add_widget(self.sm)
 
-
-
-        return self.sm
-
-
-
+        #return self.sm
+        return self.container
 
 
     def build_config(self, config):

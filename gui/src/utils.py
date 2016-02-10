@@ -1,5 +1,9 @@
 import pprint
 
+from kivy.uix.label import Label
+from kivy.properties import ObjectProperty
+from kivy.clock import Clock
+
 # Console color termcap codes
 class bcolors:
     HEADER = '\033[95m'
@@ -25,3 +29,20 @@ def dump(arg):
     except TypeError:
         pass
     print bcolors.ENDC    
+
+
+class Growl(Label):
+    text = ObjectProperty()
+    #size=(300, 20)
+    text_size=(300, None)
+    close_after=5
+    def __init__(self, app, **kwargs):
+        # Center position...
+        self.pos_hint={'center_x':.5, 'center_y':.5}
+        super(Growl, self).__init__(**kwargs)
+
+        # Automagically add ourself
+        app.container.add_widget(self)
+
+        # And then remove ourself
+        Clock.schedule_once(lambda dt: app.container.remove_widget(self), self.close_after)

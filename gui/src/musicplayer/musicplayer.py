@@ -12,6 +12,7 @@ from kivy.properties import ObjectProperty
 
 from kivy.uix.screenmanager import ScreenManager, Screen
 from utils import dump
+from utils import Growl
 import mpd
 
 __all__ = ('MusicPlayerScreen', )
@@ -29,6 +30,7 @@ class MusicPlayerScreen(Screen):
         super(MusicPlayerScreen, self).__init__(**kwargs)    
         self.app = app
 
+        
         # Setup mpd connection
         self.mpd_client = mpd.MPDClient(use_unicode=True)
         self.mpd_client.connect("10.0.0.10", 6600)
@@ -49,20 +51,13 @@ class MusicPlayerScreen(Screen):
 
         print "Selected: {}".format(text)
 
-
-        
-        
-
         if (item.get('type') == 'file'):
             print "Start playing song: {}".format(text)
-            note = Notify(message="Added {} to queue".format(text))
-            self.add_widget(note)
+            Growl(self.app, text="Added {} to queue".format(text))
             file = item.get('file')
             self.mpd_client.add(file)
             self.mpd_client.play()
 
-            #print item.get('file')
-            #dump(self.selection_history)
 
         else:
             self.clear_widgets()
