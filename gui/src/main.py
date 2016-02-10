@@ -105,7 +105,7 @@ class CarPiApp(App):
         #grid.add_widget(ab)
 
 
-        for i in range(30):
+        for i in range(5):
             r = random.randrange(1,4)
            
             icon = PluginIcon(text="Media Player with a long name", 

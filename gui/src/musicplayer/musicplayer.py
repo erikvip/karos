@@ -32,7 +32,8 @@ class MusicPlayerScreen(Screen):
 
         
         # Setup mpd connection
-        self.mpd_client = mpd.MPDClient(use_unicode=True)
+        #self.mpd_client = mpd.MPDClient(use_unicode=True)
+        self.mpd_client = mpd.MPDClient()
         self.mpd_client.connect("10.0.0.10", 6600)
 
         self.selection_history=[];
