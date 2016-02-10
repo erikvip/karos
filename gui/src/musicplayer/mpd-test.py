@@ -11,11 +11,19 @@ client.connect("10.0.0.10", 6600)
 
 #dump(info)
 
+
+
+
 #for entry in client.lsinfo("bfree"):
-for entry in client.lsinfo("bfree/Unknown Album"):
+for entry in client.lsinfo("ACDC/Ballbreaker"):
     if 'directory' in entry:
         print entry['directory']
     else:
         print entry
 #for key, value in client.status().items():
 #    print("%s: %s" % (key, value))
+
+#ACDC/Ballbreaker', 'Hard as a Rock
+client.add("ACDC/Ballbreaker/16-01 Hard As A Rock.mp3")
+
+client.play()
