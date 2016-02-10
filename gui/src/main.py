@@ -73,7 +73,7 @@ class CarPiApp(App):
         global app
         app = self
 
-        self.container = FloatLayout(size=(800, 480))
+        #self.container = FloatLayout(size=(800, 480))
 
         self.sm = ScreenManager()
 
@@ -135,10 +135,10 @@ class CarPiApp(App):
         self.sm.add_widget(MusicPlayer)
 
        
-        self.container.add_widget(self.sm)
+        #self.container.add_widget(self.sm)
 
-        #return self.sm
-        return self.container
+        return self.sm
+        #return self.container
 
 
     def build_config(self, config):

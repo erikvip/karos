@@ -138,7 +138,8 @@ class MusicList(GridLayout):
         kwargs['cols'] = 2
         super(MusicList, self).__init__(**kwargs)
 
-        self.mpd_client = mpd.MPDClient(use_unicode=True)
+        #self.mpd_client = mpd.MPDClient(use_unicode=True)
+        self.mpd_client = mpd.MPDClient()
         self.mpd_client.connect("10.0.0.10", 6600)
 
         self.add_data()
@@ -238,3 +239,22 @@ class MusicList(GridLayout):
         #self.update_minimum_size()
         #list._trigger_reset_populate()
 #        self.do_layout()
+
+
+
+if __name__ == '__main__':
+    from kivy.app import App
+    from kivy.lang import Builder
+    from kivy.uix.floatlayout import FloatLayout
+    Builder.load_file('musicplayer.kv')
+
+    class DemoApp(App):
+        def build(self):
+            app = self
+            self.container = FloatLayout(size=(800, 480))
+            self.sm = ScreenManager()
+            self.sm.add_widget(MusicPlayerScreen(app, name="main"))
+            self.container.add_widget(self.sm)
+            return self.container;
+
+    app = DemoApp().run()

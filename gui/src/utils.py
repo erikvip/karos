@@ -42,7 +42,7 @@ class Growl(Label):
         super(Growl, self).__init__(**kwargs)
 
         # Automagically add ourself
-        app.container.add_widget(self)
+        #app.container.add_widget(self)
 
         # And then remove ourself
-        Clock.schedule_once(lambda dt: app.container.remove_widget(self), self.close_after)
+        #Clock.schedule_once(lambda dt: app.container.remove_widget(self), self.close_after)
