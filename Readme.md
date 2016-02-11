@@ -77,7 +77,10 @@ This is my working /boot/config.txt file for the ads7846 touchscreen:
     disable_overscan=1
 
     # GPU
-    gpu_mem=64
+    #gpu_mem=64
+
+    # Issue with Kivy - ListView won't do more than 72 items with only 64MB of gpu_mem...
+    gpu_mem=128
 
     # Uhm...I'm not sure...
     framebuffer_ignore_alpha=1
@@ -218,7 +221,14 @@ Remember to chmod +x the script, and then throw it into */etc/rc.local*
 
     /home/pi/bin/ttyvnc.sh
 
+### ListView is partially blank
 
+When scrolling through the ListView in Kivy, labels may suddenly break after a certain point. 
+This issue was observed on a Raspberry PI when gpu_mem was set to 64MB.  It does not matter if you're running inside X11 or straight through the framebuffer via python/pygame. My list (for the musicplayer) would not show any labels for the list items after about 72.  
+
+Increasing gpu_mem to 128 fixed the issue. 
+
+Testing script under gui/src/testing/listview_longlist.py
 
 ## Useful links
 

@@ -84,18 +84,19 @@ class MusicPlayerScreen(FloatLayout):
         if (item != "/"):
             self.data = [{'text':"..", 'type':'directory'}]
 
-        for index in range(300):
-            n = int(random.choice([str(i) for i in range(8, 30)]))
-            self.data.append({'text':id_generator(size=n), 'type':'directory'})
+        for entry in self.mpd_client.lsinfo(item):
+            if 'directory' in entry:
+                self.data.append({'text':str(entry['directory']), 'type':'directory'})
+            if 'title' in entry:
+                self.data.append({'text':str(entry['title']), 'type':'file', 'file':entry['file']})
+
+#        for index in range(300):
+#            n = int(random.choice([str(i) for i in range(8, 30)]))
+#            self.data.append({'text':id_generator(size=n), 'type':'directory'})
 
         return self.data
 
 
-#        for entry in self.mpd_client.lsinfo(item):
-#            if 'directory' in entry:
-#                self.data.append({'text':str(entry['directory']), 'type':'directory'})
-#            if 'title' in entry:
-#                self.data.append({'text':str(entry['title']), 'type':'file', 'file':entry['file']})
 
 
 

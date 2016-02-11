@@ -1,3 +1,13 @@
+'''
+ This script just loads random characters into a ListView. 
+
+ On the raspberry pi, when gpu_mem was set to 64MB, the ListView would crap out after 72 items.
+ You could still see the items in the list, and the empty space in the List was present, but the text
+ lables were not there...increasing gpu_mem fixed the issue.  You can use this script to test.
+
+ This is set to 500 (see the **for index in range(N)** below).  If you cannot scroll to the bottom
+ of this list, then you'll want to increase your gpu_mem setting in /boot/config.txt (Raspberry PI)
+'''
 from kivy.uix.listview import ListView
 from kivy.uix.gridlayout import GridLayout
 from kivy.adapters.listadapter import ListAdapter
@@ -17,7 +27,7 @@ class MainView(GridLayout):
 
 #        list_view = ListView(item_strings=[str(index) for index in range(100)])
         data = []
-        for index in range(300):
+        for index in range(500):
             n = int(random.choice([str(i) for i in range(8, 30)]));
             data.append({'text':id_generator(size=n)})
 
