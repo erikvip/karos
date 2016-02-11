@@ -16,6 +16,13 @@ from utils import dump
 from utils import Growl
 import mpd
 
+
+import string
+import random
+def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
+
+
 __all__ = ('MusicPlayerScreen', )
 
 class Notify(Bubble):
@@ -77,13 +84,20 @@ class MusicPlayerScreen(FloatLayout):
         if (item != "/"):
             self.data = [{'text':"..", 'type':'directory'}]
 
-        for entry in self.mpd_client.lsinfo(item):
-            if 'directory' in entry:
-                self.data.append({'text':str(entry['directory']), 'type':'directory'})
-            if 'title' in entry:
-                self.data.append({'text':str(entry['title']), 'type':'file', 'file':entry['file']})
+        for index in range(300):
+            n = int(random.choice([str(i) for i in range(8, 30)]))
+            self.data.append({'text':id_generator(size=n), 'type':'directory'})
 
         return self.data
+
+
+#        for entry in self.mpd_client.lsinfo(item):
+#            if 'directory' in entry:
+#                self.data.append({'text':str(entry['directory']), 'type':'directory'})
+#            if 'title' in entry:
+#                self.data.append({'text':str(entry['title']), 'type':'file', 'file':entry['file']})
+
+
 
     def create_list(self, data):
 
