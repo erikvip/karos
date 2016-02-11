@@ -9,7 +9,7 @@ from kivy.uix.bubble import Bubble
 from kivy.uix.bubble import BubbleButton
 
 from kivy.properties import ObjectProperty
-
+from kivy.logger import Logger
 
 from kivy.uix.screenmanager import ScreenManager, Screen
 from utils import dump
@@ -32,10 +32,10 @@ class Notify(Bubble):
         #self.bind(on_press=self.launch)
 
 
-#class MusicPlayerScreen(Screen):
-class MusicPlayerScreen(FloatLayout):
+class MusicPlayerScreen(Screen):
+#class MusicPlayerScreen(FloatLayout):
     def __init__(self, app, **kwargs):
-        print "Init Music Player Screen"
+        Logger.info("MusicPlayer: Init")        
         super(MusicPlayerScreen, self).__init__(**kwargs)    
         self.app = app
         
@@ -43,56 +43,99 @@ class MusicPlayerScreen(FloatLayout):
         #self.mpd_client = mpd.MPDClient(use_unicode=True)
         self.mpd_client = mpd.MPDClient()
         self.mpd_client.connect("10.0.0.10", 6600)
+        Logger.info("MusicPlayer: Connected to MPD")        
 
         self.selection_history=[];
+        self.selection_last_item_index=0
 
         self.build()
 
     def do_selection(self, list):
         
-        index = list.selection[0].index
-        item = self.data[index]
+
+        # I'm TIRED of the damn scroll / child selection issue!
+        # So we're REQUIRING you to double click and item to open it...but Kivy
+        # doesn't seem to support double clicking a list item...so what we're doing is:
+        # - Set allow_empty_selection to True
+        # - Whenever we have a valid select, save the index
+        # - Next time when we don't have a valid select, it means our last index was selected...
+        # - Use the last index to open the item
+        if (len(list.selection) > 0):
+            index = list.selection[0].index
+        else:
+            index = self.selection_last_item_index
+
+        Logger.info("MusicPlayer: Selection. Current index: {}, last_index: {}".format(index, self.selection_last_item_index));
+
+        # Our current item has only been tapped once. Deselect it, but remember the index
+        if (self.selection_last_item_index != index):
+            self.selection_last_item_index = index;
+            list.deselect_data_item(index)
+            return
+
+        item = self.data[self.selection_last_item_index]
         text = item.get('text')
+        self.selection_last_item_index = -1;
+
+        Logger.info("MusicPlayer: Selected text: {}".format(text))
 
         if ( str(text) == ".." ):
-            if (len(self.selection_history) > 0):
-                text = self.selection_history.pop()
+            Logger.info("MusicPlayer: Navigating up...")
+            if (len(self.selection_history) > 1):
+                text = self.selection_history.pop();
+                text = self.selection_history.pop();
             else:
                 text = "/"
 
             item = {'type':'directory', 'text':text}
 
-        else:
-            self.selection_history.append(text)
+#        else:
+#            self.selection_history.append(text)
 
         if (item.get('type') == 'file'):
-            print "Start playing song: {}".format(text)
+            Logger.info("MusicPlayer: Start playing song: {}".format(text))
             #Growl(self.app, text="Added {} to queue".format(text))
             file = item.get('file')
             self.mpd_client.add(file)
-            self.mpd_client.play()
+            #self.mpd_client.play()
         else:
+            if (text != '/'):
+                self.selection_history.append(text)
+            else:
+                self.selection_history = []
+            
             self.clear_widgets()
             data = self.fetch_data(text)
             list_view = self.create_list(data)
             self.add_widget(list_view)
 
+        Logger.info('MusicPlayer: Selection history: {}'.format(self.selection_history))            
+
     def fetch_data(self, item="/"):
-        print "Querying mpd for: {}".format(item);
+        Logger.info("MusicPlayer: Querying mpd for: {}".format(item))
 
         self.data = []
         if (item != "/"):
             self.data = [{'text':"..", 'type':'directory'}]
 
+        count_dirs = 0
+        count_files = 0
+
         for entry in self.mpd_client.lsinfo(item):
             if 'directory' in entry:
                 self.data.append({'text':str(entry['directory']), 'type':'directory'})
+                count_dirs+=1
             if 'title' in entry:
                 self.data.append({'text':str(entry['title']), 'type':'file', 'file':entry['file']})
+                count_files+=1
+
+        Logger.info("MusicPlayer: MPD Stats, directories: {}, files: {}".format(count_dirs, count_files))
 
 #        for index in range(300):
 #            n = int(random.choice([str(i) for i in range(8, 30)]))
 #            self.data.append({'text':id_generator(size=n), 'type':'directory'})
+
+
 
         return self.data
 
@@ -111,18 +154,16 @@ class MusicPlayerScreen(FloatLayout):
                                    data=data,
                                    args_converter=list_item_args_converter,
                                    selection_mode='single',
-                                   allow_empty_selection=False,
+                                   allow_empty_selection=True,
                                    cls=ListItemButton)
 
-#        adapter.bind(on_selection_change=self.do_selection)                
+        adapter.bind(on_selection_change=self.do_selection)                
         list_view = ListView(adapter=adapter, size_hint_x=1)
 
         return list_view
 
     def build(self):
         
-        
-        print "MusicPlayerScreen.build()"
         data = self.fetch_data("/")
 
         list_view = self.create_list(data)
@@ -147,6 +188,7 @@ if __name__ == '__main__':
             #self.container.add_widget(self.sm)
             #return self.container;
             #return self.sm;
+            Logger.info("MusicPlayer: Running in standalone mode")
             return MusicPlayerScreen(app)
 
     app = DemoApp().run()
