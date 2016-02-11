@@ -1,6 +1,7 @@
 #from ../util import dump
 
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.listview import ListView, ListItemButton, ListItemLabel
 from kivy.adapters.dictadapter import DictAdapter
 from kivy.adapters.listadapter import ListAdapter
@@ -24,7 +25,8 @@ class Notify(Bubble):
         #self.bind(on_press=self.launch)
 
 
-class MusicPlayerScreen(Screen):
+#class MusicPlayerScreen(Screen):
+class MusicPlayerScreen(FloatLayout):
     def __init__(self, app, **kwargs):
         print "Init Music Player Screen"
         super(MusicPlayerScreen, self).__init__(**kwargs)    
@@ -97,7 +99,7 @@ class MusicPlayerScreen(Screen):
                                    allow_empty_selection=False,
                                    cls=ListItemButton)
 
-        adapter.bind(on_selection_change=self.do_selection)                
+#        adapter.bind(on_selection_change=self.do_selection)                
         list_view = ListView(adapter=adapter, size_hint_x=1)
 
         return list_view
@@ -125,11 +127,12 @@ if __name__ == '__main__':
         def build(self):
             app = self
             #self.container = FloatLayout(size=(800, 480))
-            self.sm = ScreenManager()
-            self.sm.add_widget(MusicPlayerScreen(app, name="main"))
+            #self.sm = ScreenManager()
+            #self.sm.add_widget(MusicPlayerScreen(app, name="main"))
             #self.container.add_widget(self.sm)
             #return self.container;
-            return self.sm;
+            #return self.sm;
+            return MusicPlayerScreen(app)
 
     app = DemoApp().run()
 
