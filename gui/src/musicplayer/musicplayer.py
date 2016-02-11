@@ -265,7 +265,7 @@ if __name__ == '__main__':
 
     class DemoApp(App):
         def build(self):
-            #app = self
+            app = self
             #self.container = FloatLayout(size=(800, 480))
             self.sm = ScreenManager()
             self.sm.add_widget(MusicPlayerScreen(app, name="main"))
