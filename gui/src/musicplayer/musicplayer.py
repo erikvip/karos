@@ -29,7 +29,6 @@ class MusicPlayerScreen(Screen):
         print "Init Music Player Screen"
         super(MusicPlayerScreen, self).__init__(**kwargs)    
         self.app = app
-
         
         # Setup mpd connection
         #self.mpd_client = mpd.MPDClient(use_unicode=True)
@@ -41,8 +40,6 @@ class MusicPlayerScreen(Screen):
         self.build()
 
     def do_selection(self, list):
-
-
         
         index = list.selection[0].index
         item = self.data[index]
@@ -59,12 +56,6 @@ class MusicPlayerScreen(Screen):
         else:
             self.selection_history.append(text)
 
-#        print "Selected: --{}--".format(text)
-
- #       print self.selection_history;
-
-        
-
         if (item.get('type') == 'file'):
             print "Start playing song: {}".format(text)
             #Growl(self.app, text="Added {} to queue".format(text))
@@ -77,16 +68,6 @@ class MusicPlayerScreen(Screen):
             list_view = self.create_list(data)
             self.add_widget(list_view)
 
-        #list_view = ListView(item_strings=[str(index) for index in range(5)])
-        #list_view = ListView(item_strings=data)
-
-        
-        #list_view.update_minimum_size()
-        #self.do_layout()
-        #dump(self)
-
-        
-
     def fetch_data(self, item="/"):
         print "Querying mpd for: {}".format(item);
 
@@ -96,8 +77,6 @@ class MusicPlayerScreen(Screen):
 
         for entry in self.mpd_client.lsinfo(item):
             if 'directory' in entry:
-                #print entry['directory']
-                #data.append({'text' : entry['directory']})
                 self.data.append({'text':str(entry['directory']), 'type':'directory'})
             if 'title' in entry:
                 self.data.append({'text':str(entry['title']), 'type':'file', 'file':entry['file']})
@@ -118,14 +97,8 @@ class MusicPlayerScreen(Screen):
                                    allow_empty_selection=False,
                                    cls=ListItemButton)
 
-        #list_view = ListView(adapter=adapter)
-
         adapter.bind(on_selection_change=self.do_selection)                
         list_view = ListView(adapter=adapter, size_hint_x=1)
-        #dump(list_view)
-        
-
-        #adapter.bind(on_selection_change=self.do_selection)        
 
         return list_view
 
@@ -142,10 +115,46 @@ class MusicPlayerScreen(Screen):
         return self
 
 
-#    def build(self):
+if __name__ == '__main__':
+    from kivy.app import App
+    from kivy.lang import Builder
+    from kivy.uix.floatlayout import FloatLayout
+    Builder.load_file('musicplayer.kv')
 
-#        return MusicList().build()
+    class DemoApp(App):
+        def build(self):
+            app = self
+            #self.container = FloatLayout(size=(800, 480))
+            self.sm = ScreenManager()
+            self.sm.add_widget(MusicPlayerScreen(app, name="main"))
+            #self.container.add_widget(self.sm)
+            #return self.container;
+            return self.sm;
 
+    app = DemoApp().run()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
 class MusicList(GridLayout):
 
     def __init__(self, **kwargs):
@@ -256,21 +265,4 @@ class MusicList(GridLayout):
 #        self.do_layout()
 
 
-
-if __name__ == '__main__':
-    from kivy.app import App
-    from kivy.lang import Builder
-    from kivy.uix.floatlayout import FloatLayout
-    Builder.load_file('musicplayer.kv')
-
-    class DemoApp(App):
-        def build(self):
-            app = self
-            #self.container = FloatLayout(size=(800, 480))
-            self.sm = ScreenManager()
-            self.sm.add_widget(MusicPlayerScreen(app, name="main"))
-            #self.container.add_widget(self.sm)
-            #return self.container;
-            return self.sm;
-
-    app = DemoApp().run()
+'''
