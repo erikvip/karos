@@ -67,7 +67,7 @@ class MusicPlayerScreen(Screen):
 
         if (item.get('type') == 'file'):
             print "Start playing song: {}".format(text)
-            Growl(self.app, text="Added {} to queue".format(text))
+            #Growl(self.app, text="Added {} to queue".format(text))
             file = item.get('file')
             self.mpd_client.add(file)
             self.mpd_client.play()
@@ -265,11 +265,12 @@ if __name__ == '__main__':
 
     class DemoApp(App):
         def build(self):
-            app = self
-            self.container = FloatLayout(size=(800, 480))
+            #app = self
+            #self.container = FloatLayout(size=(800, 480))
             self.sm = ScreenManager()
             self.sm.add_widget(MusicPlayerScreen(app, name="main"))
-            self.container.add_widget(self.sm)
-            return self.container;
+            #self.container.add_widget(self.sm)
+            #return self.container;
+            return self.sm;
 
     app = DemoApp().run()

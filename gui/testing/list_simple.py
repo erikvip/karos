@@ -17,7 +17,7 @@ class MainView(GridLayout):
 
 #        list_view = ListView(item_strings=[str(index) for index in range(100)])
         data = []
-        for index in range(100):
+        for index in range(300):
             n = int(random.choice([str(i) for i in range(8, 30)]));
             data.append({'text':id_generator(size=n)})
 
