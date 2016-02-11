@@ -48,9 +48,22 @@ class MusicPlayerScreen(Screen):
         item = self.data[index]
         text = item.get('text')
 
-        self.selection_history.append(text)
+        if ( str(text) == ".." ):
+            if (len(self.selection_history) > 0):
+                text = self.selection_history.pop()
+            else:
+                text = "/"
 
-        print "Selected: {}".format(text)
+            item = {'type':'directory', 'text':text}
+
+        else:
+            self.selection_history.append(text)
+
+#        print "Selected: --{}--".format(text)
+
+ #       print self.selection_history;
+
+        
 
         if (item.get('type') == 'file'):
             print "Start playing song: {}".format(text)
@@ -58,8 +71,6 @@ class MusicPlayerScreen(Screen):
             file = item.get('file')
             self.mpd_client.add(file)
             self.mpd_client.play()
-
-
         else:
             self.clear_widgets()
             data = self.fetch_data(text)
@@ -80,6 +91,9 @@ class MusicPlayerScreen(Screen):
         print "Querying mpd for: {}".format(item);
 
         self.data = []
+        if (item != "/"):
+            self.data = [{'text':"..", 'type':'directory'}]
+
         for entry in self.mpd_client.lsinfo(item):
             if 'directory' in entry:
                 #print entry['directory']
@@ -95,7 +109,7 @@ class MusicPlayerScreen(Screen):
         list_item_args_converter = \
                 lambda row_index, rec: {'text': rec['text'],
                                         'size_hint_y': None,
-                                        'height': 40}
+                                        'height': 80}
 
         adapter = ListAdapter(
                                    data=data,
