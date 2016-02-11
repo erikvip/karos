@@ -45,13 +45,12 @@ class MusicPlayerScreen(Screen):
         self.mpd_client.connect("10.0.0.10", 6600)
         Logger.info("MusicPlayer: Connected to MPD")        
 
-        self.selection_history=[];
+        self.selection_history=[{'text':'/', 'index':0}];
         self.selection_last_item_index=0
 
         self.build()
 
     def do_selection(self, list):
-        
 
         # I'm TIRED of the damn scroll / child selection issue!
         # So we're REQUIRING you to double click and item to open it...but Kivy
@@ -80,13 +79,24 @@ class MusicPlayerScreen(Screen):
         Logger.info("MusicPlayer: Selected text: {}".format(text))
 
         if ( str(text) == ".." ):
-            Logger.info("MusicPlayer: Navigating up...")
+            s = len(self.selection_history)
             if (len(self.selection_history) > 1):
-                text = self.selection_history.pop();
-                text = self.selection_history.pop();
+                current_item = self.selection_history.pop();
+                last_item = self.selection_history.pop();
+            elif (len(self.selection_history) == 1):
+                last_item = self.selection_history.pop();
+                current_item = last_item;
             else:
                 text = "/"
 
+            try:
+                text = last_item['text']
+                index = current_item['index']
+            except NameError:
+                pass
+
+
+            Logger.info("MusicPlayer: Navigating up to: {}. Selection history size: {}".format(text, s))
             item = {'type':'directory', 'text':text}
 
 #        else:
@@ -100,14 +110,42 @@ class MusicPlayerScreen(Screen):
             #self.mpd_client.play()
         else:
             if (text != '/'):
-                self.selection_history.append(text)
+                self.selection_history.append({'text':text, 'index':int(index) })
+                Logger.info('MusicPlayer: Added {} to selection history. Currently: {}'.format(text, self.selection_history))
             else:
-                self.selection_history = []
+                self.selection_history = [{'text':'/', 'index':0}]
+                Logger.info('MusicPlayer: Cleared selection history')
             
+
             self.clear_widgets()
             data = self.fetch_data(text)
             list_view = self.create_list(data)
             self.add_widget(list_view)
+
+            # If we're navigating up, scroll to the previously selected item
+            try:
+                di = self.data[current_item['index']];
+                Logger.info("MusicPlayer: Scrolling to previous text: {} index: {} data_item: {}".format(last_item['text'], current_item['index'], di))
+                #print current_item['index'] * 80;
+                
+                self.list_view.scroll_to(index=current_item['index'])
+                #self.list_view._scroll(current_item['index'] * 80)
+                #self.list_view.populate(300)
+
+                
+                #self.list_view.populate()
+
+                #list_view.adapter.select_data_item(di)
+            except NameError:
+                pass
+
+        #    list_view.populate()
+
+#        d = list_view.adapter.get_data_item(3);
+#        list_view.adapter.select_data_item(d);
+
+ #       list_view.adapter.selection.append(d)
+ #       dump(list_view.adapter)
 
         Logger.info('MusicPlayer: Selection history: {}'.format(self.selection_history))            
 
@@ -158,9 +196,9 @@ class MusicPlayerScreen(Screen):
                                    cls=ListItemButton)
 
         adapter.bind(on_selection_change=self.do_selection)                
-        list_view = ListView(adapter=adapter, size_hint_x=1)
+        self.list_view = ListView(adapter=adapter, size_hint_x=1)
 
-        return list_view
+        return self.list_view
 
     def build(self):
         
