@@ -6,6 +6,7 @@ from kivy.app import App
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.boxlayout import BoxLayout
 
 from kivy.uix.button import Button
 from kivy.uix.label import Label
@@ -14,6 +15,10 @@ from kivy.lang import Builder
 from kivy.logger import Logger
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.actionbar import ActionBar, ActionView, ActionButton
+
+from kivy.uix.videoplayer import VideoPlayer
+
+from kivy.garden.navigationdrawer import NavigationDrawer
 
 #from kivy.properties import NumericProperty
 
@@ -73,7 +78,7 @@ class CarPiApp(App):
         global app
         app = self
 
-        #self.container = FloatLayout(size=(800, 480))
+        self.container = FloatLayout(size=(800, 480))
 
         self.sm = ScreenManager()
 
@@ -135,10 +140,27 @@ class CarPiApp(App):
         self.sm.add_widget(MusicPlayer)
 
        
-        #self.container.add_widget(self.sm)
+        self.container.add_widget(self.sm)
 
-        return self.sm
-        #return self.container
+        navigationdrawer = NavigationDrawer()
+        panel = BoxLayout(orientation='horizontal')
+        #panel.add_widget(Label(text='Panel label'))
+        #panel.add_widget(Button(text='A button'))
+        panel.add_widget(VideoPlayer)
+        navigationdrawer.add_widget(panel)
+
+        navigationdrawer.dock = 'top'
+        navigationdrawer.anim_type = 'reveal_below_anim'
+        #navigationdrawer.anim_type = 'slide_above_simple'
+        navigationdrawer.toggle_main_above()
+
+#        main_panel = FloatLayout()
+        navigationdrawer.add_widget(self.container)
+
+        return navigationdrawer
+
+        #return self.sm
+#        return self.container
 
 
     def build_config(self, config):
