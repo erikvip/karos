@@ -1,3 +1,5 @@
 Document udev touchscreen setup
 Document kivi yaxis inversion
 Design kivy layout
+
+- Handle ConnectionError from mpd 

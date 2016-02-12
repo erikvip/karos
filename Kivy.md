@@ -16,3 +16,6 @@ Notes on Kivy implmentation and design
 ## Requirements
 
 python-mpd2 (for mpd) (pip install python-mpd)
+
+## Kivy Garden
+navigationdrawer

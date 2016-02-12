@@ -64,8 +64,9 @@ Setup framebuffer dimensions and disable overscan.  Use hdmi_mode 87 for the 800
 
 ### RPi config.txt
 
-This is my working /boot/config.txt file for the ads7846 touchscreen:
+This is my working /boot/config.txt file for the ads7846 touchscreen:   
 
+```
     # Framebuffer width/ height
     framebuffer_width=800
     framebuffer_height=480
@@ -110,6 +111,7 @@ This is my working /boot/config.txt file for the ads7846 touchscreen:
     # Increase amperage available to USB devices (from 600ma (default) to 1.2a).  I only did this in hopes to support large external HDD's being powered through USB (it didn't work). Also may be useful for charging phones connected via USB to the RPi
     max_usb_current=1
 
+```
 
 Once your config.txt file is setup, you should now have a working LCD! But we still need to calibrate and configure the touchscreen input driver. 
 
