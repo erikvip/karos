@@ -16,14 +16,16 @@ from kivy.logger import Logger
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.actionbar import ActionBar, ActionView, ActionButton
 
-from kivy.uix.videoplayer import VideoPlayer
 
 from kivy.garden.navigationdrawer import NavigationDrawer
 
 #from kivy.properties import NumericProperty
 
-from musicplayer.musicplayer import *
-#from musicplayer.musicplayer.MusicPlayerScreen import MusicPlayerScreen
+import mpd
+from mpdux.mpdbrowser import MpdBrowser
+from mpdux.audioplayer import AudioPlayer
+
+
 
 #from pudb import set_trace; set_trace()
 '''
@@ -62,12 +64,13 @@ ScreenManager
     Screen: MainScreen <GridLayout>:
         ScrollView:
             PluginIcon
-    Screen: MusicPlayer 
+    Screen: MpdBrowser 
 '''
 class CarPiApp(App):
     use_kivy_settings = False
     direction = "vertical"
     screens = []
+    mpd = False
 
     def launch(self, icon):
 
@@ -78,6 +81,11 @@ class CarPiApp(App):
         global app
         app = self
 
+        # MPD Connection
+        self.mpc = mpd.MPDClient()
+        self.mpc.connect("10.0.0.10", 6600)
+
+
         self.container = FloatLayout(size=(800, 480))
 
         self.sm = ScreenManager()
@@ -85,7 +93,8 @@ class CarPiApp(App):
         MainScreen = Screen(name="main")
         self.screens.append(MainScreen)
 
-        Builder.load_file('musicplayer/musicplayer.kv')
+        Builder.load_file('mpdux/mpdbrowser.kv')
+        Builder.load_file('mpdux/audioplayer.kv')
 
         #config = self.config
 
@@ -93,7 +102,7 @@ class CarPiApp(App):
 
         # Grid layout holds our main icons. 40 px padding on bottom
         if (self.direction == "vertical"):
-            grid = GridLayout(cols=5, padding=(0, 40, 0, 0), spacing=18,
+            grid = GridLayout(cols=5, padding=(0, 140, 0, 0), spacing=18,
                     size_hint=(None, None), width=800)
         else:
             grid = GridLayout(rows=3, padding=(20, 80, 40, 0), spacing=18,
@@ -134,10 +143,11 @@ class CarPiApp(App):
         MainScreen.add_widget(root)
         self.sm.add_widget(MainScreen)
 
-        MusicPlayer = MusicPlayerScreen(self, name='musicplayer')
 
-        #self.screens.append(MusicPlayer.build() )
-        self.sm.add_widget(MusicPlayer)
+        MpdBrowserScreen = MpdBrowser(self, self.mpc, name='mpdbrowser')
+
+        #self.screens.append(MpdBrowser.build() )
+        self.sm.add_widget(MpdBrowserScreen)
 
        
         self.container.add_widget(self.sm)
@@ -146,11 +156,14 @@ class CarPiApp(App):
         panel = BoxLayout(orientation='horizontal')
         #panel.add_widget(Label(text='Panel label'))
         #panel.add_widget(Button(text='A button'))
-        panel.add_widget(VideoPlayer)
+        self.av = AudioPlayer(self.mpc);
+        panel.add_widget(self.av)
+
         navigationdrawer.add_widget(panel)
 
         navigationdrawer.dock = 'top'
         navigationdrawer.anim_type = 'reveal_below_anim'
+        #navigationdrawer.anim_type = 'reveal_below_simple'
         #navigationdrawer.anim_type = 'slide_above_simple'
         navigationdrawer.toggle_main_above()
 

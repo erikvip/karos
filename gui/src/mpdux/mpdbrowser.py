@@ -23,27 +23,22 @@ def id_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-__all__ = ('MusicPlayerScreen', )
-
-class Notify(Bubble):
-    message = ObjectProperty()
-    def __init__(self, **kwargs):
-        super(Notify, self).__init__(**kwargs)
-        #self.bind(on_press=self.launch)
+__all__ = ('MpdBrowser', )
 
 
-class MusicPlayerScreen(Screen):
-#class MusicPlayerScreen(FloatLayout):
-    def __init__(self, app, **kwargs):
-        Logger.info("MusicPlayer: Init")        
-        super(MusicPlayerScreen, self).__init__(**kwargs)    
+class MpdBrowser(Screen):
+
+    def __init__(self, app, mpc, **kwargs):
+        Logger.info("MpdBrowser: Init")        
+        super(MpdBrowser, self).__init__(**kwargs)    
         self.app = app
         
         # Setup mpd connection
+        self.mpc = mpc
         #self.mpd_client = mpd.MPDClient(use_unicode=True)
-        self.mpd_client = mpd.MPDClient()
-        self.mpd_client.connect("10.0.0.10", 6600)
-        Logger.info("MusicPlayer: Connected to MPD")        
+        #self.mpd_client = mpd.MPDClient()
+        #self.mpd_client.connect("10.0.0.10", 6600)
+        Logger.info("MpdBrowser: Connected to MPD")        
 
         self.selection_history=[{'text':'/', 'index':0}];
         self.selection_last_item_index=0
@@ -64,7 +59,7 @@ class MusicPlayerScreen(Screen):
         else:
             index = self.selection_last_item_index
 
-        Logger.info("MusicPlayer: Selection. Current index: {}, last_index: {}".format(index, self.selection_last_item_index));
+        Logger.info("MpdBrowser: Selection. Current index: {}, last_index: {}".format(index, self.selection_last_item_index));
 
         # Our current item has only been tapped once. Deselect it, but remember the index
         if (self.selection_last_item_index != index):
@@ -76,7 +71,7 @@ class MusicPlayerScreen(Screen):
         text = item.get('text')
         self.selection_last_item_index = -1;
 
-        Logger.info("MusicPlayer: Selected text: {}".format(text))
+        Logger.info("MpdBrowser: Selected text: {}".format(text))
 
         if ( str(text) == ".." ):
             s = len(self.selection_history)
@@ -96,25 +91,25 @@ class MusicPlayerScreen(Screen):
                 pass
 
 
-            Logger.info("MusicPlayer: Navigating up to: {}. Selection history size: {}".format(text, s))
+            Logger.info("MpdBrowser: Navigating up to: {}. Selection history size: {}".format(text, s))
             item = {'type':'directory', 'text':text}
 
 #        else:
 #            self.selection_history.append(text)
 
         if (item.get('type') == 'file'):
-            Logger.info("MusicPlayer: Start playing song: {}".format(text))
+            Logger.info("MpdBrowser: Start playing song: {}".format(text))
             #Growl(self.app, text="Added {} to queue".format(text))
             file = item.get('file')
-            self.mpd_client.add(file)
-            #self.mpd_client.play()
+            self.mpd.add(file)
+            #self.mpc.play()
         else:
             if (text != '/'):
                 self.selection_history.append({'text':text, 'index':int(index) })
-                Logger.info('MusicPlayer: Added {} to selection history. Currently: {}'.format(text, self.selection_history))
+                Logger.info('MpdBrowser: Added {} to selection history. Currently: {}'.format(text, self.selection_history))
             else:
                 self.selection_history = [{'text':'/', 'index':0}]
-                Logger.info('MusicPlayer: Cleared selection history')
+                Logger.info('MpdBrowser: Cleared selection history')
             
 
             self.clear_widgets()
@@ -125,7 +120,7 @@ class MusicPlayerScreen(Screen):
             # If we're navigating up, scroll to the previously selected item
             try:
                 di = self.data[current_item['index']];
-                Logger.info("MusicPlayer: Scrolling to previous text: {} index: {} data_item: {}".format(last_item['text'], current_item['index'], di))
+                Logger.info("MpdBrowser: Scrolling to previous text: {} index: {} data_item: {}".format(last_item['text'], current_item['index'], di))
                 #print current_item['index'] * 80;
                 
                 self.list_view.scroll_to(index=current_item['index'])
@@ -147,10 +142,10 @@ class MusicPlayerScreen(Screen):
  #       list_view.adapter.selection.append(d)
  #       dump(list_view.adapter)
 
-        Logger.info('MusicPlayer: Selection history: {}'.format(self.selection_history))            
+        Logger.info('MpdBrowser: Selection history: {}'.format(self.selection_history))            
 
     def fetch_data(self, item="/"):
-        Logger.info("MusicPlayer: Querying mpd for: {}".format(item))
+        Logger.info("MpdBrowser: Querying mpd for: {}".format(item))
 
         self.data = []
         if (item != "/"):
@@ -159,7 +154,7 @@ class MusicPlayerScreen(Screen):
         count_dirs = 0
         count_files = 0
 
-        for entry in self.mpd_client.lsinfo(item):
+        for entry in self.mpc.lsinfo(item):
             if 'directory' in entry:
                 self.data.append({'text':str(entry['directory']), 'type':'directory'})
                 count_dirs+=1
@@ -167,7 +162,7 @@ class MusicPlayerScreen(Screen):
                 self.data.append({'text':str(entry['title']), 'type':'file', 'file':entry['file']})
                 count_files+=1
 
-        Logger.info("MusicPlayer: MPD Stats, directories: {}, files: {}".format(count_dirs, count_files))
+        Logger.info("MpdBrowser: MPD Stats, directories: {}, files: {}".format(count_dirs, count_files))
 
 #        for index in range(300):
 #            n = int(random.choice([str(i) for i in range(8, 30)]))
@@ -222,12 +217,12 @@ if __name__ == '__main__':
             app = self
             #self.container = FloatLayout(size=(800, 480))
             #self.sm = ScreenManager()
-            #self.sm.add_widget(MusicPlayerScreen(app, name="main"))
+            #self.sm.add_widget(MpdBrowserScreen(app, name="main"))
             #self.container.add_widget(self.sm)
             #return self.container;
             #return self.sm;
-            Logger.info("MusicPlayer: Running in standalone mode")
-            return MusicPlayerScreen(app)
+            Logger.info("MpdBrowser: Running in standalone mode")
+            return MpdBrowser(app)
 
     app = DemoApp().run()
 

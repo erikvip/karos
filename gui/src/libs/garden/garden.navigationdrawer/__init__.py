@@ -157,6 +157,7 @@ Builder.load_string('''
     _side_panel: sidepanel
     _main_panel: mainpanel
     _join_image: joinimage
+    #side_panel_width: 390 #min(dp(250), 0.5*self.width)
     side_panel_width: min(dp(250), 0.5*self.width)
     BoxLayout:
         id: sidepanel
