@@ -148,6 +148,7 @@ from kivy.properties import (ObjectProperty, NumericProperty, OptionProperty,
 from kivy.resources import resource_add_path
 from kivy.lang import Builder
 import os.path
+from kivy.logger import Logger
 
 resource_add_path(os.path.dirname(__file__))
 
@@ -512,7 +513,7 @@ class NavigationDrawer(StencilView):
                 self.state = 'open'
 
     def on_touch_down(self, touch):
-        print "touch down"
+        Logger.info("navigationdrawer: on_touch_down")
         col_self = self.collide_point(*touch.pos)
         col_side = self._side_panel.collide_point(*touch.pos)
         col_main = self._main_panel.collide_point(*touch.pos)
@@ -522,8 +523,9 @@ class NavigationDrawer(StencilView):
             'top'   : ((self.height - self.touch_accept_width) <= touch.y <= self.height),
             'right' : ((self.width  - self.touch_accept_width) <= touch.x <= self.width), 
         }
-        print "touch.x:{} touch.y:{}".format(touch.x, touch.y)
-        print closed_regions
+
+        Logger.info("touch.x:{} touch.y:{} closed_regions:{}".format(touch.x, touch.y, closed_regions))
+        
         if self._anim_progress < 0.001:  # i.e. closed
             valid_region = closed_regions[self.dock]
             if not valid_region:
@@ -559,7 +561,7 @@ class NavigationDrawer(StencilView):
         return True
 
     def on_touch_move(self, touch):
-        print "touch move"
+        Logger.info("navigationdrawer: on_touch_move")
         if touch is self._touch:
             distances = {
                 'left'  : touch.x - touch.ox, 
@@ -577,7 +579,7 @@ class NavigationDrawer(StencilView):
             return
 
     def on_touch_up(self, touch):
-        print "touch up"
+        Logger.info("navigationdrawer: on_touch_up")
         if touch is self._touch:
             self._touch = None
             init_state = touch.ud['type']
