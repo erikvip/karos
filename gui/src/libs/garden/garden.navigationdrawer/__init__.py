@@ -521,7 +521,8 @@ class NavigationDrawer(StencilView):
             'top'   : ((self.height - self.touch_accept_width) <= touch.y <= self.height),
             'right' : ((self.width  - self.touch_accept_width) <= touch.x <= self.width), 
         }
-
+        print "touch.x:{} touch.y:{}".format(touch.x, touch.y)
+        print closed_regions
         if self._anim_progress < 0.001:  # i.e. closed
             valid_region = closed_regions[self.dock]
             if not valid_region:

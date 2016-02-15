@@ -398,8 +398,8 @@ class AudioPlayer(GridLayout):
     def update_mpd_stats(self, arg):
         status = self.mpc.status()
         current_song = self.mpc.currentsong()
-        print status
-        print current_song
+        #print status
+        #print current_song
         
         if (status['state'] == 'play'):
             self.duration = int(current_song['time'])
@@ -422,7 +422,7 @@ class AudioPlayer(GridLayout):
             self.play = False
 
         try:
-            Logger.info("AudioPlayer: update_mpd_stats - duration:{} position:{} volume:{} state:{} play:{}".format(
+            Logger.trace("AudioPlayer: update_mpd_stats - duration:{} position:{} volume:{} state:{} play:{}".format(
                 self.duration, self.position, self.volume, self.state, self.play))
         except KeyError:
             pass
