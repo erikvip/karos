@@ -162,7 +162,7 @@ class CarPiApp(App):
 
         navigationdrawer.add_widget(panel)
 
-        navigationdrawer.dock = 'top'
+        navigationdrawer.dock = 'left'
         navigationdrawer.anim_type = 'reveal_below_anim'
         #navigationdrawer.anim_type = 'reveal_below_simple'
         #navigationdrawer.anim_type = 'slide_above_simple'

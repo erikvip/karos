@@ -263,7 +263,7 @@ class NavigationDrawer(StencilView):
     Possible options are: left, top, right, bottom '''
 
     # Touch properties
-    touch_accept_width = NumericProperty('56dp')
+    touch_accept_width = NumericProperty('72dp')
     '''Distance from the left of the NavigationDrawer in which to grab the
     touch and allow revealing of the hidden panel.'''
     _touch = ObjectProperty(None, allownone=True)  # The currently active touch
