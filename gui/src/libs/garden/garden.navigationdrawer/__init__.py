@@ -512,6 +512,7 @@ class NavigationDrawer(StencilView):
                 self.state = 'open'
 
     def on_touch_down(self, touch):
+        print "touch down"
         col_self = self.collide_point(*touch.pos)
         col_side = self._side_panel.collide_point(*touch.pos)
         col_main = self._main_panel.collide_point(*touch.pos)
@@ -558,6 +559,7 @@ class NavigationDrawer(StencilView):
         return True
 
     def on_touch_move(self, touch):
+        print "touch move"
         if touch is self._touch:
             distances = {
                 'left'  : touch.x - touch.ox, 
@@ -575,6 +577,7 @@ class NavigationDrawer(StencilView):
             return
 
     def on_touch_up(self, touch):
+        print "touch up"
         if touch is self._touch:
             self._touch = None
             init_state = touch.ud['type']
