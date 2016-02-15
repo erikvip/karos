@@ -21,8 +21,9 @@ from kivy.garden.navigationdrawer import NavigationDrawer
 
 #from kivy.properties import NumericProperty
 
-import mpd
+
 from mpdux.mpdbrowser import MpdBrowser
+from mpdux.mpcwrapper import MpcWrapper as mpc
 from mpdux.audioplayer import AudioPlayer
 
 
@@ -82,9 +83,9 @@ class CarPiApp(App):
         app = self
 
         # MPD Connection
-        self.mpc = mpd.MPDClient()
-        self.mpc.connect("10.0.0.10", 6600)
-
+        #self.mpc = mpd.MPDClient()
+        #self.mpc.connect("10.0.0.10", 6600)
+        self.mpc = mpc(host="10.0.0.10")
 
         self.container = FloatLayout(size=(800, 480))
 

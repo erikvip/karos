@@ -401,11 +401,12 @@ class AudioPlayer(GridLayout):
         print status
         print current_song
         
-        self.duration = int(current_song['time'])
-        try:
+        if (status['state'] == 'play'):
+            self.duration = int(current_song['time'])
             self.position = float(status['elapsed'])
-        except KeyError:
-            self.position = 0;
+        else:
+            self.position = 0
+            self.duration = 0
 
         vol = float(status['volume'])
         if (vol == -1 or vol == 0):

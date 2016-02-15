@@ -30,7 +30,7 @@ class MpdBrowser(Screen):
 
     def __init__(self, app, mpc, **kwargs):
         Logger.info("MpdBrowser: Init")        
-        super(MpdBrowser, self).__init__(**kwargs)    
+        super(MpdBrowser, self).__init__(**kwargs)
         self.app = app
         
         # Setup mpd connection
@@ -210,7 +210,7 @@ if __name__ == '__main__':
     from kivy.app import App
     from kivy.lang import Builder
     from kivy.uix.floatlayout import FloatLayout
-    Builder.load_file('musicplayer.kv')
+    Builder.load_file('mpdbrowser.kv')
 
     class DemoApp(App):
         def build(self):
