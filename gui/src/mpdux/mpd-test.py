@@ -7,7 +7,7 @@ import sys
 # use_unicode will enable the utf-8 mode for python2
 # see http://pythonhosted.org/python-mpd2/topics/advanced.html#unicode-handling
 client = mpd.MPDClient(use_unicode=True)
-client.connect("10.0.0.10", 6600)
+client.connect("10.0.0.211", 6600)
 
 #info = client.lsinfo("/");
 

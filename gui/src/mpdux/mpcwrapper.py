@@ -48,8 +48,8 @@ class MpcWrapper(object):
             self.mpc = mpd.MPDClient()
             self.mpc.connect(self.host, self.port)
         except:
-            if (retry > 0):
-                retry-=1;
+            if (retries > 0):
+                retries-=1;
                 return self.connect(retries=retries, timeout=timeout);
             else:
                 Logger.error('mpcwrapper: Failed to connect to MPD server after {} tries.')
