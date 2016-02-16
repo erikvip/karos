@@ -85,7 +85,7 @@ class CarPiApp(App):
         # MPD Connection
         #self.mpc = mpd.MPDClient()
         #self.mpc.connect("10.0.0.10", 6600)
-        self.mpc = mpc(host="10.0.0.10")
+        self.mpc = mpc(host="10.0.0.211")
 
         self.container = FloatLayout(size=(800, 480))
 
@@ -162,7 +162,7 @@ class CarPiApp(App):
 
         navigationdrawer.add_widget(panel)
 
-        navigationdrawer.dock = 'left'
+        navigationdrawer.dock = 'top'
         navigationdrawer.anim_type = 'reveal_below_anim'
         #navigationdrawer.anim_type = 'reveal_below_simple'
         #navigationdrawer.anim_type = 'slide_above_simple'
