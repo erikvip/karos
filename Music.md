@@ -55,6 +55,60 @@ Example mpd.conf.  This resides in /etc. All mpd files are housed under /home/pi
 
     sudo update-rc.d mpd defaults
 
+## Configuring the sound subsystem
 
+If you're receiving an error when trying to change volume, and get no sound, follow the instructions below. 
+
+This installs and configures pulseaudio, but we still use ALSA...after doing this though, everything appears to work...go figure.
+
+Good instructions found here:   
+
+http://raspberrypi.stackexchange.com/questions/12339/pulseaudio-mpd-http-streaming-installation-guide
+
+**Install pulseaudio and pulseaudio-zeroconf**   
+
+    sudo apt-get install pulseaudio-module-zeroconf    
+
+Configure /etc/default/pulseaudio with default options for pulseaudio init   
+**/etc/default/pulseaudio**   
+
+    PULSEAUDIO_SYSTEM_START=1
+    DISALLOW_MODULE_LOADING=0
+
+In **/etc/pulse/default.pa** and **/etc/pulse/system.pa** add these lines to enable TCP access and setup ACL permissions:    
+
+    load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1;10.0.0.0/24 auth-anonymous=1
+    load-module module-zeroconf-publish
+
+**Note**: You'll need to change *10.0.0.0/24* to your own local subnet
+
+**Disable suspend-on-idle in default.pa and system.pa**   
+
+**/etc/pulse/default.pa** and **/etc/pulse/system.pa**   
+
+Add a semicolon (;) before the *module-suspend-on-idle* line:   
+
+    ; load-module module-suspend-on-idle
+
+**Convert the ALSA configuration libraries to PulseAudio**    
+
+    sudo nano /etc/asound.conf
+
+Add these entries to the file
+
+    pcm.pulse { type pulse }
+    ctl.pulse { type pulse }
+    pcm.!default { type pulse }
+    ctl.!default { type pulse }    
+
+Your **audio_output** section of */etc/mpd.conf*  should be setup to use alsa, as configured above:   
+
+    audio_output {
+        type        "alsa"
+        name        "My ALSA Device"
+    }
+
+
+Now reboot the pi, and MPD / setvol should be working properly.
 
 
