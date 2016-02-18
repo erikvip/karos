@@ -101,7 +101,7 @@ class MpdBrowser(Screen):
             Logger.info("MpdBrowser: Start playing song: {}".format(text))
             #Growl(self.app, text="Added {} to queue".format(text))
             file = item.get('file')
-            self.mpd.add(file)
+            self.mpc.add(file)
             #self.mpc.play()
         else:
             if (text != '/'):

@@ -389,7 +389,7 @@ class AudioPlayer(GridLayout):
 
         super(AudioPlayer, self).__init__(**kwargs)
 
-        Clock.schedule_interval(self.update_mpd_stats, 0.5)
+        #Clock.schedule_interval(self.update_mpd_stats, 2)
 
         self._load_thumbnail()
         self._load_annotations()
@@ -397,11 +397,11 @@ class AudioPlayer(GridLayout):
 
     def update_mpd_stats(self, arg):
         status = self.mpc.status()
-        current_song = self.mpc.currentsong()
-        #print status
-        #print current_song
-        
+        playing = False
+
         if (status['state'] == 'play'):
+            playing = True
+            current_song = self.mpc.currentsong()
             self.duration = int(current_song['time'])
             self.position = float(status['elapsed'])
         else:
@@ -416,7 +416,7 @@ class AudioPlayer(GridLayout):
         self.volume = vol
 
         self.state = status['state']
-        if (status['state'] == 'play'):
+        if (playing == True):
             self.play = True
         else:
             self.play = False
@@ -514,6 +514,9 @@ class AudioPlayer(GridLayout):
         Logger.info("AudioPlayer: on_volume - value: {}".format(value))
         # value is between 0.0 - 1.0. MPD takes value between 0-100
         vol = int(value * 100)
+        if (vol==100):
+            vol = 99;
+        Logger.info("AudioPlayer: on_volume - calling setvol({})".format(vol))
         if (self.play == True):
             self.mpc.setvol(vol)
 
