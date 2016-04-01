@@ -112,16 +112,12 @@ class MpdBrowser(Screen):
                 self.selection_history = [{'text':'/', 'index':0}]
                 Logger.info('MpdBrowser: Cleared selection history')
             
-            # Add 'container' wrapper
-            #self.clear_widgets()
-            self.container.clear_widgets()
+            self.clear_widgets()
 
             data = self.fetch_data(text)
             list_view = self.create_list(data)
 
-            # Add 'container' wrapper
-            #self.add_widget(list_view)
-            self.container.add_widget(list_view)
+            self.add_widget(list_view)
 
             # If we're navigating up, scroll to the previously selected item
             try:
@@ -197,8 +193,11 @@ class MpdBrowser(Screen):
                                    cls=ListItemButton)
 
         adapter.bind(on_selection_change=self.do_selection)                
-        self.list_view = ListView(adapter=adapter, size_hint_x=1)
-
+        self.list_view = ListView(
+            adapter=adapter,
+            size_hint=(1, 0.8),
+            #pos_hint={'x':0, 'y': -0.20}
+        )
         return self.list_view
 
     def build(self):
@@ -206,12 +205,7 @@ class MpdBrowser(Screen):
         data = self.fetch_data("/")
 
         list_view = self.create_list(data)
-
-        # Add 'container' wrapper
-        #self.add_widget(list_view)
-        self.container = FloatLayout()
-        self.container.add_widget(list_view)
-        self.add_widget(self.container)
+        self.add_widget(list_view)
 
         #self.app.sm.add_widget(list_view)
         return self
