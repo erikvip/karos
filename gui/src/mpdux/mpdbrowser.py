@@ -1,5 +1,32 @@
 #from ../util import dump
 
+'''
+==Known issues==
+
+- Scrolling / Last selected item   
+    When you drill down to the song level, then go back up one level to album view, 
+    the upper items are hidden. This is on purpose, since when going back, we re-select
+    the last index from the breadcrumb trail...on bigger lists, just scrolling up/down will show the top, 
+    but on small lists (artists with only 1-2 albums...), we can't scroll up and we're prevented from going back.
+
+    Seems like this could be fixed if we just disable the previous menu auto scroll...but it's really needed on the
+    large artist list...even though that isn't working right either ! (See below...)
+    Fuck...can we just do absolute x / y position scrolling instead of this selected item index B.S ... ?
+        - But only when the # of list items * row_height would exceed the available screen height...
+    or
+        - Wouldn't be an issue if it wasn't for the NavigationalDrawer / Status thing...but that's really useful...
+            - Can we move it to the right? or....maybe the bottom? hmm
+
+- The 'selected previously selected index' feature appears to work...until you scroll. Then we go back to 0!
+    - Example:
+        - Go down a ways on Artist view 
+        - Select an artist. Then hit '..' to go back...
+        - We're at the correct artist view...but now try to Scroll...
+        - We're back at the top of the $@#$@# list!
+    - This is implemented at the end of do_selection. Via list_view.scroll_to ...
+'''
+
+
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.boxlayout import BoxLayout
