@@ -242,9 +242,11 @@ if __name__ == '__main__':
     from kivy.app import App
     from kivy.lang import Builder
     from kivy.uix.floatlayout import FloatLayout
+    from mpcwrapper import MpcWrapper as mpc
     Builder.load_file('mpdbrowser.kv')
 
     class DemoApp(App):
+        mpc = False
         def build(self):
             app = self
             #self.container = FloatLayout(size=(800, 480))
@@ -253,8 +255,9 @@ if __name__ == '__main__':
             #self.container.add_widget(self.sm)
             #return self.container;
             #return self.sm;
+            self.mpc = mpc(host="10.0.0.10")
             Logger.info("MpdBrowser: Running in standalone mode")
-            return MpdBrowser(app)
+            return MpdBrowser(app, self.mpc)
 
     app = DemoApp().run()
 
