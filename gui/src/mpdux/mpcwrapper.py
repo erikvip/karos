@@ -2,6 +2,7 @@
     Wrapper to the MPDClient methods calls
     This supports graceful handling of errors
 '''
+import sys
 from kivy.logger import Logger
 import mpd
 
@@ -15,17 +16,20 @@ class MpcWrapper(object):
     mpc = False
 
     '''MPD Host'''
-    host = '127.0.0.1'
+    host = 'localhost'
 
     '''MPD Port'''
     port = 6600
+
+    '''Current connection attempts'''
+    attempts = 0
 
     def __init__(self, **kwargs):
         Logger.info("mpcwrapper: Init")
         super(MpcWrapper, self).__init__()
 
         self.host = kwargs.get('host', self.host)
-        self.port = kwargs.get('port', self.port)
+        self.port = int(kwargs.get('port', self.port))
         retries = kwargs.get('retries', 10)
         timeout = kwargs.get('timeout', 1)
 
@@ -34,7 +38,7 @@ class MpcWrapper(object):
     """ 
     Connect to MPD host. Will pause and retry connection if unsuccessful
 
-    :param host: MPD Host. Default 127.0.0.1
+    :param host: MPD Host. Default localhost
     :param port: MPD Port. Default 6600
     :param retry: Retry attempts. Default 10
     :param timeout: Wait timeout between retry attempts. Default 1 (second).
@@ -44,15 +48,24 @@ class MpcWrapper(object):
         retries = kwargs.get('retires', 10)
         timeout = kwargs.get('timeout', 1)        
 
+        Logger.info("mpcwrapper: Connect host: {}, port: {}, timeout: {}, retries: {}, attempts: {}".format(
+                self.host,
+                self.port,
+                timeout,
+                retries,
+                self.attempts
+            ))
+
         try:
+            self.attempts += 1
             self.mpc = mpd.MPDClient()
-            self.mpc.connect(self.host, self.port)
+            self.mpc.connect(self.host, int(self.port))
         except:
-            if (retries > 0):
-                retries-=1;
+            Logger.warning("mpcwrapper: Connect failed. Message: {}".format(sys.exc_info()[1]))
+            if (retries > self.attempts):
                 return self.connect(retries=retries, timeout=timeout);
             else:
-                Logger.error('mpcwrapper: Failed to connect to MPD server after {} tries.')
+                Logger.error('mpcwrapper: Failed to connect to MPD server after {} tries.'.format(self.attempts))
                 raise
 
         return True

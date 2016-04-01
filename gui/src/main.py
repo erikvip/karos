@@ -72,6 +72,14 @@ class CarPiApp(App):
     direction = "vertical"
     screens = []
     mpd = False
+    config = False
+
+    def build_config(self, config):
+        self.config = config
+        self.config.setdefaults('mpd', {
+            'host': mpc.host,
+            'port': mpc.port
+        })
 
     def launch(self, icon):
 
@@ -83,9 +91,10 @@ class CarPiApp(App):
         app = self
 
         # MPD Connection
-        #self.mpc = mpd.MPDClient()
-        #self.mpc.connect("10.0.0.10", 6600)
-        self.mpc = mpc(host="10.0.0.211")
+        self.mpc = mpc(
+            host=self.config.get('mpd', 'host'),
+            port=self.config.get('mpd', 'port')
+        )
 
         self.container = FloatLayout(size=(800, 480))
 
@@ -96,8 +105,6 @@ class CarPiApp(App):
 
         Builder.load_file('mpdux/mpdbrowser.kv')
         Builder.load_file('mpdux/audioplayer.kv')
-
-        #config = self.config
 
         #self.direction = "horizontal"
 
@@ -175,12 +182,6 @@ class CarPiApp(App):
 
         #return self.sm
 #        return self.container
-
-
-    def build_config(self, config):
-        config.setdefaults('Global', {
-            'volume': '50'
-        })
 
 
     def p(self, arg):
