@@ -2,6 +2,7 @@
 
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.listview import ListView, ListItemButton, ListItemLabel
 from kivy.adapters.dictadapter import DictAdapter
 from kivy.adapters.listadapter import ListAdapter
@@ -111,11 +112,16 @@ class MpdBrowser(Screen):
                 self.selection_history = [{'text':'/', 'index':0}]
                 Logger.info('MpdBrowser: Cleared selection history')
             
+            # Add 'container' wrapper
+            #self.clear_widgets()
+            self.container.clear_widgets()
 
-            self.clear_widgets()
             data = self.fetch_data(text)
             list_view = self.create_list(data)
-            self.add_widget(list_view)
+
+            # Add 'container' wrapper
+            #self.add_widget(list_view)
+            self.container.add_widget(list_view)
 
             # If we're navigating up, scroll to the previously selected item
             try:
@@ -201,7 +207,12 @@ class MpdBrowser(Screen):
 
         list_view = self.create_list(data)
 
-        self.add_widget(list_view)
+        # Add 'container' wrapper
+        #self.add_widget(list_view)
+        self.container = FloatLayout()
+        self.container.add_widget(list_view)
+        self.add_widget(self.container)
+
         #self.app.sm.add_widget(list_view)
         return self
 
