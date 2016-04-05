@@ -155,7 +155,7 @@ class MpdBrowser(Screen):
 
         list_view = self.create_recycleview(data)
         self.add_widget(list_view)
-        self.app.p(list_view)
+        #self.app.p(list_view)
         #self.app.sm.add_widget(list_view)
         return self
 
