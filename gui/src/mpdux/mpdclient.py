@@ -45,6 +45,7 @@ from kivy.garden.recycleview import RecycleView
 from kivy.uix.screenmanager import ScreenManager, Screen
 from utils import dump
 from utils import Growl
+from os.path import dirname
 import mpd
 
 
@@ -148,7 +149,7 @@ class MpdBrowser(Screen):
             
 
     def build(self):
-        Builder.load_file('mpdclient.kv')
+        Builder.load_file(dirname(__file__) + '/mpdclient.kv')
         data = self.fetch_data("/")
 
 
