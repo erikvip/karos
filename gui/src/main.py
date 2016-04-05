@@ -22,7 +22,8 @@ from kivy.garden.navigationdrawer import NavigationDrawer
 #from kivy.properties import NumericProperty
 
 
-from mpdux.mpdbrowser import MpdBrowser
+#from mpdux.mpdbrowser import MpdBrowser
+from mpdux.mpdclient import MpdBrowser
 from mpdux.mpcwrapper import MpcWrapper as mpc
 from mpdux.audioplayer import AudioPlayer
 
