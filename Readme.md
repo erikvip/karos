@@ -6,6 +6,11 @@ The main goal of this project is to provide an touch screen mp3 player for my ve
 
 The main goal is just as a media player, but will hopefully add additional features once the main goal is working well. 
 
+## Dependencies
+
+- MPD - For music player
+- python - wifi - For wifi scanning / connecting
+
 
 ### Feature overview and wishlist
 
