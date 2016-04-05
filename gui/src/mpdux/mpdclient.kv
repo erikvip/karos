@@ -1,11 +1,11 @@
-<-MpdClientScreen>:
-    size: (800, 400)
-    canvas:
-        Color:
-            rgb: (0, 0, 0)
-        Rectangle:
-            pos: (0, 0)
-            size: (800, 400)
+#<-MpdClientScreen>:
+#    size: (800, 400)
+#    canvas:
+#        Color:
+#            rgb: (0, 0, 0)
+#        Rectangle:
+#            pos: (0, 0)
+#            size: (800, 400)
 
 
 
@@ -26,7 +26,8 @@
 
     canvas.before:
         Color:
-            rgb: (1, 1, 1) if root.index % 2 == 0 else (.95, .95, .95)
+            #rgb: (1, 1, 1) if root.index % 2 == 0 else (.95, .95, .95)
+            rgba: (0, 0, 0, 1) if root.index % 2 == 0 else (.15, .15, .15, 0.5)
         Rectangle:
             pos: self.pos
             size: self.size
@@ -39,6 +40,6 @@
     Label:
         font_size: "20sp"
         text: root.mpd_name
-        color: (0, 0, 0, 1)
+        color: (1, 1, 1, 1)
         text_size: (self.width, None)
 

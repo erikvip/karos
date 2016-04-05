@@ -99,7 +99,96 @@ class MpdBrowser(Screen):
         return self.data
 
 
+    def do_selection(self, list):
+        self.app.p(list)
+        # I'm TIRED of the damn scroll / child selection issue!
+        # So we're REQUIRING you to double click and item to open it...but Kivy
+        # doesn't seem to support double clicking a list item...so what we're doing is:
+        # - Set allow_empty_selection to True
+        # - Whenever we have a valid select, save the index
+        # - Next time when we don't have a valid select, it means our last index was selected...
+        # - Use the last index to open the item
+        if (len(list.selection) > 0):
+            index = list.selection[0].index
+        else:
+            index = self.selection_last_item_index
 
+        Logger.info("MpdBrowser: Selection. Current index: {}, last_index: {}".format(index, self.selection_last_item_index));
+
+        # Our current item has only been tapped once. Deselect it, but remember the index
+        if (self.selection_last_item_index != index):
+            self.selection_last_item_index = index;
+            list.deselect_data_item(index)
+            return
+
+        item = self.data[self.selection_last_item_index]
+        text = item.get('text')
+        self.selection_last_item_index = -1;
+
+        Logger.info("MpdBrowser: Selected text: {}".format(text))
+
+        if ( str(text) == ".." ):
+            s = len(self.selection_history)
+            if (len(self.selection_history) > 1):
+                current_item = self.selection_history.pop();
+                last_item = self.selection_history.pop();
+            elif (len(self.selection_history) == 1):
+                last_item = self.selection_history.pop();
+                current_item = last_item;
+            else:
+                text = "/"
+
+            try:
+                text = last_item['text']
+                index = current_item['index']
+            except NameError:
+                pass
+
+
+            Logger.info("MpdBrowser: Navigating up to: {}. Selection history size: {}".format(text, s))
+            item = {'type':'directory', 'text':text}
+
+#        else:
+#            self.selection_history.append(text)
+
+        if (item.get('type') == 'file'):
+            Logger.info("MpdBrowser: Start playing song: {}".format(text))
+            #Growl(self.app, text="Added {} to queue".format(text))
+            file = item.get('file')
+            self.mpc.add(file)
+            #self.mpc.play()
+        else:
+            if (text != '/'):
+                self.selection_history.append({'text':text, 'index':int(index) })
+                Logger.info('MpdBrowser: Added {} to selection history. Currently: {}'.format(text, self.selection_history))
+            else:
+                self.selection_history = [{'text':'/', 'index':0}]
+                Logger.info('MpdBrowser: Cleared selection history')
+
+            self.clear_widgets()
+
+            data = self.fetch_data(text)
+            list_view = self.create_list(data)
+
+            self.add_widget(list_view)
+
+            # If we're navigating up, scroll to the previously selected item
+            try:
+                di = self.data[current_item['index']];
+                Logger.info("MpdBrowser: Scrolling to previous text: {} index: {} data_item: {}".format(last_item['text'], current_item['index'], di))
+                #print current_item['index'] * 80;
+
+                self.list_view.scroll_to(index=current_item['index'])
+                #self.list_view._scroll(current_item['index'] * 80)
+                #self.list_view.populate(300)
+
+
+                #self.list_view.populate()
+
+                #list_view.adapter.select_data_item(di)
+            except NameError:
+                pass
+        #Logger.info('MpdBrowser: Selection history: {}'.format(self.select
 
 
     def create_list(self, data):
@@ -134,7 +223,7 @@ class MpdBrowser(Screen):
                 "index": x, 
                 "viewclass": "MpdItem", 
                 "mpd_name": r['text'], 
-                "mpd_media": ""
+                "mpd_media": "http://rocketdock.com/images/screenshots/Aphex-Clock.png"
             })
 
         self.rv = RecycleView(
@@ -144,7 +233,14 @@ class MpdBrowser(Screen):
             key_viewclass="viewclass", 
             key_size="height"
         )
-        #self.rv.data = data
+        adapter = self.rv._get_adapter()
+
+#       RecycleView doesn't support FREAKING SELECTIONS YET!! *Of course
+#        adapter.bind(
+#            on_selection_change=self.do_selection,
+#            selection_mode="single"
+#        )
+
         return self.rv
             
 
@@ -155,6 +251,7 @@ class MpdBrowser(Screen):
 
         list_view = self.create_recycleview(data)
         self.add_widget(list_view)
+        #self.app.p( self.rv._get_adapter() )
         #self.app.p(list_view)
         #self.app.sm.add_widget(list_view)
         return self
