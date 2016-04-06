@@ -37,10 +37,15 @@ from kivy.uix.bubble import Bubble
 from kivy.uix.bubble import BubbleButton
 
 from kivy.properties import ObjectProperty
+from kivy.properties import NumericProperty
 from kivy.logger import Logger
 from kivy.lang import Builder
 
 from kivy.garden.recycleview import RecycleView
+
+from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
+from kivy.uix.accordion import Accordion, AccordionItem
+from kivy.uix.label import Label
 
 from kivy.uix.screenmanager import ScreenManager, Screen
 from utils import dump
@@ -54,6 +59,18 @@ import random
 
 
 __all__ = ('MpdClient', )
+
+class MpdItem(BoxLayout):
+    index = NumericProperty()
+    mpd_name = ObjectProperty()
+    mpd_media = ObjectProperty()
+    mpd_data = ObjectProperty()
+
+    def __init__(self, **kwargs):
+        super(MpdItem, self).__init__(**kwargs)
+
+    def on_press(self, item):
+        print dump(self)
 
 '''
 Test using RecycleView instead of ListView...
@@ -221,7 +238,8 @@ class MpdBrowser(Screen):
             x+=1
             data.append({
                 "index": x, 
-                "viewclass": "MpdItem", 
+                "viewclass": "MpdItem",
+                "mpd_data": r, 
                 "mpd_name": r['text'], 
                 "mpd_media": "http://rocketdock.com/images/screenshots/Aphex-Clock.png"
             })
@@ -248,12 +266,47 @@ class MpdBrowser(Screen):
         Builder.load_file(dirname(__file__) + '/mpdclient.kv')
         data = self.fetch_data("/")
 
+        panel = TabbedPanel(do_default_tab=False, size_hint=(1,0.75) )
 
+        list_panel = TabbedPanelItem(text='Library')
         list_view = self.create_recycleview(data)
-        self.add_widget(list_view)
-        #self.app.p( self.rv._get_adapter() )
-        #self.app.p(list_view)
-        #self.app.sm.add_widget(list_view)
+
+        lib_list = AccordionItem(title="Music Library")
+        lib_list.add_widget(list_view)
+
+        lib_dev = AccordionItem(title="Devices")
+
+        lib_accordion = Accordion()
+        lib_accordion.add_widget(lib_dev)
+        lib_accordion.add_widget(lib_list)
+
+        list_panel.add_widget(lib_accordion)
+
+
+        #list_panel.add_widget(list_view)
+
+        playlist_panel = TabbedPanelItem(text='Playlist')
+        
+
+        playlist_current = AccordionItem(title="Current Queue")
+        playlist_mpd = AccordionItem(title="Saved Playlists")
+        playlist_accordion = Accordion()
+        
+        playlist_accordion.add_widget(playlist_mpd)
+        playlist_accordion.add_widget(playlist_current)
+
+        playlist_panel.add_widget(playlist_accordion)
+
+        #playlist_panel.add_widget(Label(text="Playlistssss"))
+
+
+
+        panel.add_widget(list_panel)
+        panel.add_widget(playlist_panel)
+        
+
+        self.add_widget(panel)
+
         return self
 
 

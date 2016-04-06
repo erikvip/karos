@@ -163,20 +163,14 @@ class CarPiApp(App):
 
         navigationdrawer = NavigationDrawer()
         panel = BoxLayout(orientation='horizontal')
-        #panel.add_widget(Label(text='Panel label'))
-        #panel.add_widget(Button(text='A button'))
         self.av = AudioPlayer(self.mpc);
         panel.add_widget(self.av)
-
         navigationdrawer.add_widget(panel)
-
         navigationdrawer.dock = 'top'
         navigationdrawer.anim_type = 'reveal_below_anim'
         #navigationdrawer.anim_type = 'reveal_below_simple'
         #navigationdrawer.anim_type = 'slide_above_simple'
         navigationdrawer.toggle_main_above()
-
-#        main_panel = FloatLayout()
         navigationdrawer.add_widget(self.container)
 
         return navigationdrawer
