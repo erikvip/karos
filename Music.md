@@ -1,3 +1,65 @@
+# Music Setup
+
+We're using MPD as the backend player.  This lets the GUI just issue play/pause/etc commands, while the work is done in the background by a single process. 
+
+## MPD
+
+Install MPD normally using apt-get:   
+
+```
+    sudo apt-get install mpd
+```
+
+### mpd.conf configuration
+
+**/etc/mpd.conf**
+
+```
+music_directory         "/home/pi/mpd/mp3"
+playlist_directory      "/home/pi/mpd/playlists"
+db_file                 "/home/pi/mpd/tag_cache"
+log_file                "/home/pi/mpd/mpd.log"          
+pid_file                "/home/pi/mpd/run/mpd/pid"
+state_file              "/home/pi/mpd/state"
+sticker_file            "/home/pi/mpd/sticker.sql"
+user                    "pi"
+bind_to_address         "localhost"
+port                    "6600"
+log_level               "default"
+#gapless_mp3_playback   "yes"
+auto_update             "yes"
+follow_outside_symlinks "yes"
+follow_inside_symlinks  "yes"
+input {
+        plugin "curl"
+}
+audio_output {
+        type            "alsa"
+        name            "My ALSA Device"
+}
+filesystem_charset      "UTF-8"
+id3v1_encoding          "UTF-8"
+```
+
+### /home/pi/mpd directory structure
+
+Setup the /home/pi directory structure.  Our mp3 library will be located under /home/pi/mpd/mp3
+
+```
+    mkdir -p /home/pi/mpd/mp3 /home/pi/mpd/playlists /home/pi/mpd/run/mpd
+    touch /home/pi/mpd/tag_cache
+```
+
+### Run mpd
+
+```
+$ sudo /etc/init.d/mpd start
+ [ ok ] Starting mpd (via systemctl): mpd.service.
+$ sudo /etc/init.d/mpd status
+ ● mpd.service - Music Player Daemon
+   Loaded: loaded (/lib/systemd/system/mpd.service; enabled)
+   Active: active (running) since Wed 2016-04-06 04:53:55 MDT; 1s ago
+```
 
 
 
@@ -6,35 +68,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Old...nonsense notes on MPD / Alsa setup....
 
 
             plugin "curl"
@@ -112,3 +146,4 @@ Information on the MPD Browser, player, and other music-related features.
 Now reboot the pi, and MPD / setvol should be working properly.
 This installs and configures pulseaudio, but we still use ALSA...after doing this though, everything appears to work...go figure.
 Your **audio_output** section of */etc/mpd.conf*  should be setup to use alsa, as configured above:   
+
