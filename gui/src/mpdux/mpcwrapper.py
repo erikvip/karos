@@ -58,7 +58,7 @@ class MpcWrapper(object):
 
         try:
             self.attempts += 1
-            self.mpc = mpd.MPDClient()
+            self.mpc = mpd.MPDClient(use_unicode=True)
             self.mpc.connect(self.host, int(self.port))
         except:
             Logger.warning("mpcwrapper: Connect failed. Message: {}".format(sys.exc_info()[1]))
