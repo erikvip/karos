@@ -10,7 +10,7 @@ The main goal is just as a media player, but will hopefully add additional featu
 
 - MPD - For music player
 - python-wifi - For wifi scanning / connecting
-- python-mpd2
+- python-mpd2 - For MPD usage (Note that's mpd2 - not just mpd)
 - Kivy Garden Modules:
   - Recycleview (ListView)
   - Navigationdrawer

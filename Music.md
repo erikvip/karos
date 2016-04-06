@@ -10,6 +10,14 @@ Install MPD normally using apt-get:
     sudo apt-get install mpd
 ```
 
+Install python-mpd2 using pip:
+
+```
+    sudo pip install python-mpd2
+```
+
+*Note:* that's the python-mpd2 package, **not** python-mpd
+
 ### mpd.conf configuration
 
 **/etc/mpd.conf**
