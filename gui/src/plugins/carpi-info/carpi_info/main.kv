@@ -1,0 +1,20 @@
+#:import random random.random
+
+<CarPI_info>:
+#    hue: random()
+#    canvas:
+#        Color:
+#            hsv: self.hue, .5, .3
+#        Rectangle:
+#            size: self.size
+    Label:
+        font_size: 42
+        text: "Info"
+    BoxLayout:
+        size_hint: .5, None
+        height: 250
+        pos_hint: {'center_x': .5}
+        orientation: 'vertical'
+    RstDocument:
+        text: root.docbody
+        colors: root.colors
