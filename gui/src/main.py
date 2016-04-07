@@ -1,6 +1,8 @@
 import random
 from utils import dump
 
+from pkg_resources import iter_entry_points # For importing plugins
+
 from kivy.interactive import InteractiveLauncher
 from kivy.app import App
 from kivy.uix.scrollview import ScrollView
@@ -45,14 +47,15 @@ class PluginIcon(Button, Label):
     text = ObjectProperty()
     direction = ObjectProperty()
     name = ObjectProperty()
+    icon = ObjectProperty()
+
     def __init__(self, **kwargs):
         super(PluginIcon, self).__init__(**kwargs)
-        self.bind(on_press=self.launch)
+        #self.bind(on_press=self.launch)
 
-    def launch(self, event):
-        #dump(app.screens)
-        pass
-        #app.p(event)
+#    def launch(self, event):
+#        pass
+
 
 
 class SettingsScreen(Screen):
@@ -74,6 +77,20 @@ class CarPiApp(App):
     screens = []
     mpd = False
     config = False
+    plugins = []
+
+    def __init__(self, **kwargs):
+        Logger.info("CarPiApp: Init")
+        self.register_plugins()
+        super(CarPiApp, self).__init__(**kwargs)
+
+    def register_plugins(self):
+        Logger.info("CarPiApp: registering plugins")
+        for entry_point in iter_entry_points(group='carpi.plugin', name=None):
+            p = entry_point.load()
+            self.plugins.append(p)
+            Logger.info("CarPiApp: Plugin: {} version: {} file: {}".format(p.__name__, p.__version__, p.__file__))
+        Logger.info("CarPiApp: Found {} plugins".format(len(self.plugins)))
 
     def build_config(self, config):
         self.config = config
@@ -83,8 +100,14 @@ class CarPiApp(App):
         })
 
     def launch(self, icon):
-
+        '''
+        Launch a given screen / icon
+        '''
         Logger.info("CarPiApp: Attempting to launch screen {}".format(str(icon.name)))
+        if (not self.sm.has_screen(str(icon.name))):
+            # Build and launch the plugin screen, first time run
+            screen = icon.source.launch()
+            self.sm.add_widget(screen)
         self.sm.current = str(icon.name)
 
     def build(self):
@@ -124,19 +147,16 @@ class CarPiApp(App):
             grid.bind(minimum_width=grid.setter('width'))
 
 
-        #ab = ActionBar(pos_hint={'top':1})
-        #grid.add_widget(ab)
-
-
-        for i in range(5):
-            r = random.randrange(1,4)
-           
-            icon = PluginIcon(text="Media Player with a long name", 
+        for p in self.plugins:
+            icon = PluginIcon(
+                    text=p.__name__,
                     direction=self.direction,
-                    size=(128, 128), 
+                    size=(128, 128),
                     size_hint=(None, None),
-                    source="static/"+str(r)+".png")
+                    icon=p.__icon__,
+                    source=p)
             grid.add_widget(icon)
+
 
         # create a scroll view, with a size < size of the grid
         if (self.direction == "vertical"):
