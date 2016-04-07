@@ -175,12 +175,14 @@ class CarPiApp(App):
 
         MpdBrowserScreen = MpdBrowser(self, self.mpc, name='mpdbrowser')
 
-        #self.screens.append(MpdBrowser.build() )
         self.sm.add_widget(MpdBrowserScreen)
 
        
         self.container.add_widget(self.sm)
 
+        
+        return self.container
+        '''
         navigationdrawer = NavigationDrawer()
         panel = BoxLayout(orientation='horizontal')
         self.av = AudioPlayer(self.mpc);
@@ -194,10 +196,9 @@ class CarPiApp(App):
         navigationdrawer.add_widget(self.container)
 
         return navigationdrawer
-
+        '''
         #return self.sm
 #        return self.container
-
 
     def p(self, arg):
         dump(arg)
