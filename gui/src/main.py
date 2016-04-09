@@ -89,7 +89,7 @@ class CarPiApp(App):
         for entry_point in iter_entry_points(group='carpi.plugin', name=None):
             p = entry_point.load()
             self.plugins.append(p)
-            Logger.info("CarPiApp: Plugin: {} version: {} file: {}".format(p.__name__, p.__version__, p.__file__))
+            Logger.info("CarPiApp: Plugin: {} title: {} version: {}".format(entry_point.dist, p.title, p.version))
         Logger.info("CarPiApp: Found {} plugins".format(len(self.plugins)))
 
     def build_config(self, config):
@@ -106,7 +106,7 @@ class CarPiApp(App):
         Logger.info("CarPiApp: Attempting to launch screen {}".format(str(icon.name)))
         if (not self.sm.has_screen(str(icon.name))):
             # Build and launch the plugin screen, first time run
-            screen = icon.source.launch()
+            screen = icon.source().screen()
             self.sm.add_widget(screen)
         self.sm.current = str(icon.name)
 
@@ -149,11 +149,11 @@ class CarPiApp(App):
 
         for p in self.plugins:
             icon = PluginIcon(
-                    text=p.__name__,
+                    text=p.title,
                     direction=self.direction,
                     size=(128, 128),
                     size_hint=(None, None),
-                    icon=p.__icon__,
+                    icon=p.icon,
                     source=p)
             grid.add_widget(icon)
 

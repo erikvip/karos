@@ -23,7 +23,7 @@ setup(
     ],
     entry_points={
         'carpi.plugin': [
-            'info = carpi_info',
+            'info = carpi_info:Plugin',
         ],
     }
 )

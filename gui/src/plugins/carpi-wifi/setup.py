@@ -24,7 +24,7 @@ setup(
     ],
     entry_points={
         'carpi.plugin': [
-            'wifi = carpi_wifi',
+            'wifi = carpi_wifi:Plugin',
         ],
     }
 )
