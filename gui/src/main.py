@@ -25,9 +25,9 @@ from kivy.garden.navigationdrawer import NavigationDrawer
 
 
 #from mpdux.mpdbrowser import MpdBrowser
-from mpdux.mpdclient import MpdBrowser
-from mpdux.mpcwrapper import MpcWrapper as mpc
-from mpdux.audioplayer import AudioPlayer
+#from mpdux.mpdclient import MpdBrowser
+#from mpdux.mpcwrapper import MpcWrapper as mpc
+#from mpdux.audioplayer import AudioPlayer
 
 
 
@@ -94,10 +94,10 @@ class CarPiApp(App):
 
     def build_config(self, config):
         self.config = config
-        self.config.setdefaults('mpd', {
-            'host': mpc.host,
-            'port': mpc.port
-        })
+#        self.config.setdefaults('mpd', {
+#            'host': mpc.host,
+#            'port': mpc.port
+#        })
 
     def launch(self, icon):
         '''
@@ -115,10 +115,10 @@ class CarPiApp(App):
         app = self
 
         # MPD Connection
-        self.mpc = mpc(
-            host=self.config.get('mpd', 'host'),
-            port=self.config.get('mpd', 'port')
-        )
+#        self.mpc = mpc(
+#            host=self.config.get('mpd', 'host'),
+#            port=self.config.get('mpd', 'port')
+#        )
 
         self.container = FloatLayout(size=(800, 480))
 
@@ -127,8 +127,8 @@ class CarPiApp(App):
         MainScreen = Screen(name="main")
         self.screens.append(MainScreen)
 
-        Builder.load_file('mpdux/mpdbrowser.kv')
-        Builder.load_file('mpdux/audioplayer.kv')
+#        Builder.load_file('mpdux/mpdbrowser.kv')
+#        Builder.load_file('mpdux/audioplayer.kv')
 
         #self.direction = "horizontal"
 
@@ -173,9 +173,8 @@ class CarPiApp(App):
         self.sm.add_widget(MainScreen)
 
 
-        MpdBrowserScreen = MpdBrowser(self, self.mpc, name='mpdbrowser')
-
-        self.sm.add_widget(MpdBrowserScreen)
+#        MpdBrowserScreen = MpdBrowser(self, self.mpc, name='mpdbrowser')
+#        self.sm.add_widget(MpdBrowserScreen)
 
        
         self.container.add_widget(self.sm)
