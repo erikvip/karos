@@ -16,7 +16,7 @@ from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 from kivy.logger import Logger
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.actionbar import ActionBar, ActionView, ActionButton
+from kivy.uix.actionbar import ActionBar, ActionView, ActionButton, ActionPrevious, ActionLabel, ActionOverflow
 
 
 from kivy.garden.navigationdrawer import NavigationDrawer
@@ -120,9 +120,40 @@ class CarPiApp(App):
 #            port=self.config.get('mpd', 'port')
 #        )
 
-        self.container = FloatLayout(size=(800, 480))
+        #self.container = BoxLayout(size=(800, 480), id='container', orientation='vertical')
+        self.container = FloatLayout()
 
-        self.sm = ScreenManager()
+        self.ab = ActionBar(id="ab", pos_hint={'top':1})
+        self.ab2 = ActionBar(id="ab2", pos_hint={'bottom':1})
+
+        self.av = ActionView(id="av")
+        self.av2 = ActionView(id="av2")
+
+        btn = ActionPrevious(
+            title="Back", 
+            with_previous=True, 
+            app_icon_height=42,
+            app_icon_width=42,
+            app_icon="/home/erikp/work/pi/car/gui/src/plugins/carpi-wifi/carpi_wifi/icon.png"
+        )
+
+        lb = ActionLabel(text='Abadsfasd', size=(100, 20))
+        lb2 = ActionLabel(text='Abadsfasd', size=(100, 20), pos_hint={'center_x':0.5, 'center_y':0.5})
+
+        self.av2.add_widget(lb2)
+        
+        self.av.add_widget(btn)
+        self.av.add_widget(lb)
+        #self.av.add_widget(lb2)
+
+
+        self.ab.add_widget(self.av)
+        self.ab2.add_widget(self.av2)
+
+        self.container.add_widget(self.ab)
+        #self.container.add_widget(self.ab2)
+
+        self.sm = ScreenManager(id='sm')
 
         MainScreen = Screen(name="main")
         self.screens.append(MainScreen)
@@ -134,7 +165,7 @@ class CarPiApp(App):
 
         # Grid layout holds our main icons. 40 px padding on bottom
         if (self.direction == "vertical"):
-            grid = GridLayout(cols=5, padding=(0, 140, 0, 0), spacing=18,
+            grid = GridLayout(cols=5, padding=(0, 40, 0, 0), spacing=18,
                     size_hint=(None, None), width=800)
         else:
             grid = GridLayout(rows=3, padding=(20, 80, 40, 0), spacing=18,
@@ -160,8 +191,8 @@ class CarPiApp(App):
 
         # create a scroll view, with a size < size of the grid
         if (self.direction == "vertical"):
-            root = ScrollView(size_hint=(None, None), size=(800, 480),
-                    pos_hint={'center_x': .48, 'center_y': .5}, do_scroll_x=False, do_scroll_y = True)
+            root = ScrollView(size_hint=(1, 0.75), #size=(800, 480),
+                    pos_hint={'center_x': .48, 'center_y': 0.5}, do_scroll_x=False, do_scroll_y = True)
         else:
             root = ScrollView(size_hint=(None, None), size=(800, 480),
                     pos_hint={'center_x': .42, 'center_y': .5}, do_scroll_x=True, do_scroll_y = False)
@@ -176,8 +207,9 @@ class CarPiApp(App):
 #        MpdBrowserScreen = MpdBrowser(self, self.mpc, name='mpdbrowser')
 #        self.sm.add_widget(MpdBrowserScreen)
 
-       
+        #dump(self)
         self.container.add_widget(self.sm)
+        #self.root.ids.container.add_widget(self.sm)
 
         
         return self.container
