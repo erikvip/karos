@@ -125,6 +125,7 @@ class CarPI_info(Screen):
         'bullet': '000000ff'})    
 
     def __init__( self, **kwargs):
+        self.name = "info"
         Logger.info("Info: init")
         Builder.load_file(dirname(__file__) + "/main.kv")
         super(CarPI_info, self).__init__(**kwargs)

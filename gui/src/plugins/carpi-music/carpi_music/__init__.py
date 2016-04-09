@@ -31,7 +31,7 @@ class Plugin():
 
 
         #MpdBrowserScreen = MpdBrowser(self.mpc, name='mpdbrowser')
-        MpdBrowserScreen = MpdBrowser(self.mpc)
+        MpdBrowserScreen = MpdBrowser(self.mpc, name="music")
         return MpdBrowserScreen
 
         #from .main import CarPI_music as music

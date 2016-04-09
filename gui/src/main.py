@@ -16,7 +16,7 @@ from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 from kivy.logger import Logger
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.actionbar import ActionBar, ActionView, ActionButton, ActionPrevious, ActionLabel, ActionOverflow
+from kivy.uix.actionbar import ActionBar, ActionView, ActionButton, ActionPrevious, ActionLabel, ActionOverflow, ActionGroup
 
 
 from kivy.garden.navigationdrawer import NavigationDrawer
@@ -104,11 +104,17 @@ class CarPiApp(App):
         Launch a given screen / icon
         '''
         Logger.info("CarPiApp: Attempting to launch screen {}".format(str(icon.name)))
+        #dump(self.sm)
+        #dump(icon.source.na)
         if (not self.sm.has_screen(str(icon.name))):
             # Build and launch the plugin screen, first time run
+            Logger.info("CarPiApp: First view for screen, init: {}".format(icon.name))
             screen = icon.source().screen()
             self.sm.add_widget(screen)
         self.sm.current = str(icon.name)
+
+    def go_back(self, ap):
+        self.sm.current='main'
 
     def build(self):
         global app
@@ -134,21 +140,27 @@ class CarPiApp(App):
             with_previous=True, 
             app_icon_height=42,
             app_icon_width=42,
-            app_icon="/home/erikp/work/pi/car/gui/src/plugins/carpi-wifi/carpi_wifi/icon.png"
+            app_icon="/home/erikp/work/pi/car/gui/src/plugins/carpi-wifi/carpi_wifi/icon.png", 
+            on_press=self.go_back
+
         )
 
-        lb = ActionLabel(text='Abadsfasd', size=(100, 20))
+        ag = ActionGroup(size_hint=(0.5, 1), pos_hint={'center_x':0.5, 'center_y':0.5})
+
+        lb = ActionLabel(text='Abadsfaasdfasdffffff', size_hint=(0.25, 1))
         lb2 = ActionLabel(text='Abadsfasd', size=(100, 20), pos_hint={'center_x':0.5, 'center_y':0.5})
 
-        self.av2.add_widget(lb2)
+        #ag.add_widget(btn)
+        ag.add_widget(lb)
+        ag.add_widget(lb2)
         
         self.av.add_widget(btn)
-        self.av.add_widget(lb)
+        #self.av.add_widget(lb)
         #self.av.add_widget(lb2)
-
+        self.av.add_widget(ag)
 
         self.ab.add_widget(self.av)
-        self.ab2.add_widget(self.av2)
+        #self.ab2.add_widget(self.av2)
 
         self.container.add_widget(self.ab)
         #self.container.add_widget(self.ab2)
@@ -185,6 +197,7 @@ class CarPiApp(App):
                     size=(128, 128),
                     size_hint=(None, None),
                     icon=p.icon,
+                    name=p.name.lower(),
                     source=p)
             grid.add_widget(icon)
 

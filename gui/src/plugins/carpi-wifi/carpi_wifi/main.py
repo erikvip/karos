@@ -15,6 +15,7 @@ import subprocess
 class CarPI_wifi(Screen):
     def __init__(self, **kwargs):
         Logger.info("wifi: Init")
+        self.name="wifi"
         #Builder.load_file(dirname(__file__) + "/main.kv")
         super(CarPI_wifi, self).__init__(**kwargs)
 
