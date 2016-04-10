@@ -1,3 +1,3 @@
 # Vertical
 
-This is the vertical implementaion of the icon view port
+This is the vertical implementation of the icon view port

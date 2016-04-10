@@ -114,7 +114,16 @@ class CarPiApp(App):
         self.sm.current = str(icon.name)
 
     def go_back(self, ap):
+
         self.sm.current='main'
+
+ #   def wtf(self, r):
+        #w = self.get_root_window()
+        #dump(self.root_window)
+#        self.root_window._rotation = 90
+
+#        print r.children
+
 
     def build(self):
         global app
@@ -222,10 +231,17 @@ class CarPiApp(App):
 
         #dump(self)
         self.container.add_widget(self.sm)
+
+#        self.bind(on_start=self.wtf)
         #self.root.ids.container.add_widget(self.sm)
 
-        
+        #self.add_widget(self.container)
+
         return self.container
+
+
+        #self.donebuild()
+        #return self.container
         '''
         navigationdrawer = NavigationDrawer()
         panel = BoxLayout(orientation='horizontal')
@@ -243,6 +259,10 @@ class CarPiApp(App):
         '''
         #return self.sm
 #        return self.container
+
+
+    def donebuild(self):
+        print self.root.ids
 
     def p(self, arg):
         dump(arg)
