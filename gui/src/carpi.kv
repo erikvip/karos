@@ -47,18 +47,20 @@ FloatLayout:
                 
                 GridLayout:
                     #canvas.before:
-                        #Color:
-                        #    rgb: (255, 0, 0)
-                        #Rectangle:
-                        #    size: self.size
+                    #    Color:
+                    #        rgb: (255, 0, 0)
+                    #    Rectangle:
+                    #        size: self.size
 
                     id: maingrid
-                    #cols: 6
-                    cols: int(floor(root.width / (app.get_desktop_icon_size() + 12)))
-                    padding: (0, root.ids.topbar.height, 0, 0)
+                    #cols: 5
+                    cols: int(floor(root.width / (app.get_desktop_icon_size() + self.spacing[0] )))
+                    padding: ( (root.width-(self.cols*(app.get_desktop_icon_size() + self.spacing[0])))/2 , 0, 0, 40)
                     spacing: 12
                     size_hint: (None, None)
+                    pos: (root.center)
                     #width: self.minimum_width
+
                     width: root.width
                     height: self.minimum_height
                     
@@ -94,12 +96,13 @@ FloatLayout:
             #tex_coords: (0, 0, 25, 25, 50, 50, 128, 128)
             #pos: (128, 128)
             #pos: (root.center_x, app.p(self))
-            pos: root.center
+            #pos: root.center
             #pos: (self.center_x, self.center_y)
-            #pos: (root.pos)
+            pos: (root.pos)
     Label:
         text: root.text
-        pos: (root.center_x, root.y) 
+        #pos: (root.center_x, root.y) 
+        pos: (root.x, root.y-(root.height/2))
         text_size: (root.width, None) 
         halign: 'center'
         valign: 'bottom'
