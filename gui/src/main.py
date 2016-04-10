@@ -22,34 +22,26 @@ from kivy.garden.navigationdrawer import NavigationDrawer
 #from pudb import set_trace; set_trace()
 
 class PluginIcon(Button, Label):
-    source = ObjectProperty()
     text = ObjectProperty()
-    direction = ObjectProperty()
-    name = ObjectProperty()
     icon = ObjectProperty()
-
+    name = ObjectProperty()
+    source = ObjectProperty()
     def __init__(self, **kwargs):
-        super(PluginIcon, self).__init__(**kwargs)
 
+        super(PluginIcon, self).__init__(**kwargs)
+        #dump(self.canvas.children[2].children[1])
+        
+        
+        
+        
+        
 
 class SettingsScreen(Screen):
     pass
 
-
-'''
-Layout is like this:
-
-ScreenManager
-    Screen: MainScreen <GridLayout>:
-        ScrollView:
-            PluginIcon
-    Screen: MpdBrowser 
-'''
 class CarPiApp(App):
     use_kivy_settings = False
-    direction = "vertical"
-    screens = []
-    mpd = False
+    #direction = "vertical"
     config = False
     plugins = []
 
@@ -57,6 +49,7 @@ class CarPiApp(App):
         Logger.info("CarPiApp: Init")
         self.register_plugins()
         super(CarPiApp, self).__init__(**kwargs)
+        self.bind(on_start=self.startup)
 
     def register_plugins(self):
         Logger.info("CarPiApp: registering plugins")
@@ -85,19 +78,34 @@ class CarPiApp(App):
             self.sm.add_widget(screen)
         self.sm.current = str(icon.name)
 
-    def go_back(self, ap):
+    def startup(self, app):
+        Logger.info("CarPiApp: Startup method called")
+        grid = self.root.ids['maingrid']
+        self.sm = self.root.ids['sm']
 
-        self.sm.current='main'
+        # Add each of the plugins to the main screen
+        '''
+        for p in range(30):
+            icon = PluginIcon(
+                    text='Test ' + str(p) ,
+                    icon='/home/erikp/work/pi/car/gui/src/plugins/carpi-wifi/carpi_wifi/icon.png',
+                    name='abc',
+                    source='')
+            grid.add_widget(icon)            
+        '''
+        for p in self.plugins:
+            icon = PluginIcon(
+                    text=p.title,
+                    icon=p.icon,
+                    name=p.name.lower(),
+                    source=p)
+            grid.add_widget(icon)
+        
 
- #   def wtf(self, r):
-        #w = self.get_root_window()
-        #dump(self.root_window)
-#        self.root_window._rotation = 90
+    def get_desktop_icon_size(self):
+        return 128
 
-#        print r.children
-
-
-    def build(self):
+    def deprecatedbuild(self):
         global app
         app = self
 

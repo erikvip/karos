@@ -1,23 +1,67 @@
-#:kivy 1.0.9
+#: import floor math.floor
 
-<-CarPiApp>:
-    size: (800, 400)
-    canvas.after:
-        Color:
-            rgb: (255, 0, 0)
-        Rectangle:
-            pos: (0, 0)
-            size: (800, 400)
-#    BoxLayout:
-#        id: container
-#        ScreenManager:
-#            id: sm
-#        ActionBar:
-#            ActionView:
-#                id: av
-#                title: "Wtf"
+FloatLayout:
+    id: container
+    ActionBar:
+        id: topbar
+        pos_hint: {'top':1}
+        ActionView:
+            id: topview
+            ActionPrevious:
+                id: topback
+                title: 'Back'
+                with_previous: True
+                app_icon_height: 42
+                app_icon_width: 42
+                app_icon: "/home/erikp/work/pi/car/gui/src/plugins/carpi-wifi/carpi_wifi/icon.png"
+                on_press: sm.current='main'
+            ActionGroup:
+                id: topgroup
+                ActionLabel:
+                    text: "ActionLabel Thing"
+    ScreenManager:
+        id: sm
+        #height: 400
+        #top: 400
+        Screen:
+            id: mainscreen
+            name: 'main'
+            ScrollView:
+                canvas.before:
+                    #Color:
+                    #    rgb: (255, 0, 255)
+                    #Rectangle:
+                    #    size: self.size
+                    #BorderImage: 
+                    #    source: "/home/erikp/Pictures/Wallpapers/Best/369383.jpg"
+                    #    pos: self.parent.pos
+                    #    size: self.parent.size
 
+                id: mainscroll
+                size_hint: (None, None)
+                height: root.height - root.ids.topbar.height
+                width: root.width
+                pos_hint: {'right': 1, 'bottom': 1}
+                do_scroll_x: False
+                do_scroll_y: True
+                
+                GridLayout:
+                    #canvas.before:
+                        #Color:
+                        #    rgb: (255, 0, 0)
+                        #Rectangle:
+                        #    size: self.size
 
+                    id: maingrid
+                    #cols: 6
+                    cols: int(floor(root.width / (app.get_desktop_icon_size() + 12)))
+                    padding: (0, root.ids.topbar.height, 0, 0)
+                    spacing: 12
+                    size_hint: (None, None)
+                    #width: self.minimum_width
+                    width: root.width
+                    height: self.minimum_height
+                    
 #<-ScrollView>:
 #    canvas.before:
 #        Rectangle:
@@ -27,23 +71,36 @@
 
 
 <-PluginIcon>:
-    icon:""
     text:""
+    icon:""
     name:""
-    direction: "vertical"
+    source:""
+#    direction: "vertical"
     on_press: app.launch(self)
-    canvas.after:
+    size: (app.get_desktop_icon_size(), app.get_desktop_icon_size() )
+    size_hint: (None, None)
+
+#    canvas.before:
+#        Color:
+#            rgb: (255, 0, 0)
+#        Rectangle:
+#            size: self.size
+#            pos: self.pos
+
+    canvas:
         BorderImage:
+            #auto_scale: True
             source: root.icon
+            #tex_coords: (0, 0, 25, 25, 50, 50, 128, 128)
+            #pos: (128, 128)
+            #pos: (root.center_x, app.p(self))
             pos: root.center
-            #size: root.width-12, root.height - 12
-            #size: self.size
-            #size: 96, 96
+            #pos: (self.center_x, self.center_y)
+            #pos: (root.pos)
     Label:
         text: root.text
         pos: (root.center_x, root.y) 
         text_size: (root.width, None) 
-
         halign: 'center'
         valign: 'bottom'
         font_size: 13
