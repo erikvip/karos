@@ -3,7 +3,6 @@ from utils import dump
 
 from pkg_resources import iter_entry_points # For importing plugins
 
-from kivy.interactive import InteractiveLauncher
 from kivy.app import App
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
@@ -18,29 +17,9 @@ from kivy.logger import Logger
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.actionbar import ActionBar, ActionView, ActionButton, ActionPrevious, ActionLabel, ActionOverflow, ActionGroup
 
-
 from kivy.garden.navigationdrawer import NavigationDrawer
 
-#from kivy.properties import NumericProperty
-
-
-#from mpdux.mpdbrowser import MpdBrowser
-#from mpdux.mpdclient import MpdBrowser
-#from mpdux.mpcwrapper import MpcWrapper as mpc
-#from mpdux.audioplayer import AudioPlayer
-
-
-
 #from pudb import set_trace; set_trace()
-'''
-class MainViewport(ScrollView):
-    def __init__(self, **kwargs):
-        super(MainViewport, self).__init__(**kwargs)
-    def scroll(self, item, vp):
-        print "Scrolling!"  
-    def touch(args):
-        print "Touch event: {}".format(args)    
-'''
 
 class PluginIcon(Button, Label):
     source = ObjectProperty()
@@ -51,11 +30,6 @@ class PluginIcon(Button, Label):
 
     def __init__(self, **kwargs):
         super(PluginIcon, self).__init__(**kwargs)
-        #self.bind(on_press=self.launch)
-
-#    def launch(self, event):
-#        pass
-
 
 
 class SettingsScreen(Screen):
@@ -104,8 +78,6 @@ class CarPiApp(App):
         Launch a given screen / icon
         '''
         Logger.info("CarPiApp: Attempting to launch screen {}".format(str(icon.name)))
-        #dump(self.sm)
-        #dump(icon.source.na)
         if (not self.sm.has_screen(str(icon.name))):
             # Build and launch the plugin screen, first time run
             Logger.info("CarPiApp: First view for screen, init: {}".format(icon.name))
@@ -179,11 +151,6 @@ class CarPiApp(App):
         MainScreen = Screen(name="main")
         self.screens.append(MainScreen)
 
-#        Builder.load_file('mpdux/mpdbrowser.kv')
-#        Builder.load_file('mpdux/audioplayer.kv')
-
-        #self.direction = "horizontal"
-
         # Grid layout holds our main icons. 40 px padding on bottom
         if (self.direction == "vertical"):
             grid = GridLayout(cols=5, padding=(0, 40, 0, 0), spacing=18,
@@ -225,23 +192,13 @@ class CarPiApp(App):
         MainScreen.add_widget(root)
         self.sm.add_widget(MainScreen)
 
-
-#        MpdBrowserScreen = MpdBrowser(self, self.mpc, name='mpdbrowser')
-#        self.sm.add_widget(MpdBrowserScreen)
-
-        #dump(self)
         self.container.add_widget(self.sm)
 
 #        self.bind(on_start=self.wtf)
-        #self.root.ids.container.add_widget(self.sm)
-
-        #self.add_widget(self.container)
 
         return self.container
 
 
-        #self.donebuild()
-        #return self.container
         '''
         navigationdrawer = NavigationDrawer()
         panel = BoxLayout(orientation='horizontal')
@@ -257,19 +214,10 @@ class CarPiApp(App):
 
         return navigationdrawer
         '''
-        #return self.sm
-#        return self.container
-
-
-    def donebuild(self):
-        print self.root.ids
 
     def p(self, arg):
         dump(arg)
         return "P"
-
-#launcher = InteractiveLauncher(CarPiApp())
-#launcher.run()
 
 if __name__ == '__main__':
     app = CarPiApp().run()
