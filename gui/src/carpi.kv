@@ -7,18 +7,22 @@ FloatLayout:
         pos_hint: {'top':1}
         ActionView:
             id: topview
+            ActionButton:
+                icon: "/home/erikp/work/pi/car/gui/src/plugins/carpi-wifi/carpi_wifi/icon.png"
+                on_release: app.open_settings()
             ActionPrevious:
                 id: topback
                 title: 'Back'
-                with_previous: True
+                with_previous: False
                 app_icon_height: 42
                 app_icon_width: 42
                 app_icon: "/home/erikp/work/pi/car/gui/src/plugins/carpi-wifi/carpi_wifi/icon.png"
-                on_press: sm.current='main'
-            ActionGroup:
-                id: topgroup
-                ActionLabel:
-                    text: "ActionLabel Thing"
+                on_press: sm.current='main'; self.title='Back';
+            ActionLabel:
+                align: "left"
+                text: "ActionLabel Thing"
+
+
     ScreenManager:
         id: sm
         #height: 400

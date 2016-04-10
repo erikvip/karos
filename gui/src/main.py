@@ -17,6 +17,8 @@ from kivy.logger import Logger
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.actionbar import ActionBar, ActionView, ActionButton, ActionPrevious, ActionLabel, ActionOverflow, ActionGroup
 
+from kivy.uix.settings import SettingsWithSidebar
+from kivy.uix.popup import Popup
 from kivy.garden.navigationdrawer import NavigationDrawer
 
 #from pudb import set_trace; set_trace()
@@ -36,11 +38,13 @@ class PluginIcon(Button, Label):
         
         
 
-class SettingsScreen(Screen):
-    pass
+#class SettingsScreen(Screen):
+#    pass
 
 class CarPiApp(App):
-    use_kivy_settings = False
+    lsuse_kivy_settings = False
+    settings_cls = 'SettingsWithSidebar'
+    settings_popup = ObjectProperty(None, allownone=True)
     #direction = "vertical"
     config = False
     plugins = []
@@ -61,10 +65,46 @@ class CarPiApp(App):
 
     def build_config(self, config):
         self.config = config
-#        self.config.setdefaults('mpd', {
-#            'host': mpc.host,
-#            'port': mpc.port
-#        })
+        #config.setdefaults('My Label', {'text': 'Hello', 'font_size': 20})
+        self.config.setdefaults('MPD', {'host': 'localhost','port': 6600})
+
+
+    def build_settings(self, settings):
+        json = '''
+        [
+            {
+                "type": "string",
+                "title": "MPD Host",
+                "desc": "Music Player Host to connect (Default: localhost)",
+                "section": "MPD",
+                "key": "host"
+            },
+            {
+                "type": "numeric",
+                "title": "MPD Port",
+                "desc": "Music Player Port to connect (Default: 6600)",
+                "section": "MPD",
+                "key": "port"
+            }
+        ]
+        '''
+        settings.add_json_panel('MPD', self.config, data=json)
+
+    def display_settings(self, settings):
+        p = self.settings_popup
+        if p is None:
+            self.settings_popup = p = Popup(content=settings,
+                                            title='Settings',
+                                            size_hint=(0.8, 0.8))
+        if p.content is not settings:
+            p.content = settings
+        p.open()
+    def close_settings(self, *args):
+        p = self.settings_popup
+        if p is not None:
+            p.dismiss()
+
+
 
     def launch(self, icon):
         '''
@@ -75,7 +115,10 @@ class CarPiApp(App):
             # Build and launch the plugin screen, first time run
             Logger.info("CarPiApp: First view for screen, init: {}".format(icon.name))
             screen = icon.source().screen()
-            self.sm.add_widget(screen)
+            self.sm.add_widget(screen) 
+
+        # Set the Back button title to our plugin
+        self.root.ids.topback.title = icon.text
         self.sm.current = str(icon.name)
 
     def startup(self, app):
@@ -131,7 +174,6 @@ class CarPiApp(App):
             app_icon_width=42,
             app_icon="/home/erikp/work/pi/car/gui/src/plugins/carpi-wifi/carpi_wifi/icon.png", 
             on_press=self.go_back
-
         )
 
         ag = ActionGroup(size_hint=(0.5, 1), pos_hint={'center_x':0.5, 'center_y':0.5})
