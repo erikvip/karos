@@ -2,6 +2,7 @@
 
 ## Plugins to brainstorm / define / create
 
+- Gesture Support
 - Music Visualizer
 - ScreenSaver
     - Custom shader...
