@@ -36,8 +36,8 @@ from kivy.adapters.listadapter import ListAdapter
 from kivy.uix.bubble import Bubble
 from kivy.uix.bubble import BubbleButton
 
-from kivy.properties import ObjectProperty
-from kivy.properties import NumericProperty
+from kivy.properties import ObjectProperty, NumericProperty, StringProperty, ListProperty
+
 from kivy.logger import Logger
 from kivy.lang import Builder
 
@@ -58,7 +58,7 @@ import string
 import random
 
 
-__all__ = ('MpdClient', )
+__all__ = ('Music', )
 
 class MpdItem(BoxLayout):
     index = NumericProperty()
@@ -69,28 +69,103 @@ class MpdItem(BoxLayout):
     def __init__(self, **kwargs):
         super(MpdItem, self).__init__(**kwargs)
 
-    def on_press(self, item):
-        print dump(self)
+    def on_press(self, app, btn):
+        # Call the on_press method of the RecycleView
+        sm = app.root.ids.sm
+        music = sm.get_screen('music')
+        item = btn.parent
+        music.mpd_select(item)
+
+
+class MpdLibrary(RecycleView):
+    pass
+
 
 '''
 Test using RecycleView instead of ListView...
 '''
-class MpdBrowser(Screen):
+class Music(Screen):
+    mpc = None
+    mpd_root_data = []
+    mpd_level = 0
+    mpd_history = {0:"/"}
 
     def __init__(self, mpc, **kwargs):
-        Logger.info("MpdBrowser: Init")        
-        super(MpdBrowser, self).__init__(**kwargs)
-        #self.app = app
+        Logger.info("Music: init")
+        Builder.load_file(dirname(__file__) + '/mpdclient.kv')
+        self.mpc = mpc
+        self.mpd_root_data = self.fetch_data()
+        super(Music, self).__init__(**kwargs)
+
+
+    def fetch_data(self, item="/"):
+        Logger.info("Music: Querying mpd for: {}".format(item))
+
+        data = []
+        if (item != "/"):
+            data = [{'text':"..", 'type':'directory'}]
+
+        count_dirs = 0
+        count_files = 0
+
+        for entry in self.mpc.lsinfo(item):
+            if 'directory' in entry:
+                data.append({'text':str(entry['directory']), 'type':'directory'})
+                count_dirs+=1
+            if 'title' in entry:
+                data.append({'text':str(entry['title']), 'type':'file', 'file':entry['file']})
+                count_files+=1
+
+        Logger.info("Music: MPD Stats, directories: {}, files: {}".format(count_dirs, count_files))
         
+        result = []
+        x = 1;
+        for r in data:
+            x+=1
+            result.append({
+                "index": x,
+                "viewclass": "MpdItem",
+                "mpd_data": r,
+                "mpd_name": r['text'],
+                "mpd_media": "http://rocketdock.com/images/screenshots/Aphex-Clock.png"
+            })
+
+        return result
+
+    def mpd_select(self, item):
+
+        text = item.mpd_data['text']
+
+        if (text == ".."):
+            del self.mpd_history[self.mpd_level]
+            self.mpd_level -= 1
+            text = self.mpd_history[self.mpd_level]
+        else:
+            self.mpd_level += 1
+            self.mpd_history[self.mpd_level] = text
+
+        data = self.fetch_data(text)
+        self.ids.mpdlibrary.data = data
+
+
+'''
+
+class MpdBrowserzz(Screen):
+    def __init__(self, mpc, **kwargs):
+        Logger.info("MpdBrowser: Init")        
+        Builder.load_file(dirname(__file__) + '/mpdclient.kv')
         # Setup mpd connection
         self.mpc = mpc
-
-        Logger.info("MpdBrowser: Connected to MPD")        
+        #Logger.info("MpdBrowser: Connected to MPD")
+        super(MpdBrowser, self).__init__(**kwargs)
 
         self.selection_history=[{'text':'/', 'index':0}];
         self.selection_last_item_index=0
 
-        self.build()
+
+        dump(self)
+
+        #self.build()
 
     def fetch_data(self, item="/"):
         Logger.info("MpdBrowser: Querying mpd for: {}".format(item))
@@ -115,8 +190,116 @@ class MpdBrowser(Screen):
 
         return self.data
 
+    def convert_data_for_recycleview(self, data):
+        result = []
+        x = 1; 
+        for r in data:
+            x+=1
+            result.append({
+                "index": x, 
+                "viewclass": "MpdItem",
+                "mpd_data": r, 
+                "mpd_name": r['text'], 
+                "mpd_media": "http://rocketdock.com/images/screenshots/Aphex-Clock.png"
+            })
 
-    def do_selection(self, list):
+        return result            
+
+    def create_recycleview(self, data):
+        self.rv = RecycleView(
+            width=800,
+            height=400,
+            data=data,
+            key_viewclass="viewclass",
+            key_size="height"
+        )
+
+#        adapter = self.rv._get_adapter()
+
+#       RecycleView doesn't support FREAKING SELECTIONS YET!! *Of course
+#        adapter.bind(
+#            on_selection_change=self.do_selection,
+#            selection_mode="single"
+#        )
+
+        return self.rv
+            
+
+    def build(self):
+        data = self.fetch_data("/")
+        data = self.convert_data_for_recycleview(data)
+        recycleview = self.create_recycleview(data)
+        
+
+        panel = TabbedPanel(do_default_tab=False, size_hint=(1,0.75) )
+
+        list_panel = TabbedPanelItem(text='Library')
+        
+
+        lib_list = AccordionItem(title="Music Library")
+        lib_list.add_widget(self.rv)
+
+        lib_dev = AccordionItem(title="Devices")
+
+        lib_accordion = Accordion()
+        lib_accordion.add_widget(lib_dev)
+        lib_accordion.add_widget(lib_list)
+
+        list_panel.add_widget(lib_accordion)
+
+
+        #list_panel.add_widget(list_view)
+
+        playlist_panel = TabbedPanelItem(text='Playlist')
+        
+
+        playlist_current = AccordionItem(title="Current Queue")
+        playlist_mpd = AccordionItem(title="Saved Playlists")
+        playlist_accordion = Accordion()
+        
+        playlist_accordion.add_widget(playlist_mpd)
+        playlist_accordion.add_widget(playlist_current)
+
+        playlist_panel.add_widget(playlist_accordion)
+
+
+        panel.add_widget(list_panel)
+        panel.add_widget(playlist_panel)
+        
+
+        self.add_widget(panel)
+
+        return self
+
+    def on_press(self, item):
+        text = item.mpd_data['text']
+        if (text == '..'):
+            text = "/"
+        else:
+            self.last_item = item
+        response = self.fetch_data(text)
+        data = []
+        x = 1; 
+        for r in response:
+            x+=1
+            data.append({
+                "index": x, 
+                "viewclass": "MpdItem",
+                "mpd_data": r, 
+                "mpd_name": r['text'], 
+                "mpd_media": "http://rocketdock.com/images/screenshots/Aphex-Clock.png"
+            })
+
+        self.rv.data = data
+        if (text == "/"):
+            print "last item"
+            dump(self.last_item)
+            self.rv.goto_node(self.last_item.index, self.item, self.item.index)
+            #self.rv.scroll_to(self.last_item.x)
+            #self.rv.scroll_to(self.last_item.to_window(self.last_item.pos))
+
+
+    def deprecated_do_selection(self, list):
         #self.app.p(list)
         # I'm TIRED of the damn scroll / child selection issue!
         # So we're REQUIRING you to double click and item to open it...but Kivy
@@ -199,7 +382,7 @@ class MpdBrowser(Screen):
                 pass
 
 
-    def create_list(self, data):
+    def deprecated_create_list(self, data):
 
         list_item_args_converter = \
                 lambda row_index, rec: {'text': rec['text'],
@@ -221,81 +404,6 @@ class MpdBrowser(Screen):
         )
         return self.list_view
 
-
-    def create_recycleview(self, response):
-        data = []
-        x = 1; 
-        for r in response:
-            x+=1
-            data.append({
-                "index": x, 
-                "viewclass": "MpdItem",
-                "mpd_data": r, 
-                "mpd_name": r['text'], 
-                "mpd_media": "http://rocketdock.com/images/screenshots/Aphex-Clock.png"
-            })
-
-        self.rv = RecycleView(
-            width=800, 
-            height=400, 
-            data=data, 
-            key_viewclass="viewclass", 
-            key_size="height"
-        )
-        adapter = self.rv._get_adapter()
-
-#       RecycleView doesn't support FREAKING SELECTIONS YET!! *Of course
-#        adapter.bind(
-#            on_selection_change=self.do_selection,
-#            selection_mode="single"
-#        )
-
-        return self.rv
-            
-
-    def build(self):
-        Builder.load_file(dirname(__file__) + '/mpdclient.kv')
-        data = self.fetch_data("/")
-
-        panel = TabbedPanel(do_default_tab=False, size_hint=(1,0.75) )
-
-        list_panel = TabbedPanelItem(text='Library')
-        list_view = self.create_recycleview(data)
-
-        lib_list = AccordionItem(title="Music Library")
-        lib_list.add_widget(list_view)
-
-        lib_dev = AccordionItem(title="Devices")
-
-        lib_accordion = Accordion()
-        lib_accordion.add_widget(lib_dev)
-        lib_accordion.add_widget(lib_list)
-
-        list_panel.add_widget(lib_accordion)
-
-
-        #list_panel.add_widget(list_view)
-
-        playlist_panel = TabbedPanelItem(text='Playlist')
-        
-
-        playlist_current = AccordionItem(title="Current Queue")
-        playlist_mpd = AccordionItem(title="Saved Playlists")
-        playlist_accordion = Accordion()
-        
-        playlist_accordion.add_widget(playlist_mpd)
-        playlist_accordion.add_widget(playlist_current)
-
-        playlist_panel.add_widget(playlist_accordion)
-
-
-        panel.add_widget(list_panel)
-        panel.add_widget(playlist_panel)
-        
-
-        self.add_widget(panel)
-
-        return self
 
 
 if __name__ == '__main__':
@@ -319,3 +427,5 @@ if __name__ == '__main__':
             return MpdBrowser(app, self.mpc)
 
     app = DemoApp().run()
+
+'''    

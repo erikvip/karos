@@ -17,7 +17,8 @@
             pos: self.pos
             size: self.size
 
-#<-MpdItem>:
+
+
 <-MpdItem>:
     index: 0
     mpd_media: ""
@@ -45,4 +46,39 @@
     Button:
         text: 'Open'
         size_hint: (0.15, 1)
-        on_press: root.on_press(self)
+        on_press: root.on_press(app, self)
+
+
+<-Music>:
+    id:browser
+    TabbedPanel:
+        id: tabs
+        do_default_tab: False
+        size_hint: (1, 0.75)
+        TabbedPanelItem:
+            id: librarytab
+            text: 'Library'
+            Accordion:
+                id: libraryaccordion
+                AccordionItem:
+                    id: devices
+                    title: "Devices"
+                AccordionItem:
+                    id: library
+                    title: "Music Library"
+                    RecycleView:
+                        id: mpdlibrary
+                        data: root.mpd_root_data
+                        key_viewclass: "viewclass"
+                        key_size: "height"
+        TabbedPanelItem:
+            id: playlists
+            text: 'Playlists'
+            Accordion:
+                id: playlistsaccordion
+                AccordionItem:
+                    id: currentplaylist
+                    title: "Current Playlist"
+                AccordionItem:
+                    id: savedplaylists
+                    title: "Saved Playlists"

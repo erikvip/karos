@@ -29,17 +29,8 @@ class PluginIcon(Button, Label):
     name = ObjectProperty()
     source = ObjectProperty()
     def __init__(self, **kwargs):
-
         super(PluginIcon, self).__init__(**kwargs)
-        #dump(self.canvas.children[2].children[1])
-        
-        
-        
-        
-        
 
-#class SettingsScreen(Screen):
-#    pass
 
 class CarPiApp(App):
     lsuse_kivy_settings = False

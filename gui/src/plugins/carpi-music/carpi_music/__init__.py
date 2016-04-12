@@ -6,7 +6,7 @@ __name__ = "Music"
 __title__ = "Music Library"
 __icon__ = dirname(__file__) + "/icon.png"
 
-from mpdclient import MpdBrowser
+from mpdclient import Music
 from mpcwrapper import MpcWrapper as mpc
 #from audioplayer import AudioPlayer
 
@@ -26,13 +26,6 @@ class Plugin():
 
         self.mpc = mpc(host='10.0.0.10', port=6600)
 
-        #Builder.load_file(dirname(__file__) + '/mpdbrowser.kv')
-        #Builder.load_file(dirname(__file__) + '/audioplayer.kv')
+        MusicScreen = Music(self.mpc, name="music")
+        return MusicScreen
 
-
-        #MpdBrowserScreen = MpdBrowser(self.mpc, name='mpdbrowser')
-        MpdBrowserScreen = MpdBrowser(self.mpc, name="music")
-        return MpdBrowserScreen
-
-        #from .main import CarPI_music as music
-        #return music().build()
