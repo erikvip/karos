@@ -1,75 +1,74 @@
 #: import floor math.floor
+#: import pprint pprint
 
+# The FloatLayout is used only to allow absolute positioning of notifications
 FloatLayout:
-    id: container
-    Bubble:
-        size_hint: (None, 0.12)
-        #size: (200, root.height/12)
-        width: 200
-        height: 40
-        center_x: root.center_x
-        #y: (self.height*3)
-        y: root.height/6
-        background_color: [12, 12, 12, 0.5]
-        show_arrow: False
-        Label:
-            text: " as df adsf ad fadfa dfa sdf asdkljfasdf asdf asdlfjkalsdkjflkad flas dflkjadsl fa "
-            width: self.parent.width
-            valign: 'middle'
-            halign: 'center'
-            strip: True
+    size_hint: (1, 1)
+    Growl:
+    BoxLayout:
+        size_hint: (1, 1)
+        orientation: 'vertical'
+        id: container
+        SystemBar:
+            id: systembar
+            size_hint: (1, 0.1)
+        ScreenManager:
+            id: sm
+            size_hint: (1, 0.8)
+            Screen:
+                id: mainscreen
+                name: 'main'
+                size_hint: (1, 1)
+                ScrollView:
+                    canvas.before:
+                        Color:
+                            rgba: (255, 0, 255, 0.2)
+                        Color:
+                            rgba: (12, 12, 12, 0.1)
+                        Line:
+                            points: [0, 0, self.width, 0, self.width, self.height, 0, self.height, 0, 0]
+                            width: 6
+                        Rectangle:
+                            size: self.size
+                        #BorderImage: 
+                        #    source: "/home/erikp/Pictures/Wallpapers/Best/369383.jpg"
+                        #    pos: self.parent.pos
+                        #    size: self.parent.size
+                        #    border: [1, 1, 1, 1]
 
-            #text_size: self.parent.size
-            text_size: self.parent.width, self.parent.height
-            size: self.texture_size
-            texture_size: root.size
-    SystemBar:
-        id: systembar
-    ScreenManager:
-        id: sm
-        #height: 400
-        #top: 400
-        Screen:
-            id: mainscreen
-            name: 'main'
+                    id: mainscroll
+                    size_hint: (1, 1)
+                    #size_hint: (None, None)
+                    #height: root.height - root.ids.systembar.height
+                    #height: root.height - 42
+                    #width: root.width
+                    pos_hint: {'right': 1, 'bottom': 1}
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    
+                    GridLayout:
+                        #canvas.before:
+                        #    Color:
+                        #        rgb: (255, 0, 0)
+                        #    Rectangle:
+                        #        size: self.size
 
-            ScrollView:
-                #canvas.before:
-                    #Color:
-                    #    rgb: (255, 0, 255)
-                    #Rectangle:
-                    #    size: self.size
-                    #BorderImage: 
-                    #    source: "/home/erikp/Pictures/Wallpapers/Best/369383.jpg"
-                    #    pos: self.parent.pos
-                    #    size: self.parent.size
+                        id: maingrid
+                        #cols: 5
+                        cols: int(floor(root.width / (app.get_desktop_icon_size() + self.spacing[0] )))
+                        padding: ( (root.width-(self.cols*(app.get_desktop_icon_size() + self.spacing[0])))/2 , 0, 0, 40)
+                        spacing: 12
+                        size_hint: (None, None)
+                        pos: (root.center)
+                        #width: self.minimum_width
 
-                id: mainscroll
-                size_hint: (None, None)
-                height: root.height - root.ids.systembar.height
-                width: root.width
-                pos_hint: {'right': 1, 'bottom': 1}
-                do_scroll_x: False
-                do_scroll_y: True
-                
-                GridLayout:
-                    #canvas.before:
-                    #    Color:
-                    #        rgb: (255, 0, 0)
-                    #    Rectangle:
-                    #        size: self.size
+                        width: root.width
+                        height: self.minimum_height
+        MediaBar:
+            id: mediabar
+            size_hint: (1, 0.1)
 
-                    id: maingrid
-                    #cols: 5
-                    cols: int(floor(root.width / (app.get_desktop_icon_size() + self.spacing[0] )))
-                    padding: ( (root.width-(self.cols*(app.get_desktop_icon_size() + self.spacing[0])))/2 , 0, 0, 40)
-                    spacing: 12
-                    size_hint: (None, None)
-                    pos: (root.center)
-                    #width: self.minimum_width
 
-                    width: root.width
-                    height: self.minimum_height
                     
 #<-ScrollView>:
 #    canvas.before:
@@ -117,27 +116,61 @@ FloatLayout:
 
 
 
-
-
-
-
-#<Growl@Label>:
-#    canvas:
-#        Color:
-#            rgba: (0, 0, 0, 0.8)    # Background color
+<Growl@Label>:
+    canvas.after:
+        Color:
+            rgba: (12, 12, 12, 0.5)    # Background color
 #        BorderImage:
 #            pos: int(self.center_x - self.texture_size[0] / 2.), int(self.center_y - self.texture_size[1] / 2.)
 #            size: self.texture_size
+#            border: [0, 0, 0, 0]
 #        Color:
-#            rgba: (255, 255, 255, 1)    # Foreground color
+#            rgba:(127, 0, 255, 0.7)
+
+        Line:
+            rounded_rectangle: [self.x, self.y, self.width, self.height, 10, 100]
+            width: 1
+        Color:
+            rgba: (255, 127, 255, 1)    # Foreground color
 #        Rectangle:
 #            texture: self.texture
 #            size: self.texture_size
 #            pos: int(self.center_x - self.texture_size[0] / 2.), int(self.center_y - self.texture_size[1] / 2.)
-#    halign: 'center'
-#    valign: 'middle'
-#    size: self.texture_size
-#    #size_hint: (0.6, 0.6)
+#        Line:
+#            points: [0, 0, self.width, 0, self.width, self.height, 0, self.height, 0, 0]
+#            width: 2
+#            cap: 'square'
+    halign: 'center'
+    valign: 'middle'
+    #text_size: (400, None)
+    text_size: (None, None)
+    size_hint: (None, None)
+    size: self.texture_size
+    padding: (10, 6)
+    pos_hint: {'center_x':0.5, 'y':0.25}
+    #text: 'x:' + str(self.x) + ' y:' + str(self.y) + ' width:' + str(self.width) + ' height:' + str(self.height)
+    #text: "alksdf  asdf\nasdlfjkalsdkjflkad flas dflkjadsl END"
+    text: "a;lkasdf asdflkjasdf asd fasd f asd fasdf asd f asd f asdf as,fna df asdf asdf asdf dsalksdf  asdf\nasdlfjkalsdkjflkad flas dflkjadsl END"
 
 
+<AltGrowl@Bubble>:
+    #size_hint: (None, 0.12)
+    #size: (200, root.height/12)
+    width: 200
+    height: 40
+    center_x: self.parent.center_x
+    y: self.parent.height / 8
+    background_color: [12, 12, 12, 0.5]
+    show_arrow: False
+    Label:
+        text: " as df adsf ad fadfa dfa sdf asdkljfasdf asdf asdlfjkalsdkjflkad flas dflkjadsl fa "
+        width: self.parent.width
+        valign: 'middle'
+        halign: 'center'
+        strip: True
+
+        #text_size: self.parent.width, self.parent.height
+        text_size: (200, None)
+        size: self.texture_size
+        #texture_size: root.size
     

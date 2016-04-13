@@ -19,6 +19,7 @@ from kivy.uix.popup import Popup
 from kivy.garden.navigationdrawer import NavigationDrawer
 
 from systembar import SystemBar
+from mediabar import MediaBar
 
 #from pudb import set_trace; set_trace()
 

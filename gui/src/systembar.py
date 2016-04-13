@@ -26,7 +26,7 @@ Builder.load_string('''
             app_icon_height: 42
             app_icon_width: 42
             app_icon: "/home/erikp/work/pi/car/gui/src/plugins/carpi-wifi/carpi_wifi/icon.png"
-            on_press: app.sm.current='main'; self.title='Back';
+            on_release: app.sm.current='main'; self.title='Back';
         ActionButton:
             id: systemicon-settings
             icon: "/home/erikp/work/pi/car/gui/src/plugins/carpi-wifi/carpi_wifi/icon.png"
@@ -92,6 +92,7 @@ class SystemNotify(Bubble):
         opacity = self.background_color[3]
         if (opacity <= 0):
             Clock.unschedule(self.fade_clock)
+            self.parent.remove_widget(self)
         else:
             opacity -= 0.1
             self.background_color[3] = opacity

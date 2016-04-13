@@ -30,8 +30,9 @@ def dump(arg):
         pass
     print bcolors.ENDC    
 
-
+'''
 class Growl(Label):
+
     text = ObjectProperty()
     #size=(300, 20)
     text_size=(300, None)
@@ -46,3 +47,4 @@ class Growl(Label):
 
         # And then remove ourself
         #Clock.schedule_once(lambda dt: app.container.remove_widget(self), self.close_after)
+'''
