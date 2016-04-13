@@ -2,27 +2,29 @@
 
 FloatLayout:
     id: container
-    ActionBar:
-        id: topbar
-        pos_hint: {'top':1}
-        ActionView:
-            id: topview
-            ActionButton:
-                icon: "/home/erikp/work/pi/car/gui/src/plugins/carpi-wifi/carpi_wifi/icon.png"
-                on_release: app.open_settings()
-            ActionPrevious:
-                id: topback
-                title: 'Back'
-                with_previous: False
-                app_icon_height: 42
-                app_icon_width: 42
-                app_icon: "/home/erikp/work/pi/car/gui/src/plugins/carpi-wifi/carpi_wifi/icon.png"
-                on_press: sm.current='main'; self.title='Back';
-            ActionLabel:
-                align: "left"
-                text: "ActionLabel Thing"
+    Bubble:
+        size_hint: (None, 0.12)
+        #size: (200, root.height/12)
+        width: 200
+        height: 40
+        center_x: root.center_x
+        #y: (self.height*3)
+        y: root.height/6
+        background_color: [12, 12, 12, 0.5]
+        show_arrow: False
+        Label:
+            text: " as df adsf ad fadfa dfa sdf asdkljfasdf asdf asdlfjkalsdkjflkad flas dflkjadsl fa "
+            width: self.parent.width
+            valign: 'middle'
+            halign: 'center'
+            strip: True
 
-
+            #text_size: self.parent.size
+            text_size: self.parent.width, self.parent.height
+            size: self.texture_size
+            texture_size: root.size
+    SystemBar:
+        id: systembar
     ScreenManager:
         id: sm
         #height: 400
@@ -30,8 +32,9 @@ FloatLayout:
         Screen:
             id: mainscreen
             name: 'main'
+
             ScrollView:
-                canvas.before:
+                #canvas.before:
                     #Color:
                     #    rgb: (255, 0, 255)
                     #Rectangle:
@@ -43,7 +46,7 @@ FloatLayout:
 
                 id: mainscroll
                 size_hint: (None, None)
-                height: root.height - root.ids.topbar.height
+                height: root.height - root.ids.systembar.height
                 width: root.width
                 pos_hint: {'right': 1, 'bottom': 1}
                 do_scroll_x: False
@@ -93,7 +96,7 @@ FloatLayout:
 #            size: self.size
 #            pos: self.pos
 
-    canvas:
+    canvas.after:
         BorderImage:
             #auto_scale: True
             source: root.icon
@@ -111,6 +114,10 @@ FloatLayout:
         halign: 'center'
         valign: 'bottom'
         font_size: 13
+
+
+
+
 
 
 

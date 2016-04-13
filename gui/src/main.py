@@ -4,22 +4,21 @@ from utils import dump
 from pkg_resources import iter_entry_points # For importing plugins
 
 from kivy.app import App
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.boxlayout import BoxLayout
 
+# For PluginIcon
 from kivy.uix.button import Button
 from kivy.uix.label import Label
+
 from kivy.properties import ObjectProperty
 from kivy.lang import Builder
 from kivy.logger import Logger
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.actionbar import ActionBar, ActionView, ActionButton, ActionPrevious, ActionLabel, ActionOverflow, ActionGroup
+#from kivy.uix.screenmanager import ScreenManager, Screen
 
 from kivy.uix.settings import SettingsWithSidebar
 from kivy.uix.popup import Popup
 from kivy.garden.navigationdrawer import NavigationDrawer
+
+from systembar import SystemBar
 
 #from pudb import set_trace; set_trace()
 
@@ -109,7 +108,7 @@ class CarPiApp(App):
             self.sm.add_widget(screen) 
 
         # Set the Back button title to our plugin
-        self.root.ids.topback.title = icon.text
+        self.root.ids.systembar.set_back_title(' Back | ' + icon.text)
         self.sm.current = str(icon.name)
 
     def startup(self, app):
