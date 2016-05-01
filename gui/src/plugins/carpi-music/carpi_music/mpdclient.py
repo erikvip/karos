@@ -48,7 +48,7 @@ from kivy.uix.accordion import Accordion, AccordionItem
 from kivy.uix.label import Label
 
 from kivy.uix.screenmanager import ScreenManager, Screen
-from utils import dump
+#from utils import dump
 #from utils import Growl
 from os.path import dirname
 import mpd

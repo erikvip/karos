@@ -48,13 +48,29 @@
         size_hint: (0.15, 1)
         on_press: root.on_press(app, self)
 
-
 <-Music>:
     id:browser
+    RecycleView:
+        id: mpdlibrary
+        data: root.mpd_root_data
+        key_viewclass: 'viewclass'
+        key_size: 'height'
+
+<-Musics>:
+    id:browser
     TabbedPanel:
+        canvas.after:
+            Color:
+                rgba: (255, 0, 255, 0.2)
+            Line:
+                points: [0, 0, self.width, 0, self.width, self.height, 0, self.height, 0, 0]
+                width: 6
+
         id: tabs
+    #    pos: (0, 108)
         do_default_tab: False
-        size_hint: (1, 0.75)
+        size_hint: (1, 1)
+        #pos_hint: {''}
         TabbedPanelItem:
             id: librarytab
             text: 'Library'
@@ -82,3 +98,12 @@
                 AccordionItem:
                     id: savedplaylists
                     title: "Saved Playlists"
+    MediaBar:
+        id: mediabar
+        size_hint: (1, 0.1)
+        canvas.after:
+            Color:
+                rgba: (0, 0, 255, 0.2)
+            Line:
+                points: [0, 0, self.width, 0, self.width, self.height, 0, self.height, 0, 0]
+                width: 6

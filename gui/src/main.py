@@ -109,7 +109,8 @@ class CarPiApp(App):
             self.sm.add_widget(screen) 
 
         # Set the Back button title to our plugin
-        self.root.ids.systembar.set_back_title(' Back | ' + icon.text)
+        if ('systembar' in self.root.ids):
+            self.root.ids.systembar.set_back_title(' Back | ' + icon.text)
         self.sm.current = str(icon.name)
 
     def startup(self, app):
