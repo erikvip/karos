@@ -1,0 +1,76 @@
+# =============================================================================
+# Audio player / forked from Video Player
+# =============================================================================
+
+<AudioPlayerPreview>:
+    pos_hint: {'x': 0, 'y': 0}
+    image_overlay_play: 'atlas://data/images/defaulttheme/player-play-overlay'
+    image_loading: 'data/images/image-loading.gif'
+    Image:
+        source: root.source
+        color: (.5, .5, .5, 1)
+        pos_hint: {'x': 0, 'y': 0}
+    Image:
+        source: root.image_overlay_play if not root.click_done else root.image_loading
+        pos_hint: {'x': 0, 'y': 0}
+
+
+<AudioPlayerAnnotation>:
+    canvas.before:
+        Color:
+            rgba: self.annotation['bgcolor'] if 'bgcolor' in self.annotation else (0, 0, 0, 0.8)
+        BorderImage:
+            pos: self.pos
+            size: self.size
+            source: self.annotation['bgsource'] if 'bgsource' in self.annotation else None
+            border: self.annotation['border'] if 'border' in self.annotation else (0, 0, 0, 0)
+    size_hint: self.annotation['size_hint'] if 'size_hint' in self.annotation else (None, None)
+    size: self.annotation['size'] if 'size' in self.annotation else (self.texture_size[0] + 20, self.texture_size[1] + 20)
+    pos_hint: self.annotation['pos_hint'] if 'pos_hint' in self.annotation else {'center_x': .5, 'y': .05}
+
+<AudioPlayer>:
+    container: container
+    cols: 1
+
+    FloatLayout:
+        cols: 1
+        id: container
+
+    GridLayout:
+        rows: 1
+        size_hint_y: None
+        height: '44dp'
+
+        AudioPlayerStop:
+            size_hint_x: None
+            video: root
+            width: '44dp'
+            source: root.image_stop
+            allow_stretch: True
+
+        AudioPlayerPlayPause:
+            size_hint_x: None
+            video: root
+            width: '44dp'
+            source: root.image_pause if root.state == 'play' else root.image_play
+            allow_stretch: True
+
+        AudioPlayerVolume:
+            video: root
+            size_hint_x: None
+            width: '44dp'
+            source: root.image_volumehigh if root.volume > 0.8 else (root.image_volumemedium if root.volume > 0.4 else (root.image_volumelow if root.volume > 0 else root.image_volumemuted))
+            allow_stretch: True
+
+        Widget:
+            size_hint_x: None
+            width: 5
+
+        AudioPlayerProgressBar:
+            video: root
+            max: max(root.duration, root.position, 1)
+            value: root.position
+
+        Widget:
+            size_hint_x: None
+            width: 10

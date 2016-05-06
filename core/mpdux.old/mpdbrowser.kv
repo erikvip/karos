@@ -1,0 +1,42 @@
+<-MpdBrowserScreen>:
+    size: (800, 400)
+    canvas:
+        Color:
+            rgb: (0, 0, 0)
+        Rectangle:
+            pos: (0, 0)
+            size: (800, 400)
+#    MusicList:
+#        cols: 1
+#        width: 700
+
+<ListItemButton>:
+    canvas.before:
+        Color:
+            rgb: (0, 0, 0)
+#        BorderImage:
+#            size: (800, 200)
+#        Rectangle:
+#            size: (800, 200)
+    selected_color: (0.75, 0.75, 0.75, 1)
+    deselected_color: (0.1, 0.1, 0.1, 1)
+#    height: 50
+    #size_hint: (None, 50)
+    text_size: self.size
+    font_size: 22
+    #text_size: (16, None)
+    halign: 'left'
+    valign: 'middle'
+
+
+<Notify>:
+
+    size_hint: (None, None)
+    size: (160, 120)
+    #pos_hint: ({'center_x': root.parent.center_x, 'y': 0})
+    pos: (400, 400)
+    Bubble:
+        background_color: (0.75, 0.75, 0.75, 1)
+        arrow_pos: "bottom_mid"
+        Label:
+            text: root.message
