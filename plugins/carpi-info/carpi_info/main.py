@@ -109,6 +109,9 @@ from kivy.properties import NumericProperty
 from kivy.properties import ObjectProperty
 from kivy.properties import DictProperty
 from kivy.uix.rst import RstDocument
+
+from CarPI import utils
+
 import kivy
 import sys
 

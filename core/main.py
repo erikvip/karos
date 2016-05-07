@@ -1,3 +1,6 @@
+from __future__ import unicode_literals
+from os.path import dirname
+
 import random
 from utils import dump
 
@@ -164,7 +167,7 @@ class CarPiApp(App):
             with_previous=True, 
             app_icon_height=42,
             app_icon_width=42,
-            app_icon="/home/erikp/work/pi/car/gui/src/plugins/carpi-wifi/carpi_wifi/icon.png", 
+            app_icon="../plugins/carpi-wifi/carpi_wifi/icon.png", 
             on_press=self.go_back
         )
 
