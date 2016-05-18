@@ -9,6 +9,7 @@
 - KAR: Kivy Application Runner
 - KARPC: Kivy Application Runner and Plugin Container|Controller
 - KARPI: Kivy Application Runner and Plugin Interface
+- KAROS: Kivy Application Repository and Operating Shell
 
 
 ## Plugins to brainstorm / define / create
