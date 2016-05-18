@@ -35,7 +35,7 @@ class PluginIcon(Button, Label):
         super(PluginIcon, self).__init__(**kwargs)
 
 
-class CarPiApp(App):
+class KarpcApp(App):
     lsuse_kivy_settings = False
     settings_cls = 'SettingsWithSidebar'
     settings_popup = ObjectProperty(None, allownone=True)
@@ -44,18 +44,18 @@ class CarPiApp(App):
     plugins = []
 
     def __init__(self, **kwargs):
-        Logger.info("CarPiApp: Init")
+        Logger.info("karpc: Init")
         self.register_plugins()
-        super(CarPiApp, self).__init__(**kwargs)
+        super(KarpcApp, self).__init__(**kwargs)
         self.bind(on_start=self.startup)
 
     def register_plugins(self):
-        Logger.info("CarPiApp: registering plugins")
+        Logger.info("karpc: registering plugins")
         for entry_point in iter_entry_points(group='carpi.plugin', name=None):
             p = entry_point.load()
             self.plugins.append(p)
-            Logger.info("CarPiApp: Plugin: {} title: {} version: {}".format(entry_point.dist, p.title, p.version))
-        Logger.info("CarPiApp: Found {} plugins".format(len(self.plugins)))
+            Logger.info("karpc: Plugin: {} title: {} version: {}".format(entry_point.dist, p.title, p.version))
+        Logger.info("karpc: Found {} plugins".format(len(self.plugins)))
 
     def build_config(self, config):
         self.config = config
@@ -104,10 +104,10 @@ class CarPiApp(App):
         '''
         Launch a given screen / icon
         '''
-        Logger.info("CarPiApp: Attempting to launch screen {}".format(str(icon.name)))
+        Logger.info("karpc: Attempting to launch screen {}".format(str(icon.name)))
         if (not self.sm.has_screen(str(icon.name))):
             # Build and launch the plugin screen, first time run
-            Logger.info("CarPiApp: First view for screen, init: {}".format(icon.name))
+            Logger.info("karpc: First view for screen, init: {}".format(icon.name))
             screen = icon.source().screen()
             self.sm.add_widget(screen) 
 
@@ -117,7 +117,7 @@ class CarPiApp(App):
         self.sm.current = str(icon.name)
 
     def startup(self, app):
-        Logger.info("CarPiApp: Startup method called")
+        Logger.info("karpc: Startup method called")
         grid = self.root.ids['maingrid']
         self.sm = self.root.ids['sm']
 
@@ -265,4 +265,4 @@ class CarPiApp(App):
         return "P"
 
 if __name__ == '__main__':
-    app = CarPiApp().run()
+    app = KarpcApp().run()

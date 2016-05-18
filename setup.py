@@ -9,17 +9,17 @@ def get_version(filename):
         return metadata['version']
 
 setup(
-    name='CarPI',
+    name='karpc',
     version=get_version(dirname(__file__) + '/core/__init__.py'),
-    url='https://github.com/erikvip/carpi',
+    url='https://github.com/erikvip/karpc',
     license='MIT',
     author_email='erikvip@gmail.com',
-    description='CarPI core package',
+    description='KarPC core package',
     #packages=find_packages(),
-    package_dir={'CarPI': ''},
+    package_dir={'karpc': ''},
     packages=[
-        'CarPI',
-        'CarPI.core', 
+        'karpc',
+        'karpc.core', 
 
     ],
     zip_safe=False,

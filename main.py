@@ -1,5 +1,5 @@
-from core.main import CarPiApp
+from core.main import KarpcApp
 from core.utils import dump
 
-app = CarPiApp().run()
+app = KarpcApp().run()
 
