@@ -1,5 +1,16 @@
 # TODO
 
+## Naming Ideas
+
+- KOSH: Kivy Operating SHell
+- KASH: Kivy Application SHell
+- KAM: Kivy Application Manager
+- KAMI: Kivy Application Manager Interface
+- KAR: Kivy Application Runner
+- KARPC: Kivy Application Runner and Plugin Container|Controller
+- KARPI: Kivy Application Runner and Plugin Interface
+
+
 ## Plugins to brainstorm / define / create
 
 - Gesture Support

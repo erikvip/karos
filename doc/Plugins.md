@@ -23,7 +23,7 @@ We use setuptools entry points method for automatic plugin discovery. Complete d
 **setup.py**    - setuptools installation script
 **carpi_info**  - source files
 **carpi_info/__init__.py**  - plugin metadata and launch methods
-**carpi_info/__main__.py**  - optional, entry point for testing using python -m plugin_name.  This is not required. 
+**carpi_info/__main__.py**  - optional, entry point for testing using python -m plugin_name.  This is not required.
 **carpi_info/main.py**      - Our plugin code. This doesn't need to be main.py.
 
 ##### Plugin setup
