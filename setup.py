@@ -29,7 +29,7 @@ setup(
     ],
     entry_points={
 #        'console_scripts': [
-#            'carpi = CarPI.main'
+#            'karpc = karpc.main'
 #        ]
     }
 )
