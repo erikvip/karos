@@ -12,12 +12,12 @@ from wifi import Cell, Scheme
 
 import subprocess
 
-class CarPI_wifi(Screen):
+class karpc_wifi(Screen):
     def __init__(self, **kwargs):
         Logger.info("wifi: Init")
         self.name="wifi"
         #Builder.load_file(dirname(__file__) + "/main.kv")
-        super(CarPI_wifi, self).__init__(**kwargs)
+        super(karpc_wifi, self).__init__(**kwargs)
 
 
     def get_wireless_interfaces(self):
@@ -101,4 +101,4 @@ class CarPI_wifi(Screen):
         return self
 
 #if __name__ == '__main__':
-#    CarPI_wifi().run()
+#    karpc_wifi().run()

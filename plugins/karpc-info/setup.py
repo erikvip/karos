@@ -9,22 +9,21 @@ def get_version(filename):
         return metadata['version']
 
 setup(
-    name='CarPI-wifi',
-    version=get_version(dirname(__file__) + '/carpi_wifi/__init__.py'),
-    url='https://github.com/erikvip/carpi-wifi',
+    name='karpc-info',
+    version=get_version(dirname(__file__) + '/karpc_info/__init__.py'),
+    url='https://github.com/erikvip/karpc-info',
     license='MIT',
     author_email='erikvip@gmail.com',
-    description='Wireless Connection Manager and Wardriving tools',
+    description='Basic info about KarPC and system. Simple plugin example.',
     packages=find_packages(),
     zip_safe=False,
     include_package_data=True,
     install_requires=[
-        'wifi',
         'Kivy >= 1.9.0',
     ],
     entry_points={
-        'carpi.plugin': [
-            'wifi = carpi_wifi:Plugin',
+        'karpc.plugin': [
+            'info = karpc_info:Plugin',
         ],
     }
 )

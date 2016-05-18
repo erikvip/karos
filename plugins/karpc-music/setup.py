@@ -9,9 +9,9 @@ def get_version(filename):
         return metadata['version']
 
 setup(
-    name='CarPI-music',
-    version=get_version(dirname(__file__) + '/carpi_music/__init__.py'),
-    url='https://github.com/erikvip/carpi-music',
+    name='karpc-music',
+    version=get_version(dirname(__file__) + '/karpc_music/__init__.py'),
+    url='https://github.com/erikvip/karpc-music',
     license='MIT',
     author_email='erikvip@gmail.com',
     description='Music library player',
@@ -23,8 +23,8 @@ setup(
         'python-mpd2 >= 0.5.5'
     ],
     entry_points={
-        'carpi.plugin': [
-            'info = carpi_music:Plugin',
+        'karpc.plugin': [
+            'info = karpc_music:Plugin',
         ],
     }
 )

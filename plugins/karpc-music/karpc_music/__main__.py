@@ -1,7 +1,7 @@
 if __name__ == '__main__':
     from kivy.app import App
     
-    from main import CarPI_info
+    from main import karpc_info
     from kivy.uix.screenmanager import ScreenManager, Screen
     from kivy.interactive import InteractiveLauncher
 
@@ -10,8 +10,8 @@ if __name__ == '__main__':
             
             root = ScreenManager()
 
-            #info = CarPI_info().build()
-            root.add_widget(CarPI_info().build())
+            #info = karpc_info().build()
+            root.add_widget(karpc_info().build())
             
             return root
 
