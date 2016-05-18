@@ -19,7 +19,7 @@ from kivy.logger import Logger
 
 from kivy.uix.settings import SettingsWithSidebar
 from kivy.uix.popup import Popup
-from kivy.garden.navigationdrawer import NavigationDrawer
+from floatingdrawer import FloatingDrawer
 
 from systembar import SystemBar
 from mediabar import MediaBar
@@ -245,19 +245,19 @@ class KarosApp(App):
 
 
         '''
-        navigationdrawer = NavigationDrawer()
+        floatingdrawer = FloatingDrawer()
         panel = BoxLayout(orientation='horizontal')
         self.av = AudioPlayer(self.mpc);
         panel.add_widget(self.av)
-        navigationdrawer.add_widget(panel)
-        navigationdrawer.dock = 'top'
-        navigationdrawer.anim_type = 'reveal_below_anim'
-        #navigationdrawer.anim_type = 'reveal_below_simple'
-        #navigationdrawer.anim_type = 'slide_above_simple'
-        navigationdrawer.toggle_main_above()
-        navigationdrawer.add_widget(self.container)
+        floatingdrawer.add_widget(panel)
+        floatingdrawer.dock = 'top'
+        floatingdrawer.anim_type = 'reveal_below_anim'
+        #floatingdrawer.anim_type = 'reveal_below_simple'
+        #floatingdrawer.anim_type = 'slide_above_simple'
+        floatingdrawer.toggle_main_above()
+        floatingdrawer.add_widget(self.container)
 
-        return navigationdrawer
+        return floatingdrawer
         '''
 
     def p(self, arg):

@@ -11,7 +11,7 @@ from kivy.uix.bubble import Bubble
 
 from kivy.clock import Clock
 
-from kivy.garden.navigationdrawer import NavigationDrawer
+from floatingdrawer import FloatingDrawer
 
 Builder.load_string('''
 <SystemBar>:

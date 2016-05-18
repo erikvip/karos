@@ -7,7 +7,7 @@ from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 
 from kivy.uix.actionbar import ActionBar, ActionView, ActionButton, ActionPrevious, ActionLabel, ActionOverflow, ActionGroup
-from kivy.garden.navigationdrawer import NavigationDrawer
+from floatingdrawer import FloatingDrawer
 
 Builder.load_string('''
 <MediaBar>:
