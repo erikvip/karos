@@ -51,7 +51,7 @@ class KarpcApp(App):
 
     def register_plugins(self):
         Logger.info("karpc: registering plugins")
-        for entry_point in iter_entry_points(group='carpi.plugin', name=None):
+        for entry_point in iter_entry_points(group='karpc.plugin', name=None):
             p = entry_point.load()
             self.plugins.append(p)
             Logger.info("karpc: Plugin: {} title: {} version: {}".format(entry_point.dist, p.title, p.version))
@@ -126,7 +126,7 @@ class KarpcApp(App):
         for p in range(30):
             icon = PluginIcon(
                     text='Test ' + str(p) ,
-                    icon='/home/erikp/work/pi/car/gui/src/plugins/carpi-wifi/carpi_wifi/icon.png',
+                    icon='../plugins/karpc-wifi/karpc_wifi/icon.png',
                     name='abc',
                     source='')
             grid.add_widget(icon)            
@@ -167,7 +167,7 @@ class KarpcApp(App):
             with_previous=True, 
             app_icon_height=42,
             app_icon_width=42,
-            app_icon="../plugins/carpi-wifi/carpi_wifi/icon.png", 
+            app_icon="../plugins/karpc-wifi/karpc_wifi/icon.png", 
             on_press=self.go_back
         )
 

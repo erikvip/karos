@@ -1,4 +1,4 @@
-# Raspberry PI Car PC Setup
+# Raspberry PI KarPC Setup
 
 ## Overview   
 

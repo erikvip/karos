@@ -10,8 +10,8 @@ We use setuptools entry points method for automatic plugin discovery. Complete d
 
 #### File Structure
 
-    carpi-info
-    ├── carpi_info
+    karpc-info
+    ├── karpc_info
     │   ├── icon.png
     │   ├── __init__.py
     │   ├── main.kv
@@ -19,12 +19,12 @@ We use setuptools entry points method for automatic plugin discovery. Complete d
     │   ├── main.py
     └── setup.py
 
-**carpi-info**  - our base plugin name. This should contain only the setup.py script, and plugin documentation.
+**karpc-info**  - our base plugin name. This should contain only the setup.py script, and plugin documentation.
 **setup.py**    - setuptools installation script
-**carpi_info**  - source files
-**carpi_info/__init__.py**  - plugin metadata and launch methods
-**carpi_info/__main__.py**  - optional, entry point for testing using python -m plugin_name.  This is not required.
-**carpi_info/main.py**      - Our plugin code. This doesn't need to be main.py.
+**karpc_info**  - source files
+**karpc_info/__init__.py**  - plugin metadata and launch methods
+**karpc_info/__main__.py**  - optional, entry point for testing using python -m plugin_name.  This is not required.
+**karpc_info/main.py**      - Our plugin code. This doesn't need to be main.py.
 
 ##### Plugin setup
 
@@ -44,9 +44,9 @@ Note the **entry_points** attribute. These are the auto discovery methods.
             return metadata['version']
 
     setup(
-        name='CarPI-info',
-        version=get_version(dirname(__file__) + '/carpi_info/__init__.py'),
-        url='https://github.com/erikvip/carpi-info',
+        name='karpc-info',
+        version=get_version(dirname(__file__) + '/karpc_info/__init__.py'),
+        url='https://github.com/erikvip/karpc-info',
         license='MIT',
         author_email='email@example.com',
         description='Basic plugin example',
@@ -57,8 +57,8 @@ Note the **entry_points** attribute. These are the auto discovery methods.
             'Kivy >= 1.9.0',
         ],
         entry_points={
-            'carpi.plugin': [
-                'info = carpi_info',
+            'karpc.plugin': [
+                'info = karpc_info',
             ],
         }
     )
@@ -78,9 +78,9 @@ This contains our plugin metadata, configuration and launch method.
     __icon__ = dirname(__file__) + "/icon.png"
 
     def launch():
-        from .main import CarPI_info as info
+        from .main import karpc_info as info
         return info().build()
 ```
 
-Note the *from .main import CarPI_info as info*.  You can name this however you like, but we must return a Kivy Screen widget. the *.main* package will load the file main.py, which contains our main plugin code.
+Note the *from .main import karpc_info as info*.  You can name this however you like, but we must return a Kivy Screen widget. the *.main* package will load the file main.py, which contains our main plugin code.
 
