@@ -7,7 +7,7 @@ __title__ = "System Information"
 __icon__ = dirname(__file__) + "/icon.png"
 
 #def launch():
-#    from .main import karpc_info as info
+#    from .main import karos_info as info
 #    return info().build()
 
 
@@ -18,5 +18,5 @@ class Plugin():
     name = __name__
 
     def screen(self):
-        from .main import karpc_info as info
+        from .main import karos_info as info
         return info().build()

@@ -110,13 +110,13 @@ from kivy.properties import ObjectProperty
 from kivy.properties import DictProperty
 from kivy.uix.rst import RstDocument
 
-from karpc import utils
+from karos import utils
 
 import kivy
 import sys
 
 
-class karpc_info(Screen):
+class karos_info(Screen):
     hue = NumericProperty(0)
     docbody = ObjectProperty()
     colors = DictProperty({
@@ -131,7 +131,7 @@ class karpc_info(Screen):
         self.name = "info"
         Logger.info("Info: init")
         Builder.load_file(dirname(__file__) + "/main.kv")
-        super(karpc_info, self).__init__(**kwargs)
+        super(karos_info, self).__init__(**kwargs)
 
     def build(self):
         self.docbody = """

@@ -21,7 +21,7 @@ Builder.load_string('''
             with_previous: True
             app_icon_height: 42
             app_icon_width: 42
-            app_icon: "../plugins/karpc-wifi/karpc_wifi/icon.png"
+            app_icon: "../plugins/karos-wifi/karos_wifi/icon.png"
             on_press: root.do("omgwtf")
         ActionButton:
             id: skip-back

@@ -9,22 +9,22 @@ def get_version(filename):
         return metadata['version']
 
 setup(
-    name='karpc-music',
-    version=get_version(dirname(__file__) + '/karpc_music/__init__.py'),
-    url='https://github.com/erikvip/karpc-music',
+    name='karos-wifi',
+    version=get_version(dirname(__file__) + '/karos_wifi/__init__.py'),
+    url='https://github.com/erikvip/karos-wifi',
     license='MIT',
     author_email='erikvip@gmail.com',
-    description='Music library player',
+    description='Wireless Connection Manager and Wardriving tools',
     packages=find_packages(),
     zip_safe=False,
     include_package_data=True,
     install_requires=[
+        'wifi',
         'Kivy >= 1.9.0',
-        'python-mpd2 >= 0.5.5'
     ],
     entry_points={
-        'karpc.plugin': [
-            'info = karpc_music:Plugin',
+        'karos.plugin': [
+            'wifi = karos_wifi:Plugin',
         ],
     }
 )

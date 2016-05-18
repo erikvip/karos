@@ -1,4 +1,4 @@
-# Raspberry PI KarPC Setup
+# Raspberry PI KarOS Setup Notes
 
 ## Overview   
 

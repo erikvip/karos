@@ -9,17 +9,17 @@ def get_version(filename):
         return metadata['version']
 
 setup(
-    name='karpc',
-    version=get_version(dirname(__file__) + '/karpc/core/__init__.py'),
-    url='https://github.com/erikvip/karpc',
+    name='karos',
+    version=get_version(dirname(__file__) + '/karos/core/__init__.py'),
+    url='https://github.com/erikvip/karos',
     license='MIT',
     author_email='erikvip@gmail.com',
-    description='KarPC core package',
+    description='karos core package',
     packages=find_packages(),
-    #package_dir={'karpc': 'karpc'},
+    #package_dir={'karos': 'karos'},
 #    packages=[
-#        'karpc',
-#        'karpc.core', 
+#        'karos',
+#        'karos.core', 
 #    ],
     zip_safe=False,
     include_package_data=True,
@@ -28,7 +28,7 @@ setup(
     ],
 #    entry_points={
 #        'console_scripts': [
-#            'karpc = karpc.main'
+#            'karos = karos.main'
 #        ]
 #    }
 )

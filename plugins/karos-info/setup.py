@@ -9,12 +9,12 @@ def get_version(filename):
         return metadata['version']
 
 setup(
-    name='karpc-info',
-    version=get_version(dirname(__file__) + '/karpc_info/__init__.py'),
-    url='https://github.com/erikvip/karpc-info',
+    name='karos-info',
+    version=get_version(dirname(__file__) + '/karos_info/__init__.py'),
+    url='https://github.com/erikvip/karos-info',
     license='MIT',
     author_email='erikvip@gmail.com',
-    description='Basic info about KarPC and system. Simple plugin example.',
+    description='Basic system and KarOS info. Simple plugin example.',
     packages=find_packages(),
     zip_safe=False,
     include_package_data=True,
@@ -22,8 +22,8 @@ setup(
         'Kivy >= 1.9.0',
     ],
     entry_points={
-        'karpc.plugin': [
-            'info = karpc_info:Plugin',
+        'karos.plugin': [
+            'info = karos_info:Plugin',
         ],
     }
 )

@@ -13,5 +13,5 @@ class Plugin():
     name = __name__
 
     def screen(self):
-        from .main import karpc_wifi as wifi
+        from .main import karos_wifi as wifi
         return wifi().build()

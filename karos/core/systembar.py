@@ -25,11 +25,11 @@ Builder.load_string('''
             with_previous: False
             app_icon_height: 42
             app_icon_width: 42
-            app_icon: "../plugins/karpc-wifi/karpc_wifi/icon.png"
+            app_icon: "../plugins/karos-wifi/karos_wifi/icon.png"
             on_release: app.sm.current='main'; self.title='Back';
         ActionButton:
             id: systemicon-settings
-            icon: "../plugins/karpc-wifi/karpc_wifi/icon.png"
+            icon: "../plugins/karos-wifi/karos_wifi/icon.png"
             #on_release: app.open_settings()
             on_release: systembar.notify("Notify message", self)
         ActionLabel:
