@@ -10,26 +10,25 @@ def get_version(filename):
 
 setup(
     name='karpc',
-    version=get_version(dirname(__file__) + '/core/__init__.py'),
+    version=get_version(dirname(__file__) + '/karpc/core/__init__.py'),
     url='https://github.com/erikvip/karpc',
     license='MIT',
     author_email='erikvip@gmail.com',
     description='KarPC core package',
-    #packages=find_packages(),
-    package_dir={'karpc': ''},
-    packages=[
-        'karpc',
-        'karpc.core', 
-
-    ],
+    packages=find_packages(),
+    #package_dir={'karpc': 'karpc'},
+#    packages=[
+#        'karpc',
+#        'karpc.core', 
+#    ],
     zip_safe=False,
     include_package_data=True,
     install_requires=[
         'Kivy >= 1.9.0',
     ],
-    entry_points={
+#    entry_points={
 #        'console_scripts': [
 #            'karpc = karpc.main'
 #        ]
-    }
+#    }
 )
