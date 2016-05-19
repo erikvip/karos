@@ -14,24 +14,24 @@ import subprocess
 
 class karos_wifi(Screen):
     def __init__(self, **kwargs):
-        Logger.info("wifi: Init")
+        Logger.info("karos_wifi: init")
         self.name="wifi"
         #Builder.load_file(dirname(__file__) + "/main.kv")
         super(karos_wifi, self).__init__(**kwargs)
 
 
     def get_wireless_interfaces(self):
-        Logger.info("wifi: Getting wireless interfaces from /proc/net/wireless")
+        Logger.info("karos_wifi: Getting wireless interfaces from /proc/net/wireless")
 
         try:
             proc = subprocess.Popen("cat /proc/net/wireless  | tail -n +3 | cut -d ':' -f1 | tr -d ' \t'", stdout=subprocess.PIPE, shell=True)
             (output, error) = proc.communicate()
         except:
-            Logger.error("wifi: Failed to gather wireless interfaces")
+            Logger.error("karos_wifi: Failed to gather wireless interfaces")
             throw
 
         inf = [i.strip() for i in output.splitlines()]
-        Logger.info("wifi: Found {} wireless interfaces: {}".format(len(inf), inf))
+        Logger.info("karos_wifi: Found {} wireless interfaces: {}".format(len(inf), inf))
         return inf
 
 
@@ -46,7 +46,7 @@ class karos_wifi(Screen):
             self.add_widget(root)
             return self
 
-        Logger.info("wifi: Using {} for wireless scan".format(inf))
+        Logger.info("karos_wifi: Using {} for wireless scan".format(inf))
 
         # create a default grid layout with custom width/height
         layout = GridLayout(cols=4, padding=10, spacing=10,
@@ -60,10 +60,10 @@ class karos_wifi(Screen):
 
         scan = Cell.all('wlan0')
 
-        Logger.info("wifi: Results from iw scan: {}".format(scan))
+        Logger.info("karos_wifi: Results from iw scan: {}".format(scan))
 
         for s in scan:
-            Logger.info("wifi: Network info - ssid: {} signal: {} quality: {} bitrates: {} channel: {} encrypted: {}".format(
+            Logger.info("karos_wifi: Network info - ssid: {} signal: {} quality: {} bitrates: {} channel: {} encrypted: {}".format(
                     s.ssid, 
                     s.signal, 
                     s.quality, 

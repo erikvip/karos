@@ -91,7 +91,7 @@ class Music(Screen):
     mpd_history = {0:"/"}
 
     def __init__(self, mpc, **kwargs):
-        Logger.info("Music: init")
+        Logger.info("karos_music: init")
         Builder.load_file(dirname(__file__) + '/mpdclient.kv')
         self.mpc = mpc
         self.mpd_root_data = self.fetch_data()
@@ -99,7 +99,7 @@ class Music(Screen):
 
 
     def fetch_data(self, item="/"):
-        Logger.info("Music: Querying mpd for: {}".format(item))
+        Logger.info("karos_music: Querying mpd for: {}".format(item))
 
         data = []
         if (item != "/"):
@@ -116,7 +116,7 @@ class Music(Screen):
                 data.append({'text':str(entry['title']), 'type':'file', 'file':entry['file']})
                 count_files+=1
 
-        Logger.info("Music: MPD Stats, directories: {}, files: {}".format(count_dirs, count_files))
+        Logger.info("karos_music: MPD Stats, directories: {}, files: {}".format(count_dirs, count_files))
         
         result = []
         x = 1;

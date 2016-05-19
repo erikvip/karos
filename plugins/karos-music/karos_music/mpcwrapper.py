@@ -25,7 +25,7 @@ class MpcWrapper(object):
     attempts = 0
 
     def __init__(self, **kwargs):
-        Logger.info("mpcwrapper: Init")
+        Logger.info("karos_music: mpcwrapper init")
         super(MpcWrapper, self).__init__()
 
         self.host = kwargs.get('host', self.host)
@@ -48,7 +48,7 @@ class MpcWrapper(object):
         retries = kwargs.get('retires', 10)
         timeout = kwargs.get('timeout', 1)        
 
-        Logger.info("mpcwrapper: Connect host: {}, port: {}, timeout: {}, retries: {}, attempts: {}".format(
+        Logger.info("karos_music: mpcwrapper connect host: {}, port: {}, timeout: {}, retries: {}, attempts: {}".format(
                 self.host,
                 self.port,
                 timeout,
@@ -61,11 +61,11 @@ class MpcWrapper(object):
             self.mpc = mpd.MPDClient(use_unicode=True)
             self.mpc.connect(self.host, int(self.port))
         except:
-            Logger.warning("mpcwrapper: Connect failed. Message: {}".format(sys.exc_info()[1]))
+            Logger.warning("karos_music: mpcwrapper connect failed. Message: {}".format(sys.exc_info()[1]))
             if (retries > self.attempts):
                 return self.connect(retries=retries, timeout=timeout);
             else:
-                Logger.error('mpcwrapper: Failed to connect to MPD server after {} tries.'.format(self.attempts))
+                Logger.error('karos_music: mpcwrapper failed to connect to MPD server after {} tries.'.format(self.attempts))
                 raise
 
         return True

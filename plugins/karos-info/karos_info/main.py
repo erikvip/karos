@@ -129,7 +129,7 @@ class karos_info(Screen):
 
     def __init__( self, **kwargs):
         self.name = "info"
-        Logger.info("Info: init")
+        Logger.info("karos_info: init")
         Builder.load_file(dirname(__file__) + "/main.kv")
         super(karos_info, self).__init__(**kwargs)
 

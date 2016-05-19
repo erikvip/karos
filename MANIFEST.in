@@ -1,0 +1,8 @@
+recursive-include *.md
+recursive-include doc *
+recursive-include karos *.py *.kv
+recursive-include karos/core/data *
+recursive-include plugins *
+recursive-include tests *.py
+
+
