@@ -4,7 +4,7 @@
 # The FloatLayout is used only to allow absolute positioning of notifications
 FloatLayout:
     size_hint: (1, 1)
-    Growl:
+#    Notify:
     BoxLayout:
         size_hint: (1, 1)
         orientation: 'vertical'
@@ -80,41 +80,6 @@ FloatLayout:
 
 
 
-<Growl@Label>:
-    canvas.after:
-        Color:
-            rgba: (12, 12, 12, 0.5)    # Background color
-#        BorderImage:
-#            pos: int(self.center_x - self.texture_size[0] / 2.), int(self.center_y - self.texture_size[1] / 2.)
-#            size: self.texture_size
-#            border: [0, 0, 0, 0]
-#        Color:
-#            rgba:(127, 0, 255, 0.7)
-
-        Line:
-            rounded_rectangle: [self.x, self.y, self.width, self.height, 10, 100]
-            width: 1
-        Color:
-            rgba: (255, 127, 255, 1)    # Foreground color
-#        Rectangle:
-#            texture: self.texture
-#            size: self.texture_size
-#            pos: int(self.center_x - self.texture_size[0] / 2.), int(self.center_y - self.texture_size[1] / 2.)
-#        Line:
-#            points: [0, 0, self.width, 0, self.width, self.height, 0, self.height, 0, 0]
-#            width: 2
-#            cap: 'square'
-    halign: 'center'
-    valign: 'middle'
-    #text_size: (400, None)
-    text_size: (None, None)
-    size_hint: (None, None)
-    size: self.texture_size
-    padding: (10, 6)
-    pos_hint: {'center_x':0.5, 'y':0.25}
-    #text: 'x:' + str(self.x) + ' y:' + str(self.y) + ' width:' + str(self.width) + ' height:' + str(self.height)
-    #text: "alksdf  asdf\nasdlfjkalsdkjflkad flas dflkjadsl END"
-    text: "a;lkasdf asdflkjasdf asd fasd f asd fasdf asd f asd f asdf as,fna df asdf asdf asdf dsalksdf  asdf\nasdlfjkalsdkjflkad flas dflkjadsl END"
 
 
 <AltGrowl@Bubble>:

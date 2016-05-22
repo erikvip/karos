@@ -4,7 +4,7 @@ import pkg_resources
 
 import random
 #from utils import dump
-from karos.core.utils import dump
+from utils import dump
 
 from pkg_resources import iter_entry_points # For importing plugins
 
@@ -21,7 +21,8 @@ from floatingdrawer import FloatingDrawer
 
 from systembar import SystemBar
 from mediabar import MediaBar
-from karos.core.pluginicon import PluginIcon
+from pluginicon import PluginIcon
+from notify import Notify
 
 #from pudb import set_trace; set_trace()
 
@@ -51,6 +52,7 @@ class KarosApp(App):
             self.plugins.append(p)
             Logger.info("karos: Plugin: {} title: {} version: {}".format(entry_point.dist, p.title, p.version))
         Logger.info("karos: Found {} plugins".format(len(self.plugins)))
+        #Notify(text="Found {} plugins".format(len(self.plugins)))
 
     def build_config(self, config):
         '''Kivy callback. Setup our default ConfigParser object values'''
@@ -140,7 +142,8 @@ class KarosApp(App):
                     name=p.name.lower(),
                     source=p)
             grid.add_widget(icon)
-        
+
+       
     def get_desktop_icon_size(self):
         '''Return the width/height for desktop icons'''
         return 128

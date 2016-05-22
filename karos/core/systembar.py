@@ -42,13 +42,14 @@ Builder.load_string('''
             id: systemicon-settings
             icon: "../../plugins/karos-wifi/karos_wifi/icon.png"
             #on_release: app.open_settings()
-            on_release: systembar.notify("Notify message", self)
+            on_release: systembar.notify("Notify message", item=self)
         ActionLabel:
             id: systemtime
             align: "right"
-            text: root.get_time()
+            text: root._get_time()
 
 <SystemNotify>:
+    opacity: 2
     id: notify
     item: ""
     message: ""
@@ -63,10 +64,16 @@ Builder.load_string('''
     arrow_pos: 'top_mid'
     center_x: root.item.center_x
     Label:
+        canvas:
+            Color:
+                rgba: (12, 12, 12, 0.5)
+            Color:
+                rgba: (1, 0, 0, 0.5)
         id: label
         valign: 'top'
         text: root.message
         color: [255, 255, 255, 1]
+        background_color: [255, 255, 255, 1]
 ''')
 
 
@@ -74,16 +81,25 @@ class SystemBar(ActionBar):
     time = ObjectProperty("")
     def __init__(self, **kwargs):
         super(SystemBar, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update_time, 0.1)
+        Clock.schedule_interval(self._update_time, 0.1)
 
-    def notify(self, msg, item):
-        notify = SystemNotify(message=msg, item=item)
+    def notify(self, msg, **kwargs):
+        '''
+            Send a notification from a tray icon. 
+            If item is not specified, we default to the Title area
+        '''
+
+        # Default to title area if item is not specified
+        item = kwargs.get('item', self.ids.systemback.ids.title)
+        timeout = kwargs.get('timeout', None)        
+
+        notify = SystemNotify(message=msg, item=item, timeout=timeout)
         item.add_widget(notify)
 
-    def update_time(self, val=0):
-        self.ids.systemtime.text = self.get_time()
+    def _update_time(self, val=0):
+        self.ids.systemtime.text = self._get_time()
 
-    def get_time(self):
+    def _get_time(self):
         return datetime.now().strftime("%X %p");
 
     def set_back_title(self, title):
@@ -94,10 +110,16 @@ class SystemNotify(Bubble):
     item = ObjectProperty("")
     message = ObjectProperty("")
     fade_clock = None
+    default_timeout = 5
 
     def __init__(self, **kwargs):
         super(SystemNotify, self).__init__(**kwargs)
-        Clock.schedule_once(self.fadeout, 2)
+        timeout = kwargs.get('timeout', self.default_timeout)
+        if (timeout == None):
+            timeout = self.default_timeout
+
+        if (timeout > 0):
+            Clock.schedule_once(self.fadeout, timeout)
 
     def fadeout(self, val=0):
         opacity = self.background_color[3]
