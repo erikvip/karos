@@ -1,3 +1,9 @@
+'''
+Main application launcher
+
+This script can be called via 'python main.py', and is also linked via setuptool's console_script entry point
+
+'''
 from core.main import KarosApp
 
 def run():

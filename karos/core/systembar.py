@@ -1,3 +1,13 @@
+'''
+SystemBar
+========
+
+ActionBar containing global Back button, Time, and additional SystemTray icons
+
+This is docked at the top of the screen and provides the global Back button to exit from plugin screens, 
+as well as System Tray icons, and the Time display.
+
+'''
 from utils import dump
 import os.path
 import pkg_resources

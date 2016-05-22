@@ -1,3 +1,12 @@
+'''
+MediaBar
+========
+
+ActionBar containing global Skip/Play/Pause and Volume buttons.
+
+This is docked at the bottom of the screen and provides global controls for media plugins
+
+'''
 from utils import dump
 import os.path
 import pkg_resources

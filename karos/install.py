@@ -1,3 +1,12 @@
+'''
+Installer script for KarOS core.
+
+This is run via setuptools.install hook in setup.py. 
+
+Current operations:
+- Create application dir ~/.karos/ to house config file
+
+'''
 from os import mkdir
 from os.path import isdir, expanduser, exists
 from karos.core.utils import bcolors

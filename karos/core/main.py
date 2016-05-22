@@ -36,14 +36,15 @@ class KarosApp(App):
     plugins = []
 
     def __init__(self, **kwargs):
+        '''Main app init. Register plugins, then call self.startup'''
         Logger.info("karos: Init")
         Logger.info("karos: main location: {}".format(__file__))
-
         self.register_plugins()
         super(KarosApp, self).__init__(**kwargs)
         self.bind(on_start=self.startup)
 
     def register_plugins(self):
+        '''Load all plugins via setuptools entry points'''
         Logger.info("karos: registering plugins")
         for entry_point in iter_entry_points(group='karos.plugin', name=None):
             p = entry_point.load()
@@ -84,6 +85,7 @@ class KarosApp(App):
         settings.add_json_panel('MPD', self.config, data=json)
 
     def display_settings(self, settings):
+        '''Kivy callback. Display the settings screen as a popup'''
         p = self.settings_popup
         if p is None:
             self.settings_popup = p = Popup(content=settings,
@@ -92,12 +94,12 @@ class KarosApp(App):
         if p.content is not settings:
             p.content = settings
         p.open()
+
     def close_settings(self, *args):
+        '''Kivy callback. Close the settings screen'''
         p = self.settings_popup
         if p is not None:
             p.dismiss()
-
-
 
     def launch(self, icon):
         '''
@@ -116,6 +118,7 @@ class KarosApp(App):
         self.sm.current = str(icon.name)
 
     def startup(self, app):
+        '''Called after init. Build the plugin icon's and populate the desktop grid'''
         Logger.info("karos: Startup method called")
         grid = self.root.ids['maingrid']
         self.sm = self.root.ids['sm']
@@ -138,8 +141,8 @@ class KarosApp(App):
                     source=p)
             grid.add_widget(icon)
         
-
     def get_desktop_icon_size(self):
+        '''Return the width/height for desktop icons'''
         return 128
 
     def deprecatedbuild(self):

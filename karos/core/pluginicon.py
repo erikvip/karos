@@ -1,3 +1,10 @@
+'''
+PluginIcon
+==========
+
+This is the wrapper widget for displaying Icons on the Main Desktop screen
+
+'''
 import pkg_resources
 
 # For PluginIcon

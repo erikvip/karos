@@ -1,11 +1,14 @@
+'''
+Utils
+=====
+
+Contains convenience methods for debugging or global utilitie4s 
+
+'''
 import pprint
 
-#from kivy.uix.label import Label
-#from kivy.properties import ObjectProperty
-#from kivy.clock import Clock
-
-# Console color termcap codes
 class bcolors:
+    '''Console color termcap codes'''
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
@@ -16,7 +19,8 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 def dump(arg):
-    print "="*80, "\n", bcolors.BOLD, arg, bcolors.ENDC, "\n" + "="*80, bcolors.WARNINGg
+    '''Output a variable in a user friendly way'''
+    print "="*80, "\n", bcolors.BOLD, arg, bcolors.ENDC, "\n" + "="*80, bcolors.WARNING
     col_width = max(len(row) for row in dir(arg)) + 3
     for d in dir(arg):
         try:
