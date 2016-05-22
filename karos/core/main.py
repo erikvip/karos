@@ -107,6 +107,11 @@ class KarosApp(App):
         '''
         Launch a given screen / icon
         '''
+        
+        # Ugly hack - hide the media bar when a plugin is launched...
+        mb = self.root.ids.mediabar
+        mb.parent.remove_widget(mb)
+
         Logger.info("karos: Attempting to launch screen {}".format(str(icon.name)))
         if (not self.sm.has_screen(str(icon.name))):
             # Build and launch the plugin screen, first time run

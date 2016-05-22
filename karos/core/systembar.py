@@ -24,6 +24,8 @@ from kivy.clock import Clock
 
 from floatingdrawer import FloatingDrawer
 
+from mediabar import MediaBar
+
 Builder.load_string('''
 <SystemBar>:
     id: systembar
@@ -37,7 +39,7 @@ Builder.load_string('''
             app_icon_height: 42
             app_icon_width: 42
             app_icon: "''' + '../../plugins/karos-wifi/karos_wifi/icon.png' + '''"
-            on_release: app.sm.current='main'; self.title='Back';
+            on_release: root.go_back(app);  #app.sm.current='main'; self.title='Back';
         ActionButton:
             id: systemicon-settings
             icon: "../../plugins/karos-wifi/karos_wifi/icon.png"
@@ -82,6 +84,14 @@ class SystemBar(ActionBar):
     def __init__(self, **kwargs):
         super(SystemBar, self).__init__(**kwargs)
         Clock.schedule_interval(self._update_time, 0.1)
+
+    def go_back(self, app):
+        '''Handle back button press. Relaunch main grid screen'''
+        self.ids.systemback.title = '';
+        app.sm.current = 'main'
+        #dump(app.root.ids.mediabar)        
+        # Stupid hack...readd the media bar...This works but only once...
+        app.root.ids.container.add_widget(MediaBar(id="mediabar"))
 
     def notify(self, msg, **kwargs):
         '''
