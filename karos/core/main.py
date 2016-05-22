@@ -1,8 +1,10 @@
 from __future__ import unicode_literals
 from os.path import dirname
+import pkg_resources
 
 import random
-from utils import dump
+#from utils import dump
+from karos.core.utils import dump
 
 from pkg_resources import iter_entry_points # For importing plugins
 
@@ -45,6 +47,8 @@ class KarosApp(App):
 
     def __init__(self, **kwargs):
         Logger.info("karos: Init")
+        Logger.info("karos: main location: {}".format(__file__))
+
         self.register_plugins()
         super(KarosApp, self).__init__(**kwargs)
         self.bind(on_start=self.startup)
@@ -59,8 +63,15 @@ class KarosApp(App):
 
     def build_config(self, config):
         self.config = config
-        #config.setdefaults('My Label', {'text': 'Hello', 'font_size': 20})
         self.config.setdefaults('MPD', {'host': 'localhost','port': 6600})
+
+    
+    def get_application_config(self):
+        '''Return the path to our app config file'''
+
+        Logger.info("karos: get_application_config: ~/.%(appname)s.ini")
+        return super(KarosApp, self).get_application_config(
+            '~/.%(appname)s.ini')
 
 
     def build_settings(self, settings):
@@ -264,5 +275,5 @@ class KarosApp(App):
         dump(arg)
         return "P"
 
-if __name__ == '__main__':
-    app = KarosApp().run()
+#if __name__ == '__main__':
+#    app = KarosApp().run()

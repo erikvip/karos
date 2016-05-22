@@ -1,5 +1,6 @@
 from utils import dump
 import os.path
+import pkg_resources
 from datetime import datetime
 
 from kivy.logger import Logger
@@ -25,20 +26,20 @@ Builder.load_string('''
             on_press: root.do("omgwtf")
         ActionButton:
             id: skip-back
-            icon: "core/data/images/skip-back.png"
+            icon: "''' + pkg_resources.resource_filename(__name__, 'data/images/skip-back.png') + '''"
             on_press: root.do("skip-back")
         ActionButton:
             id: play-pause
             media_state: 'pause'
-            pause_icon: "core/data/images/pause.png"
-            play_icon: "core/data/images/pause.png"
+            pause_icon: "''' + pkg_resources.resource_filename(__name__, 'data/images/pause.png') + '''"
+            play_icon:  "''' + pkg_resources.resource_filename(__name__, 'data/images/pause.png') + '''"
             #on_state: self.pause_icon if self.state == 'play' else self.play_icon
             icon: self.pause_icon if self.media_state == 'play' else self.play_icon
-            on_press: print("Skip back")
+            on_press: print("play-pause")
         ActionButton:
             id: skip-forward
-            icon: "core/data/images/skip-forward.png"
-            on_press: print("Skip back")
+            icon: "''' + pkg_resources.resource_filename(__name__, 'data/images/skip-forward.png') + '''"
+            on_press: print("skip-forward")
 
 
 ''')
@@ -46,6 +47,7 @@ Builder.load_string('''
 
 class MediaBar(ActionBar):
     def __init__(self, **kwargs):
+        Logger.info("karos: MediaBar data image path: {}".format( pkg_resources.resource_filename(__name__, 'data/images/') ))
         super(MediaBar, self).__init__(**kwargs)
 
     def do(self, action):

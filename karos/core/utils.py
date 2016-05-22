@@ -1,8 +1,8 @@
 import pprint
 
-from kivy.uix.label import Label
-from kivy.properties import ObjectProperty
-from kivy.clock import Clock
+#from kivy.uix.label import Label
+#from kivy.properties import ObjectProperty
+#from kivy.clock import Clock
 
 # Console color termcap codes
 class bcolors:
