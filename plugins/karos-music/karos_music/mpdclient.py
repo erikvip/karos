@@ -36,6 +36,7 @@ from kivy.uix.bubble import BubbleButton
 
 from kivy.properties import ObjectProperty, NumericProperty, StringProperty, ListProperty
 
+from kivy.clock import Clock
 from kivy.logger import Logger
 from kivy.lang import Builder
 
@@ -49,8 +50,13 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 #from utils import dump
 #from utils import Growl
 from os.path import dirname
+import os
+import sys
+
 import mpd
 import pkg_resources
+import pymtp
+
 
 import string
 import random
@@ -70,9 +76,16 @@ class MpdItem(BoxLayout):
     def on_press(self, app, btn):
         # Call the on_press method of the RecycleView
         sm = app.root.ids.sm
-        music = sm.get_screen('music')
+        music = sm.get_screen('karos_music')
         item = btn.parent
         music.mpd_select(item)
+
+
+class MtpDevice(BoxLayout):
+    index = NumericProperty()
+    mtp_name = ObjectProperty()
+    def __init__(self, **kwargs):
+        super(MtpDevice, self).__init__(**kwargs)
 
 
 class MpdLibrary(RecycleView):
@@ -84,17 +97,24 @@ Test using RecycleView instead of ListView...
 '''
 class Music(Screen):
     mpc = None
+    mtp = None
+    devnull = None
     mpd_root_data = []
     mpd_level = 0
     mpd_history = {0:"/"}
+    mtp_devices = []
 
     def __init__(self, mpc, **kwargs):
         Logger.info("karos_music: init")
-        #Builder.load_file(dirname(__file__) + '/mpdclient.kv')
         Builder.load_file(pkg_resources.resource_filename(__name__, 'mpdclient.kv'))
         self.mpc = mpc
         self.mpd_root_data = self.fetch_data()
+        self.mtp = pymtp.MTP()
+        self.fetch_mtp_devices()
+        #self.devnull = open(os.devnull, 'w')
+        print self.mtp_devices
         super(Music, self).__init__(**kwargs)
+        Clock.schedule_interval(self.fetch_mtp_devices, 5)
 
 
     def fetch_data(self, item="/"):
@@ -146,6 +166,27 @@ class Music(Screen):
         data = self.fetch_data(text)
         self.ids.mpdlibrary.data = data
 
+    def fetch_mtp_devices(self, timer=None):
+#        stdout = sys.stderr;
+#        f = open(os.devnull, 'w')
+#        sys.stderr = f
+        d = self.mtp.detect_devices()
+#        sys.stderr = stdout;
+
+        if (len(d) != len(self.mtp_devices)):
+            # New device detected
+            Logger.info("karos_music: New MTP device detected")
+            self.mtp_devices = []
+            c=0;
+            for i in d:
+                c+=1;
+                print i.device_entry
+                self.mtp_devices.append({
+                    "index": c, 
+                    "viewclass": "MtpDevice", 
+                    "mtp_name": "%(name)s (USB bus:%(bus)i device:%(dev)i)" % 
+                        {'name': i.device_entry, 'bus': i.bus_location, 'dev': i.devnum}
+                })
 
 '''
 

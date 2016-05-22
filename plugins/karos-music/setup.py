@@ -20,7 +20,8 @@ setup(
     include_package_data=True,
     install_requires=[
         'Kivy >= 1.9.0',
-        'python-mpd2 >= 0.5.5'
+        'python-mpd2 >= 0.5.5', 
+        'PyMTP >= 0.0.6'
     ],
     entry_points={
         'karos.plugin': [

@@ -27,12 +27,10 @@
     spacing: "10dp"
     canvas.before:
         Color:
-            #rgb: (1, 1, 1) if root.index % 2 == 0 else (.95, .95, .95)
             rgba: (0, 0, 0, 1) if root.index % 2 == 0 else (.15, .15, .15, 0.5)
         Rectangle:
             pos: self.pos
             size: self.size
-
     AsyncImage:
         source: root.mpd_media
         size_hint_x: None
@@ -48,7 +46,28 @@
         size_hint: (0.15, 1)
         on_press: root.on_press(app, self)
 
-<-Music>:
+<-MtpDevice>:
+    index: 0
+    mtp_name: ''
+    spacing: "10dp"
+    canvas.before:
+        Color:
+            rgba: (0, 0, 0, 1) if root.index % 2 == 0 else (.15, .15, .15, 0.5)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    Label:
+        font_size: "20sp"
+        text: root.mtp_name
+        color: (1, 1, 1, 1)
+        text_size: (self.width, None)
+    Button:
+        text: 'Open'
+        size_hint: (0.15, 1)
+        on_press: root.on_press(app, self)
+
+
+<-Musics>:
     id:browser
     RecycleView:
         id: mpdlibrary
@@ -56,15 +75,15 @@
         key_viewclass: 'viewclass'
         key_size: 'height'
 
-<-Musics>:
+<-Music>:
     id:browser
     TabbedPanel:
-        canvas.after:
-            Color:
-                rgba: (255, 0, 255, 0.2)
-            Line:
-                points: [0, 0, self.width, 0, self.width, self.height, 0, self.height, 0, 0]
-                width: 6
+#        canvas.after:
+#            Color:
+#                rgba: (255, 0, 255, 0.2)
+#            Line:
+#                points: [0, 0, self.width, 0, self.width, self.height, 0, self.height, 0, 0]
+#                width: 6
 
         id: tabs
     #    pos: (0, 108)
@@ -79,6 +98,11 @@
                 AccordionItem:
                     id: devices
                     title: "Devices"
+                    RecycleView:
+                        id: mtpdevices
+                        data: root.mtp_devices
+                        key_viewclass: "viewclass"
+                        key_size: "height"
                 AccordionItem:
                     id: library
                     title: "Music Library"
@@ -101,9 +125,9 @@
     MediaBar:
         id: mediabar
         size_hint: (1, 0.1)
-        canvas.after:
-            Color:
-                rgba: (0, 0, 255, 0.2)
-            Line:
-                points: [0, 0, self.width, 0, self.width, self.height, 0, self.height, 0, 0]
-                width: 6
+ #       canvas.after:
+ #           Color:
+ #               rgba: (0, 0, 255, 0.2)
+ #           Line:
+ #               points: [0, 0, self.width, 0, self.width, self.height, 0, self.height, 0, 0]
+ #               width: 6
