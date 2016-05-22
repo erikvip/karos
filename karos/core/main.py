@@ -62,19 +62,17 @@ class KarosApp(App):
         Logger.info("karos: Found {} plugins".format(len(self.plugins)))
 
     def build_config(self, config):
+        '''Kivy callback. Setup our default ConfigParser object values'''
         self.config = config
         self.config.setdefaults('MPD', {'host': 'localhost','port': 6600})
 
-    
     def get_application_config(self):
-        '''Return the path to our app config file'''
-
-        Logger.info("karos: get_application_config: ~/.%(appname)s.ini")
+        '''Kivy callback. Return the path to our app config file.'''
         return super(KarosApp, self).get_application_config(
-            '~/.%(appname)s.ini')
-
+            '~/.karos/%(appname)s.ini')
 
     def build_settings(self, settings):
+        '''Kivy callback. Build our settings info screen'''
         json = '''
         [
             {

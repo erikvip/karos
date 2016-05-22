@@ -1,15 +1,11 @@
 from __future__ import unicode_literals
 from os.path import dirname
+import pkg_resources
+from kivy.logger import Logger
 
 __version__ = '0.1.6'
-__name__ = "Info"
 __title__ = "System Information"
-__icon__ = dirname(__file__) + "/icon.png"
-
-#def launch():
-#    from .main import karos_info as info
-#    return info().build()
-
+__icon__ = pkg_resources.resource_filename(__name__, 'icon.png')
 
 class Plugin():
     version = __version__
@@ -18,5 +14,8 @@ class Plugin():
     name = __name__
 
     def screen(self):
+        Logger.info("{}: Plugin screen init. Name:{} Version:{} Title:{} File:{} Icon:{}".format(
+            __name__, __name__, __version__, __title__, __file__, __icon__))
+
         from .main import karos_info as info
-        return info().build()
+        return info(name=__name__).build()

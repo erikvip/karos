@@ -15,8 +15,6 @@ import subprocess
 class karos_wifi(Screen):
     def __init__(self, **kwargs):
         Logger.info("karos_wifi: init")
-        self.name="wifi"
-        #Builder.load_file(dirname(__file__) + "/main.kv")
         super(karos_wifi, self).__init__(**kwargs)
 
 

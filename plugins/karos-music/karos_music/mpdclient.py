@@ -1,5 +1,3 @@
-#from ../util import dump
-
 '''
 ==Known issues==
 
@@ -52,7 +50,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 #from utils import Growl
 from os.path import dirname
 import mpd
-
+import pkg_resources
 
 import string
 import random
@@ -92,7 +90,8 @@ class Music(Screen):
 
     def __init__(self, mpc, **kwargs):
         Logger.info("karos_music: init")
-        Builder.load_file(dirname(__file__) + '/mpdclient.kv')
+        #Builder.load_file(dirname(__file__) + '/mpdclient.kv')
+        Builder.load_file(pkg_resources.resource_filename(__name__, 'mpdclient.kv'))
         self.mpc = mpc
         self.mpd_root_data = self.fetch_data()
         super(Music, self).__init__(**kwargs)

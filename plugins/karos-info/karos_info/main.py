@@ -110,8 +110,9 @@ from kivy.properties import ObjectProperty
 from kivy.properties import DictProperty
 from kivy.uix.rst import RstDocument
 
-from karos import utils
+from karos.core.utils import dump
 
+import pkg_resources
 import kivy
 import sys
 
@@ -128,9 +129,8 @@ class karos_info(Screen):
         'bullet': '000000ff'})    
 
     def __init__( self, **kwargs):
-        self.name = "info"
         Logger.info("karos_info: init")
-        Builder.load_file(dirname(__file__) + "/main.kv")
+        Builder.load_file(pkg_resources.resource_filename(__name__, 'main.kv'))
         super(karos_info, self).__init__(**kwargs)
 
     def build(self):

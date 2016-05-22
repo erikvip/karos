@@ -16,7 +16,7 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 def dump(arg):
-    print "="*80, "\n", bcolors.BOLD, arg, bcolors.ENDC, "\n" + "="*80, bcolors.WARNING
+    print "="*80, "\n", bcolors.BOLD, arg, bcolors.ENDC, "\n" + "="*80, bcolors.WARNINGg
     col_width = max(len(row) for row in dir(arg)) + 3
     for d in dir(arg):
         try:
