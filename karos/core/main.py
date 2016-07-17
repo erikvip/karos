@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
-from os.path import dirname
+from os.path import dirname, isfile
+import os
+import sys
 import pkg_resources
 
 import random
@@ -28,12 +30,15 @@ from notify import Notify
 
 
 
+
 class KarosApp(App):
     lsuse_kivy_settings = False
     settings_cls = 'SettingsWithSidebar'
     settings_popup = ObjectProperty(None, allownone=True)
     #direction = "vertical"
     config = False
+    config_file_template = '~/.karos/%(appname)s.ini'
+    config_file = False
     plugins = []
 
     def __init__(self, **kwargs):
@@ -54,37 +59,62 @@ class KarosApp(App):
         Logger.info("karos: Found {} plugins".format(len(self.plugins)))
         #Notify(text="Found {} plugins".format(len(self.plugins)))
 
-    def build_config(self, config):
-        '''Kivy callback. Setup our default ConfigParser object values'''
-        self.config = config
-        self.config.setdefaults('MPD', {'host': 'localhost','port': 6600})
-
     def get_application_config(self):
         '''Kivy callback. Return the path to our app config file.'''
-        return super(KarosApp, self).get_application_config(
-            '~/.karos/%(appname)s.ini')
+        self.config_file = App.get_application_config(self, self.config_file_template)
+        Logger.info("karos: application config file: {}".format(self.config_file) )
+
+        # If our config file exists, verify we have write access
+        if os.path.isfile(self.config_file):
+            if not os.access(self.config_file, os.W_OK):
+                Logger.exception("karos: No write access to config file {}".format(self.config_file));
+                raise IOError("No write access to config file {}".format(self.config_file))
+
+        return super(KarosApp, self).get_application_config(self.config_file_template)
+
+    def build_config(self, config):
+        '''Kivy callback. Setup our default ConfigParser object values'''
+        Logger.info("karos: building config")
+        self.config = config
+
+        # Plugin config can enable / disable each plugin
+        plugin_config = {};
+
+        for p in self.plugins:
+            plugin_config[p.config_section] = 1;
+            if hasattr(p, 'default_config'):
+                conf = p.default_config if not callable(p.default_config) else p.default_config()
+                self.config.setdefaults(p.config_section, conf)
+
+        self.config.setdefaults('Plugins', plugin_config);
+
 
     def build_settings(self, settings):
         '''Kivy callback. Build our settings info screen'''
-        json = '''
-        [
-            {
-                "type": "string",
-                "title": "MPD Host",
-                "desc": "Music Player Host to connect (Default: localhost)",
-                "section": "MPD",
-                "key": "host"
-            },
-            {
-                "type": "numeric",
-                "title": "MPD Port",
-                "desc": "Music Player Port to connect (Default: 6600)",
-                "section": "MPD",
-                "key": "port"
-            }
-        ]
+
+        # Plugin item section. Plugins are enabled by default
+        plugin_template = '''
+            {{
+                "type": "bool",
+                "title":"Enable {title}",
+                "description": "{description}",
+                "section": "Plugins",
+                "key":  "{section}"
+            }}
         '''
-        settings.add_json_panel('MPD', self.config, data=json)
+        plugin_list = []
+        for p in self.plugins:
+            plugin_list.append( plugin_template.format(**{'title': p.title,
+                                                        'description': p.description,
+                                                        'section': p.config_section}))
+            if hasattr(p, 'default_settings'):
+                if callable(p.default_settings):
+                    settings.add_json_panel(p.config_section, self.config, data=p.default_settings())
+                else:
+                    settings.add_json_panel(p.config_section, self.config, data=p.default_settings)
+
+        plugin_settings = '[{0}]'.format( ','.join(plugin_list) )
+        settings.add_json_panel('Plugins', self.config, data=plugin_settings)
 
     def display_settings(self, settings):
         '''Kivy callback. Display the settings screen as a popup'''
@@ -92,7 +122,7 @@ class KarosApp(App):
         if p is None:
             self.settings_popup = p = Popup(content=settings,
                                             title='Settings',
-                                            size_hint=(0.8, 0.8))
+                                            size_hint=(0.9, 0.8))
         if p.content is not settings:
             p.content = settings
         p.open()
@@ -103,12 +133,15 @@ class KarosApp(App):
         if p is not None:
             p.dismiss()
 
+    #def launch(self, icon):
+    #    self.open_settings()
+
     def launch(self, icon):
         '''
         Launch a given screen / icon
         '''
-        
         # Ugly hack - hide the media bar when a plugin is launched...
+
         mb = self.root.ids.mediabar
         mb.parent.remove_widget(mb)
 
@@ -116,7 +149,11 @@ class KarosApp(App):
         if (not self.sm.has_screen(str(icon.name))):
             # Build and launch the plugin screen, first time run
             Logger.info("karos: First view for screen, init: {}".format(icon.name))
-            screen = icon.source().screen()
+
+            pconf = self.config._sections[icon.source.config_section]
+            # Create instance of new plugin class
+            instance = icon.source(config=pconf)
+            screen = instance.screen()
             self.sm.add_widget(screen) 
 
         # Set the Back button title to our plugin

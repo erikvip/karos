@@ -11,7 +11,7 @@ def get_version(filename):
 setup(
     name='karos-wifi',
     version=get_version(dirname(__file__) + '/karos_wifi/__init__.py'),
-    url='https://github.com/erikvip/karos-wifi',
+    url='https://github.com/erikvip/karos_wifi',
     license='MIT',
     author_email='erikvip@gmail.com',
     description='Wireless Connection Manager and Wardriving tools',
@@ -24,7 +24,7 @@ setup(
     ],
     entry_points={
         'karos.plugin': [
-            'wifi = karos_wifi:Plugin',
+            'karos_wifi = karos_wifi:Plugin',
         ],
     }
 )

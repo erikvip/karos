@@ -5,6 +5,7 @@ from kivy.logger import Logger
 
 __version__ = '0.1.6'
 __title__ = "System Information"
+__description__ = "System info"
 __icon__ = pkg_resources.resource_filename(__name__, 'icon.png')
 
 class Plugin():
@@ -12,6 +13,7 @@ class Plugin():
     title = __title__
     icon = __icon__
     name = __name__
+    description = __description__
 
     def screen(self):
         Logger.info("{}: Plugin screen init. Name:{} Version:{} Title:{} File:{} Icon:{}".format(

@@ -42,9 +42,9 @@ Builder.load_string('''
             on_release: root.go_back(app);  #app.sm.current='main'; self.title='Back';
         ActionButton:
             id: systemicon-settings
-            icon: "../../plugins/karos-wifi/karos_wifi/icon.png"
-            #on_release: app.open_settings()
-            on_release: systembar.notify("Notify message", item=self)
+            icon: "''' + pkg_resources.resource_filename(__name__, 'data/images/settings.png') + '''"
+            on_release: app.open_settings()
+            #on_release: systembar.notify("Notify message", item=self)
         ActionLabel:
             id: systemtime
             align: "right"
