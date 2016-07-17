@@ -47,7 +47,7 @@ from kivy.uix.accordion import Accordion, AccordionItem
 from kivy.uix.label import Label
 
 from kivy.uix.screenmanager import ScreenManager, Screen
-#from utils import dump
+from karos.core.utils import dump
 #from utils import Growl
 from os.path import dirname
 import os
@@ -152,9 +152,21 @@ class Music(Screen):
         return result
 
     def mpd_select(self, item):
-
+        '''Handler for a UI click. Dispatches depending on item type'''
+        Logger.info("karos_music: Selected item: {}".format(item.mpd_data))
         text = item.mpd_data['text']
+        type = item.mpd_data['type']
 
+        if type == 'directory':
+            self.mpd_select_directory(item.mpd_data['text'])
+        elif type == 'file':
+            self.mpd_play_file(item.mpd_data)
+
+    def mpd_select_directory(self, text):
+        '''
+            Handles a directory click in the MPD Library UI
+            This records our current path, if '..' is passed as text, then we go up in history
+        '''
         if (text == ".."):
             del self.mpd_history[self.mpd_level]
             self.mpd_level -= 1
@@ -165,6 +177,17 @@ class Music(Screen):
 
         data = self.fetch_data(text)
         self.ids.mpdlibrary.data = data
+
+    def mpd_play_file(self, node):
+        '''
+            Send a play request to MPD. This is dispatch handler when a File is clicked. 
+            node is expected to be an MPD file object, which is a Dict that looks like:
+            {'text': 'The Secret', 'type': 'file', 'file': u'Geto Boys/The Foundation/13-geto_boys-the_secret-c4.mp3'}
+            the node.file option is sent in the PLAY command to MPD
+        '''
+        Logger.info('karos_music: Sending PLAY request for file: {}'.format(node['file']))
+        self.mpc.add(node['file'])
+        self.mpc.play()
 
     def fetch_mtp_devices(self, timer=None):
 #        stdout = sys.stderr;
