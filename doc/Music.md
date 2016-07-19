@@ -70,9 +70,54 @@ $ sudo /etc/init.d/mpd status
 ```
 
 
+## MPD Dev setup on Ubuntu / Debian using PulseAudio
+
+After installing MPD on my Ubuntu development machine, MPD could not connect to the ALSA sound driver, and there was no audio output.  To fix, need to:
+
+- Add the MPD user to the pulse,pulse-access group (Since PULSE runs in userspace). 
+- Comment out the ALSA driver, and setup the pulse driver in **/etc/mpd.conf**
+  - Specify the localhost as the Pulse server
+- Restart pulse using --kill --start
+
+**Example**   
+'''bash
+# Add mpd user to pulse and pulse-access group
+sudo usermod -aG pulse,pulse-access mpd
+
+# Edit /etc/mpd.conf and comment out the ALSA device:
+#audio_output {
+#   type        "alsa"
+#   name        "My ALSA Device"
+#}
+
+# Add the Pulse config to /etc/mpd.conf, set host to localhost
+audio_output {
+        type            "pulse"
+        name            "My Pulse Output"
+        server          "localhost"
+}
+
+# Restart pulseaudio
+pulseaudio --kill
+pulseaudio --start
+'''
+
+**Troubleshooting**   
+'''bash
+# Check /var/log/syslog for Pulse errors:
+grep -i pulseaudio /etc/syslog
+
+Jul 17 09:52:36 host pulseaudio[18162]: [pulseaudio] module.c: Failed to open module "module-esound-protocol-tcp".
+Jul 17 09:52:36 host pulseaudio[18162]: [pulseaudio] module-gconf.c: pa_module_load() failed
+Jul 17 09:52:36 host pulseaudio[18162]: [pulseaudio] module-protocol-stub.c: Failed to parse module arguments
+Jul 17 09:52:36 host pulseaudio[18162]: [pulseaudio] module.c: Failed to load module "module-native-protocol-tcp" (argument: "auth-ip-acl=127.0.0.1 # IP of localhost"): initialization failed.
 
 
-
+# Verify tcp module is loaded via pacmd
+pacmd list-modules | grep -i tcp
+    name: <module-native-protocol-tcp>
+        module.description = "Native protocol (TCP sockets)"
+'''
 
 
 
