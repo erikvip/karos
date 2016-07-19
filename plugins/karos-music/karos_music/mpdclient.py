@@ -87,6 +87,13 @@ class MtpDevice(BoxLayout):
     def __init__(self, **kwargs):
         super(MtpDevice, self).__init__(**kwargs)
 
+    def on_press(self, app, btn):
+        # Call the on_press method of the RecycleView
+        sm = app.root.ids.sm
+        music = sm.get_screen('karos_music')
+        item = btn.parent
+        music.mtp_device_select(item)
+
 
 class MpdLibrary(RecycleView):
     pass
@@ -210,6 +217,8 @@ class Music(Screen):
                     "mtp_name": "%(name)s (USB bus:%(bus)i device:%(dev)i)" % 
                         {'name': i.device_entry, 'bus': i.bus_location, 'dev': i.devnum}
                 })
+    def mtp_device_select(self, dev):
+        dump(dev);
 
 '''
 
