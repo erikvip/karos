@@ -1,5 +1,7 @@
 # Raspberry PI KarOS Setup Notes
 
+**This is an unfinished, early alpha version, and as such is not ready for production use. It is here for historical purposes only. The ads7846 touchscreen is also a resistive touch screen and performs rather poorly. Won't be updated until I get new hardware and motivation.**
+
 ## Overview   
 
 The main goal of this project is to provide an touch screen mp3 player for my vehicle using a Raspberry PI.  Also looking to add MTP support so Android (iphone?) phones can be played directly by passengers. 
